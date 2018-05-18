@@ -8,6 +8,8 @@ function drewdrew
   end
 end
 
+source ~/.dada/bobthefish-custom.fish
+
 # Git commands/shortcuts
 source ~/.dada/ms-git.fish
 # API keys
@@ -27,6 +29,7 @@ set -gx CEEGEE_BUILD_DEST_DIR "/Users/msikma/Personal projects/ceegee_nightly";
 
 set fish_greeting ""
 
+alias composer="php ~/.bin/composer.phar"
 alias md5sum="gmd5sum"
 alias sha1sum="gsha1sum"
 alias streamlink="streamlink --default-stream best --player '/Applications/VLC3.app/Contents/MacOS/VLC --file-caching 10000 --network-caching 10000'"
@@ -34,6 +37,7 @@ alias livestreamer="streamlink --default-stream best"
 alias scrip="youtube-dl -w -c --add-metadata"
 alias youtube-wav="youtube-dl -x --add-metadata --audio-format wav"
 alias youtube-mp3="youtube-dl -x --add-metadata --audio-format mp3"
+alias youtube-audio="youtube-dl --audio-format best -x"
 alias chrome="open -a Google\ Chrome\ Canary"
 alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
 
@@ -67,6 +71,9 @@ set PATH ~/.bin/ $PATH
 set PATH ~/.bin/misc-scripts $PATH
 set PATH ./node_modules/.bin $PATH
 set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
+set PATH /usr/local/djgpp/bin/ $PATH
+set PATH ~/.composer/vendor/bin $PATH
+set PATH ~/.cargo/bin $PATH
 
 set -x LC_ALL en_US.UTF-8
 
