@@ -70,8 +70,12 @@ set PATH /usr/local/bin $PATH
 set PATH ~/.bin/ $PATH
 set PATH ~/.bin/misc-scripts $PATH
 set PATH ./node_modules/.bin $PATH
-set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
-set PATH /usr/local/djgpp/bin/ $PATH
+if test -d ~/Personal\ projects/liballeg.4.4.2-osx/tools
+  set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
+end
+if test -d /usr/local/djgpp/bin/
+  set PATH /usr/local/djgpp/bin/ $PATH
+end
 set PATH ~/.composer/vendor/bin $PATH
 set PATH ~/.cargo/bin $PATH
 
@@ -94,4 +98,4 @@ alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 
 # Virtualfish (for real this time)
-eval (python -m virtualfish auto_activation global_requirements)
+#eval (python -m virtualfish auto_activation global_requirements)
