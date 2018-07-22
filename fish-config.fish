@@ -61,7 +61,8 @@ end
 
 set -x SCSCRAPE_DIR ~/Music/scscrape
 set VAGRANT_DEFAULT_PROVIDER virtualbox
-set EDITOR nano
+set -x EDITOR nano
+set -x GIT_EDITOR nano
 
 set PATH ~ $PATH
 set PATH /usr/bin $PATH
