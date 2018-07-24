@@ -27,7 +27,7 @@ end
 
 function fish_right_prompt --description 'Write out the right prompt'
   set -l exit_code $status
-  set -l datestr (date +"%a, %b %d %Y %H:%m:%d")
+  set -l datestr (date +"%a, %b %d %Y %X")
   if test $exit_code -ne 0
     set_color red
     echo -n "! "
@@ -51,13 +51,44 @@ function fish_greeting
   # Current IP (10.0.1.3)
   set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2)
   
+  # TODO: check on backup status
+  # /Volumes/Files/Backups/msikma
+  echo 
+  
   set_color brblack
   echo (uname -v)
   uptime
   echo
-  echo -s User: "       " $user " (" $currip ")"
-  echo Disk usage: $disk_usage_perc% "("$disk_usage_gb GB available")"
+  
+  set l1 "User:         $user ($currip)"
+  set l2 "Disk usage: $disk_usage_perc% ($disk_usage_gb GB available)"
+  set lines $l1 $l2
+  
+  draw_columns $lines
   set_color normal
+end
+
+function draw_columns --description 'Draws lines as columns'
+  set lines $argv
+  set colwidth 50
+  set columns 2
+  for n in (seq (count $lines))
+    set line $lines[$n]
+    # Line length
+    set len (string length $line)
+    # Remainder
+    set rem (math "$colwidth - $len")
+    
+    # Echo the string
+    echo -n $line
+    # Echo spaces until we reach the column width
+    echo -n (string repeat ' ' -n $rem)
+    
+    # Linebreak after 2 columns
+    if [ (math "$n % $columns") -eq 0 ]
+      echo
+    end
+  end
 end
 
 function faster_vcs
