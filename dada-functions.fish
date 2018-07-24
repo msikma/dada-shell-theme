@@ -9,6 +9,10 @@ function drewdrew
   end
 end
 
+function devices
+  cat /etc/hosts | grep --color=no -i "10.0.1"
+end
+
 function video2gif
     ffmpeg -y -i $argv[1] -vf fps=20,scale=320:-1:flags=lanczos,palettegen palette.png
     ffmpeg -i $argv[1] -i palette.png -filter_complex "fps=20,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse" $argv[1].gif
