@@ -15,6 +15,7 @@ set -g __fish_git_prompt_char_cleanstate '✓'
 set -g __fish_git_prompt_color_prefix yellow
 set -g __fish_git_prompt_color_suffix yellow
 set -g __fish_git_prompt_color_branch yellow
+set -g __fish_git_prompt_color_cleanstate green
 
 # CWD color
 set -g __fish_prompt_cwd (set_color cyan)
