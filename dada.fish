@@ -1,12 +1,13 @@
 # Prompt and other style things
-source ~/.dada/dada-theme.fish
-# source ~/.dada/bobthefish-custom.fish  # disabled for now.
+source ~/.config/dada/dada-theme.fish
+# source ~/.config/dada/bobthefish-custom.fish  # disabled for now.
 # Git commands/shortcuts
-source ~/.dada/ms-git.fish
+source ~/.config/dada/dada-git.fish
 # API keys
-source ~/.dada/secrets/keys.fish
-# Functions
-source ~/.dada/dada-functions.fish
+source ~/.config/dada/secrets/keys.fish
+# Functions and aliases
+source ~/.config/dada/dada-functions.fish
+source ~/.config/dada/dada-aliases.fish
 
 # A ton of path segments to add
 set PATH ~ $PATH
@@ -25,23 +26,6 @@ if test -d /usr/local/djgpp/bin/
 end
 set PATH ~/.composer/vendor/bin $PATH
 set PATH ~/.cargo/bin $PATH
-
-alias composer="php ~/.bin/composer.phar"
-alias md5sum="gmd5sum"
-alias sha1sum="gsha1sum"
-alias streamlink="streamlink --default-stream best --player '/Applications/VLC3.app/Contents/MacOS/VLC --file-caching 10000 --network-caching 10000'"
-alias livestreamer="streamlink --default-stream best"
-alias scrip="youtube-dl -w -c --add-metadata"
-alias youtube-wav="youtube-dl -x --add-metadata --audio-format wav"
-alias youtube-mp3="youtube-dl -x --add-metadata --audio-format mp3"
-alias youtube-audio="youtube-dl --audio-format best -x"
-alias chrome="open -a Google\ Chrome\ Canary"
-alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
-alias ls="ls -G"
-alias l="ls -lah"
-alias wget="wget --no-check-certificate"
-alias latest="ls -1t | head -5"
-alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")
@@ -72,6 +56,3 @@ set -x NIMLIB ~/Source/Nim/lib/
 
 set -x LDFLAGS -L/usr/local/opt/qt5/lib
 set -x CPPFLAGS -I/usr/local/opt/qt5/include
-
-# Virtualfish (for real this time)
-#eval (python -m virtualfish auto_activation global_requirements)

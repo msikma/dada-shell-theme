@@ -29,9 +29,7 @@ function fish_right_prompt --description 'Write out the right prompt'
   set -l exit_code $status
   set -l datestr (date +"%a, %b %d %Y %X")
   if test $exit_code -ne 0
-    set_color red
-    echo -n "! "
-    set_color normal
+    echo -n "⚠️  "
   end
   
   set_color 222
@@ -51,18 +49,34 @@ function fish_greeting
   # Current IP (10.0.1.3)
   set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2)
   
-  # TODO: check on backup status
-  # /Volumes/Files/Backups/msikma
+  # Check latest backup timestamps.
+  if test -e ~/.cache/dada/backup-dbs
+    set backup_dbs (cat ~/.cache/dada/backup-dbs)
+  else
+    set backup_dbs 'unknown'
+  end
+  
+  if test -e ~/.cache/dada/backup-glitch
+    set backup_glitch (cat ~/.cache/dada/backup-glitch)
+  else
+    set backup_glitch 'unknown'
+  end
+  
+  # One empty line before we begin.
   echo 
   
   set_color brblack
   echo (uname -v)
   uptime
   echo
+  set c0 (set_color purple)
+  set c1 (set_color white)
   
-  set l1 "User:         $user ($currip)"
-  set l2 "Disk usage: $disk_usage_perc% ($disk_usage_gb GB available)"
-  set lines $l1 $l2
+  set l1 $c0"User:           $c1$user ($currip)"
+  set l2 $c0"Last db backup: $c1$backup_dbs"
+  set l3 $c0"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
+  set l4 $c0"Last music b/u: $c1$backup_glitch"
+  set lines $l1 $l2 $l3 $l4
   
   draw_columns $lines
   set_color normal
@@ -70,7 +84,7 @@ end
 
 function draw_columns --description 'Draws lines as columns'
   set lines $argv
-  set colwidth 50
+  set colwidth 60
   set columns 2
   for n in (seq (count $lines))
     set line $lines[$n]
