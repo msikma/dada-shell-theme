@@ -11,6 +11,9 @@ source ~/.config/dada/dada-aliases.fish
 
 # A ton of path segments to add
 set PATH ~ $PATH
+if test -d /usr/local/opt/node@8/bin
+  set PATH /usr/local/opt/node@8/bin $PATH
+end
 set PATH /usr/bin $PATH
 set PATH /bin /usr/sbin /sbin $PATH
 set PATH /usr/local/bin $PATH
@@ -20,6 +23,9 @@ set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/mi
 set PATH ./node_modules/.bin $PATH
 if test -d ~/Personal\ projects/liballeg.4.4.2-osx/tools
   set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
+end
+if test -d ~/Source/liballeg.4.4.2-osx/tools
+  set PATH ~/Source/liballeg.4.4.2-osx/tools $PATH
 end
 if test -d /usr/local/djgpp/bin/
   set PATH /usr/local/djgpp/bin/ $PATH
@@ -56,3 +62,6 @@ set -x NIMLIB ~/Source/Nim/lib/
 
 set -x LDFLAGS -L/usr/local/opt/qt5/lib
 set -x CPPFLAGS -I/usr/local/opt/qt5/include
+
+# For testing web scrapers project
+set -gx WEB_SCRAPERS_USE_SRC 1
