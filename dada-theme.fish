@@ -55,9 +55,13 @@ function fish_greeting --description 'Display the login greeting'
   # Current IP (10.0.1.3)
   set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1)
   # Current Dada-theme version, e.g. master-12-abcdef
+  # Make sure we return to where we were.
+  set dir (pwd)
+  cd ~/.config/dada
   set version (get_version)
   set last_commit (get_last_commit)
   set last_commit_rel (get_last_commit_rel)
+  cd "$dir"
   
   # Check latest backup timestamps.
   if test -e ~/.cache/dada/backup-dbs
