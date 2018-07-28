@@ -48,7 +48,7 @@ function fish_greeting
   # user@hostname
   set user (whoami)'@'(uname -n)
   # Current IP (10.0.1.3)
-  set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2)
+  set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1)
   
   # Check latest backup timestamps.
   if test -e ~/.cache/dada/backup-dbs
