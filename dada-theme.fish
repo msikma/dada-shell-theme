@@ -118,13 +118,14 @@ function fish_greeting --description 'Display the login greeting'
   # Display the info columns.
   set c0 (set_color purple)
   set c1 (set_color white)
-  set c2 (set_color yellow)
+  set c2 (set_color blue)
+  set c3 (set_color yellow)
   
   set m1 $c2"Version:        $c1$version"
   set m2 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
-  set l1 $c0"User:           $c1$user ($currip)"
+  set l1 $c3"User:           $c1$user ($currip)"
   set l2 $c0"Last db backup: $c1$backup_dbs"
-  set l3 $c0"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
+  set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
   set l4 $c0"Last music b/u: $c1$backup_glitch"
   set lines $m1 $m2 $l1 $l2 $l3 $l4
   
