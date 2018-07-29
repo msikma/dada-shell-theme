@@ -40,6 +40,38 @@ function fish_right_prompt --description 'Write out the right prompt'
   set_color normal
 end
 
+# Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
+function backup_time_str --description 'Prints the time a backup was last performed'
+  set bfile $argv[1]
+  set now (date +%s)
+  
+  # If a backup is older than a week, display the value in yellow.
+  # If it's older than a month, display the value in red.
+  set yellow_cutoff 604800
+  set red_cutoff 2628000
+  
+  if test -e $bfile
+    set bu (cat $bfile)
+    set bu_unix (backup_date_unix $bu)
+    set bu_abs (date -r $bu_unix +%Y-%m-%d)
+    set bu_rel (time_ago $now $bu_unix)
+    set bu_diff (math "$now - $bu_unix")
+    set color (set_color normal)
+    set warn ""
+    if [ $bu_diff -gt $yellow_cutoff ]
+      set color (set_color yellow)
+      set warn " ⚠️"
+    end
+    if [ $bu_diff -gt $red_cutoff ]
+      set color (set_color red)
+      set warn " ⚠️"
+    end
+    echo "$color$bu_abs ($bu_rel)$warn"(set_color normal)
+  else
+    echo 'unknown'
+  end
+end
+
 # Prints a greeting message when logging in.
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
@@ -63,18 +95,8 @@ function fish_greeting --description 'Display the login greeting'
   set last_commit_rel (get_last_commit_rel)
   cd "$dir"
   
-  # Check latest backup timestamps.
-  if test -e ~/.cache/dada/backup-dbs
-    set backup_dbs (cat ~/.cache/dada/backup-dbs)
-  else
-    set backup_dbs 'unknown'
-  end
-  
-  if test -e ~/.cache/dada/backup-glitch
-    set backup_glitch (cat ~/.cache/dada/backup-glitch)
-  else
-    set backup_glitch 'unknown'
-  end
+  set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
+  set backup_glitch (backup_time_str "/Users/msikma/.cache/dada/backup-glitch")
   
   # Display the gray uname section.
   set_color brblack
@@ -110,7 +132,71 @@ function fish_greeting --description 'Display the login greeting'
   set_color normal
 end
 
-# Returns Git version (e.g. master-23-a4fd3c)
+# Converts a timestamp used for backups into Unix time.
+function backup_date_unix --description 'Converts a backup timestamp back to Unix time'
+  date -jf "%a, %b %d %Y %X %z" $argv[1] +%s
+end
+
+# Prints out a single time value with 'ago' after it.
+function time_ago_echo --description 'Prints out a time ago string'
+  echo -n $argv[1]
+  if [ $argv[1] -eq 1 ]
+    echo -n " $argv[2]"
+  else
+    echo -n " $argv[3]"
+  end
+  echo " ago"
+end
+
+# Calculates the relative difference between two Unix times.
+# The difference is returned in a human-readable format,
+# e.g. '5 years ago', '2 days ago', '20 minutes ago'.
+function time_ago --description 'Formats the relative difference between two dates'
+  set date1 $argv[1]
+  set date2 $argv[2]
+  set diff (math "$date1 - $date2")
+  
+  set year_l 31536000
+  set month_l 2628000
+  set week_l 604800
+  set day_l 86400
+  set hour_l 3600
+  set minute_l 60
+  
+  set years (math "$diff / $year_l")
+  if [ $years -gt 0 ]
+    time_ago_echo $years "year" "years"
+    return
+  end
+  set months (math "$diff / $month_l")
+  if [ $months -gt 0 ]
+    time_ago_echo $months "month" "months"
+    return
+  end
+  set weeks (math "$diff / $week_l")
+  if [ $weeks -gt 0 ]
+    time_ago_echo $weeks "week" "weeks"
+    return
+  end
+  set days (math "$diff / $day_l")
+  if [ $days -gt 0 ]
+    time_ago_echo $days "day" "days"
+    return
+  end
+  set hours (math "$diff / $hour_l")
+  if [ $hours -gt 0 ]
+    time_ago_echo $hours "hour" "hours"
+    return
+  end
+  set minutes (math "$diff / $minute_l")
+  if [ $minutes -gt 0 ]
+    time_ago_echo $minutes "minute" "minutes"
+    return
+  end
+  time_ago_echo $diff "second" "seconds"
+end
+
+# Returns Git version (e.g. master-23-a4fd3c).
 function get_version --description 'Returns version identifier string'
   set branch (git describe --all | sed s@heads/@@)
   set hash (git rev-parse --short head)
@@ -118,12 +204,14 @@ function get_version --description 'Returns version identifier string'
   echo $branch-$commits [$hash]
 end
 
+# Last commit date in short format (YYYY-mm-dd).
 function get_last_commit --description 'Returns last Git commit date'
   echo (git log -n 1 --date=format:%s --pretty=format:%cd --date=short)
 end
 
+# Last commit date in relative format ('x days ago').
 function get_last_commit_rel --description 'Returns last Git commit date in relative format'
-  echo (git log -n 1 --date=format:%s --pretty=format:%cd --date=relative)
+  echo (git log -n 1 --pretty=format:%cd --date=relative)
 end
 
 # Draws lines as columns. Used to draw two columns of text in the greeting.
@@ -142,7 +230,9 @@ function draw_columns --description 'Draws lines as columns'
     # Echo the string
     echo -n $line
     # Echo spaces until we reach the column width
-    echo -n (string repeat ' ' -n $rem)
+    if [ $rem -gt 0 ]
+      echo -n (string repeat ' ' -n $rem)
+    end
     
     # Linebreak after 2 columns
     if [ (math "$n % $columns") -eq 0 ]
