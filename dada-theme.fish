@@ -97,6 +97,8 @@ function fish_greeting --description 'Display the login greeting'
   
   set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
   set backup_glitch (backup_time_str "/Users/msikma/.cache/dada/backup-glitch")
+  set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
+  set backup_source (backup_time_str "/Users/msikma/.cache/dada/backup-source")
   
   # Display the gray uname section.
   set_color brblack
@@ -120,14 +122,16 @@ function fish_greeting --description 'Display the login greeting'
   set c1 (set_color white)
   set c2 (set_color blue)
   set c3 (set_color yellow)
-  
-  set m1 $c2"Version:        $c1$version"
-  set m2 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
+
   set l1 $c3"User:           $c1$user ($currip)"
-  set l2 $c0"Last db backup: $c1$backup_dbs"
+  set l2 $c0"MySQL backup:   $c1$backup_dbs"
   set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
-  set l4 $c0"Last music b/u: $c1$backup_glitch"
-  set lines $m1 $m2 $l1 $l2 $l3 $l4
+  set l4 $c0"Music backup:   $c1$backup_glitch"
+  set l5 $c2"Theme version:  $c1$version"
+  set l6 $c0"Source backup:  $c1$backup_source"
+  set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
+  set l8 $c0"Files backup:   $c1$backup_files"
+  set lines $l1 $l2 $l3 $l4 $l5 $l6 $l7 $l8
   
   draw_columns $lines
   set_color normal
