@@ -22,7 +22,7 @@ set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
 # Hostname, used in several backup scripts.
-set -g hostname (hostname -s)
+set -gx hostname (hostname -s)
 
 # Copied from one of the default prompts and edited a bit.
 # Displays a shortened cwd and VCS information.
