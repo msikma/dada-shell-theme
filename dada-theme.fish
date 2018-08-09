@@ -21,6 +21,9 @@ set -g __fish_git_prompt_color_cleanstate green
 set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
+# Hostname, used in several backup scripts.
+set -g hostname (hostname -s)
+
 # Copied from one of the default prompts and edited a bit.
 # Displays a shortened cwd and VCS information.
 function fish_prompt --description 'Write out the left prompt'
@@ -96,7 +99,7 @@ function fish_greeting --description 'Display the login greeting'
   cd "$dir"
   
   set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
-  set backup_glitch (backup_time_str "/Users/msikma/.cache/dada/backup-glitch")
+  set backup_music (backup_time_str "/Users/msikma/.cache/dada/backup-music")
   set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
   set backup_source (backup_time_str "/Users/msikma/.cache/dada/backup-source")
   
@@ -126,7 +129,7 @@ function fish_greeting --description 'Display the login greeting'
   set l1 $c3"User:           $c1$user ($currip)"
   set l2 $c0"MySQL backup:   $c1$backup_dbs"
   set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
-  set l4 $c0"Music backup:   $c1$backup_glitch"
+  set l4 $c0"Music backup:   $c1$backup_music"
   set l5 $c2"Theme version:  $c1$version"
   set l6 $c0"Source backup:  $c1$backup_source"
   set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
@@ -201,7 +204,7 @@ function time_ago --description 'Formats the relative difference between two dat
   time_ago_echo $diff "second" "seconds"
 end
 
-# Returns Git version (e.g. master-23-a4fd3c).
+# Returns Git version (e.g. master-23 [a4fd3c]).
 function get_version --description 'Returns version identifier string'
   set branch (git describe --all | sed s@heads/@@)
   set hash (git rev-parse --short head)
