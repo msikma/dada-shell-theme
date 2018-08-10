@@ -79,6 +79,9 @@ end
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
 function fish_greeting --description 'Display the login greeting'
+  # Current Mac OS X version
+  set osx_version (defaults read loginwindow SystemVersionStampAsString)
+  set darwin_version (uname -v | sed -e 's/:.*;/;/g')
   # Disk usage in %
   set disk_usage_perc (df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1)
   # Disk usage in GB, one decimal
@@ -105,7 +108,7 @@ function fish_greeting --description 'Display the login greeting'
   
   # Display the gray uname section.
   set_color brblack
-  echo (uname -v)
+  echo $darwin_version
   uptime
   echo
   
@@ -116,7 +119,11 @@ function fish_greeting --description 'Display the login greeting'
   #set_color blue
   #echo -n "🔥"
   #set_color red
-  echo " Dada shell theme"
+  echo -n " Dada shell theme"
+  set_color 2b4e03
+  echo -n " running on "
+  set_color brgreen
+  echo "macOS $osx_version"
   set_color normal
   echo
   
