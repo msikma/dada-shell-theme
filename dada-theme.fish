@@ -144,6 +144,7 @@ function fish_greeting --description 'Display the login greeting'
   set lines $l1 $l2 $l3 $l4 $l5 $l6 $l7 $l8
   
   draw_columns $lines
+  echo
   set_color normal
 end
 
