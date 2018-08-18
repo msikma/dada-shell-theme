@@ -104,7 +104,7 @@ function fish_greeting --description 'Display the login greeting'
   set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
   set backup_music (backup_time_str "/Users/msikma/.cache/dada/backup-music")
   set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
-  set backup_source (backup_time_str "/Users/msikma/.cache/dada/backup-source")
+  set backup_src (backup_time_str "/Users/msikma/.cache/dada/backup-src")
   
   # Display the gray uname section.
   set_color brblack
@@ -143,7 +143,7 @@ function fish_greeting --description 'Display the login greeting'
   set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
   set l4 $c0"Music backup:   $c1$backup_music"
   set l5 $c2"Theme version:  $c1$version"
-  set l6 $c0"Source backup:  $c1$backup_source"
+  set l6 $c0"Source backup:  $c1$backup_src"
   set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
   set l8 $c0"Files backup:   $c1$backup_files"
   set lines $l1 $l2 $l3 $l4 $l5 $l6 $l7 $l8
