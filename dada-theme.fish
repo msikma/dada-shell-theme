@@ -121,10 +121,15 @@ function fish_greeting --description 'Display the login greeting'
   #set_color red
   echo -n " Dada shell theme"
   set_color 2b4e03
-  echo -n " running on "
-  set_color brgreen
-  echo "macOS $osx_version"
-  set_color normal
+  echo -n " on "
+  set_color green
+  echo "OSX $osx_version"
+  set_color 2b4e03
+  echo -n "Type "
+  set_color green
+  echo -n "help"
+  set_color 2b4e03
+  echo " to see available commands"
   echo
   
   # Display the info columns.
