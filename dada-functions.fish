@@ -23,25 +23,39 @@ function help
   echo "The following commands are available:"
   echo
   
-  set l1 $c0"sphp         $c1 Changes PHP version"
-  set l2 $c0"devices      $c1 Displays local computers"
-  set l3 $c0"scrapemp3s   $c1 Scrapes MP3 files from a URL"
-  set l4 $c0"headers      $c1 Displays headers for a URL"
-  set l5 $c2"gb           $c1 Last Git commits per branch"
-  set l6 $c2"gits / g     $c1 Git status"
-  set l7 $c2"gl           $c1 Git log with merge lines"
-  set l8 $c2"gsl          $c1 Git short log (one liners)"
-  set l9 $c3"backup-dbs   $c1 Backs up MySQL databases"
-  set la $c3"backup-music $c1 Backs up music"
-  set lb $c3"backup-files $c1 Backs up ~/Files"
-  set lc $c3"backup-src   $c1 Backs up source code dirs"
-  set le $c3"backup-zoo   $c1 Copies some music to Happy Zoo"
-  
-  set lines $l1 $l6 $l2 $l5 $l4 $l7 $l3 $l8 $l9 $la $lb $lc $le
+  set lines $c0"sphp         $c1 Changes PHP version"\
+            $c2"gits / g     $c1 Git status"\
+            $c0"devices      $c1 Displays local computers"\
+            $c2"gb           $c1 Last Git commits per branch"\
+            $c0"headers      $c1 Displays headers for a URL"\
+            $c2"gl           $c1 Git log with merge lines"\
+            $c0"scrapemp3s   $c1 Scrapes MP3 files from a URL"\
+            $c2"gsl          $c1 Git short log (one liners)"\
+            $c0"cdbackup     $c1 Changes directory to backup dir"\
+            ""\
+            $c3"backup-dbs   $c1 Backs up MySQL databases"\
+            $c3"backup-music $c1 Backs up music"\
+            $c3"backup-files $c1 Backs up ~/Files"\
+            $c3"backup-src   $c1 Backs up source code dirs"\
+            $c3"backup-zoo   $c1 Copies some music to Happy Zoo"
   
   draw_columns $lines
   echo
   set_color normal
+end
+
+function cdbackup
+  if not set -q hostname
+    echo "$err \$hostname is not set"
+    exit 1
+  end
+  set bdir "/Volumes/Files/Backups/"$hostname
+  if not test -d $bdir
+    echo "Error: Can't access backup directory: $bdir"
+    exit 1
+  end
+  echo $bdir
+  cd $bdir
 end
 
 function devices
