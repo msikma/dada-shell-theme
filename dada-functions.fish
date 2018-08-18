@@ -17,8 +17,9 @@ function help
   set c3 (set_color red)
   
   echo
-  echo -n "🌿"
-  echo (set_color green)" Dada shell theme"(set_color normal)
+  #echo -n "🌿"
+  #echo (set_color green)" Dada shell theme"
+  set_color normal
   echo "The following commands are available:"
   echo
   
