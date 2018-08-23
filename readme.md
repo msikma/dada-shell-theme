@@ -12,6 +12,7 @@ Make sure to install:
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
 * `npm install --global trash-cli`
 * `npm install --global empty-trash-cli`
+* `brew install exa`
 
 ### Copyright
 
