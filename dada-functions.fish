@@ -39,7 +39,7 @@ function help
             $c3"backup-files $c1 Backs up ~/Files"\
             $c0"trash        $c1 Moves a file to the trash (as rm)"\
             $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
-            $c0$c0\
+            $c0"tldr <cmd>   $c1 Displays simple command help"\
             $c3"backup-src   $c1 Backs up source code dirs"\
   
   draw_columns $lines

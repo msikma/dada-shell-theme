@@ -13,6 +13,7 @@ Make sure to install:
 * `npm install --global trash-cli`
 * `npm install --global empty-trash-cli`
 * `brew install exa`
+* `brew install tldr`
 
 ### Copyright
 
