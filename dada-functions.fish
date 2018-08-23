@@ -35,7 +35,7 @@ function help
             $c3"backup-dbs   $c1 Backs up MySQL databases"\
             $c0"fdupes       $c1 Finds duplicate files by hash"\
             $c3"backup-music $c1 Backs up music"\
-            $c0$c0\
+            $c0"color        $c1 Adds a colored icon to a folder"\
             $c3"backup-files $c1 Backs up ~/Files"\
             $c0$c0\
             $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
