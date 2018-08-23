@@ -1,3 +1,4 @@
+#alias rm="trash"
 alias fdupes="jdupes"
 alias ssh-keygen="ssh-keygen -t ed25519"
 alias composer="php ~/.bin/composer.phar"

@@ -37,7 +37,7 @@ function help
             $c3"backup-music $c1 Backs up music"\
             $c0"color        $c1 Adds a colored icon to a folder"\
             $c3"backup-files $c1 Backs up ~/Files"\
-            $c0$c0\
+            $c0"trash        $c1 Moves a file to the trash (as rm)"\
             $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
             $c0$c0\
             $c3"backup-src   $c1 Backs up source code dirs"\
