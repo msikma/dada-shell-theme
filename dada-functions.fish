@@ -32,12 +32,15 @@ function help
             $c0"scrapemp3s   $c1 Scrapes MP3 files from a URL"\
             $c2"gsl          $c1 Git short log (one liners)"\
             $c0"cdbackup     $c1 Changes directory to backup dir"\
-            ""\
             $c3"backup-dbs   $c1 Backs up MySQL databases"\
+            $c0"fdupes       $c1 Finds duplicate files by hash"\
             $c3"backup-music $c1 Backs up music"\
+            $c0$c0\
             $c3"backup-files $c1 Backs up ~/Files"\
+            $c0$c0\
+            $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
+            $c0$c0\
             $c3"backup-src   $c1 Backs up source code dirs"\
-            $c3"backup-zoo   $c1 Copies some music to Happy Zoo"
   
   draw_columns $lines
   echo
