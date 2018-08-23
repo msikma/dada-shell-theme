@@ -14,6 +14,8 @@ Make sure to install:
 * `npm install --global empty-trash-cli`
 * `brew install exa`
 * `brew install tldr`
+* `brew install git-extras`
+* `npm install -g weather-cli`
 
 ### Copyright
 

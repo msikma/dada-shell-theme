@@ -33,7 +33,7 @@ function help
             $c0"scrapemp3s   $c1 Scrapes MP3 files from a URL"\
             $c2"gsl          $c1 Git short log (one liners)"\
             $c0"cdbackup     $c1 Changes directory to backup dir"\
-            $c3"backup-dbs   $c1 Backs up MySQL databases"\
+            $c2"gc           $c1 Displays Git commands help"\
             $c0"fdupes       $c1 Finds duplicate files by hash"\
             $c3"backup-music $c1 Backs up music"\
             $c0"color        $c1 Adds a colored icon to a folder"\
@@ -42,6 +42,8 @@ function help
             $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>   $c1 Displays simple command help"\
             $c3"backup-src   $c1 Backs up source code dirs"\
+            $c0"$c1"\
+            $c3"backup-dbs   $c1 Backs up MySQL databases"\
   
   draw_columns $lines
   # Now the rest of the commands - all external applications.
