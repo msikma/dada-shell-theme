@@ -62,7 +62,13 @@ function cdbackup
 end
 
 function devices
-  cat /etc/hosts | grep --color=no -i "10.0.1"
+  echo
+  echo "The following devices are on the network:"
+  echo
+  set c0 (set_color red)
+  set c1 (set_color white)
+  cat /etc/hosts | grep --color=no -i "10.0.1" | sed "s/[^[:blank:]]\{1,\}/$c0&$c1/1"
+  echo
 end
 
 function video2gif
