@@ -42,7 +42,7 @@ function help
             $c3"backup-zoo   $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>   $c1 Displays simple command help"\
             $c3"backup-src   $c1 Backs up source code dirs"\
-            $c0"$c1"\
+            $c0"tree         $c1 Runs ls with tree structure"\
             $c3"backup-dbs   $c1 Backs up MySQL databases"\
   
   draw_columns $lines
