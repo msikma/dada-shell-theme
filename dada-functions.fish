@@ -53,7 +53,8 @@ function help
                $c4"ascr$c1          Downloads art from social media"\
                $c4"weather$c1       Displays the current weather"\
                $c4"bat$c1           Improved version of cat"\
-               $c4"glances$c1       Computer monitoring tool"
+               $c4"glances$c1       Computer monitoring tool"\
+               $c4"bbedit <file>$c1 Opens a file in BBEdit"
   echo
 end
 
