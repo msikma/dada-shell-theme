@@ -51,7 +51,9 @@ function help
   draw_columns $c4"youtube-dl$c1    Downloads videos from Youtube"\
                $c4"streamlink$c1    Opens internet streams in VLC"\
                $c4"ascr$c1          Downloads art from social media"\
-               $c4"weather$c1       Displays the current weather"
+               $c4"weather$c1       Displays the current weather"\
+               $c4"bat$c1           Improved version of cat"\
+               $c4"glances$c1       Computer monitoring tool"
   echo
 end
 
