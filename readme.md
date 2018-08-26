@@ -18,6 +18,7 @@ Make sure to install:
 * `npm install -g weather-cli`
 * `pip3 install glances`
 * `brew install bat`
+* `npm install fileicon -g`
 
 ### Copyright
 
