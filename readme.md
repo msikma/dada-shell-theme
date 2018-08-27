@@ -19,6 +19,9 @@ Make sure to install:
 * `pip3 install glances`
 * `brew install bat`
 * `npm install fileicon -g`
+* `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
+* `brew install fd`
+* `brew install ncdu`
 
 ### Copyright
 

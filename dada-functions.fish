@@ -54,7 +54,9 @@ function help
                $c4"weather$c1       Displays the current weather"\
                $c4"bat$c1           Improved version of cat"\
                $c4"glances$c1       Computer monitoring tool"\
-               $c4"bbedit <file>$c1 Opens a file in BBEdit"
+               $c4"bbedit <file>$c1 Opens a file in BBEdit"\
+               $c4"fd <str>$c1      Searches for files (alt. to find)"\
+               $c4"ncdu$c1          Displays disk space usage"
   echo
 end
 
