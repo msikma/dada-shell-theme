@@ -15,7 +15,6 @@ Make sure to install:
 * `brew install exa`
 * `brew install tldr`
 * `brew install git-extras`
-* `npm install -g weather-cli`
 * `pip3 install glances`
 * `brew install bat`
 * `npm install fileicon -g`
