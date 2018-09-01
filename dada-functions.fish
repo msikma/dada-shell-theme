@@ -56,7 +56,7 @@ function help
                $c4"glances$c1         Computer monitoring tool"\
                $c4"bbedit <file>$c1   Opens a file in BBEdit"\
                $c4"fd <str>$c1        Searches for files (alt. to find)"\
-               $c4"ncdu$c1            Displays disk space usage"
+               $c4"ncdu$c1            Shows directory disk space usage"
   echo
 end
 
