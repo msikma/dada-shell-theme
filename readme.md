@@ -15,6 +15,7 @@ Make sure to install:
 * `brew install exa`
 * `brew install tldr`
 * `brew install git-extras`
+* `brew install youtube-dl`
 * `pip3 install glances`
 * `brew install bat`
 * `npm install fileicon -g`
