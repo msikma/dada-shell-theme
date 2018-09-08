@@ -268,11 +268,12 @@ end
 
 # A slightly optimized helper function for VCS.
 # Displaying the VCS part of the prompt is quite slow,
-# so we check to see if ./.git or ../.git exists. If not, we exit early.
-# This is a decent trade-off for the extra speed in most cases.
+# so we check to see if .git exists in the current dir or two dirs down.
+# If not, we exit early. This is a decent trade-off for the extra speed
+# in most cases. (Works for most regular repos and monorepos.)
 function faster_vcs
   # Speed up non-Git folders a bit
-  if not test -d ./.git; and not test -d ../.git
+  if not test -d ./.git; and not test -d ../.git; and not test -d ../../.git
     return
   end
   __fish_vcs_prompt
