@@ -66,3 +66,4 @@ set -x CPPFLAGS -I/usr/local/opt/qt5/include
 
 # For testing web scrapers project
 set -gx WEB_SCRAPERS_USE_SRC 1
+set -gx MSIKMA_USE_SRC 1
