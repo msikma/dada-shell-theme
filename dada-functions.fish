@@ -16,6 +16,7 @@ function help
   set c2 (set_color purple)
   set c3 (set_color red)
   set c4 (set_color yellow)
+  set c5 (set_color green)
   
   echo
   #echo -n "🌿"
@@ -26,7 +27,7 @@ function help
   
   set lines $c0"sphp           $c1 Changes PHP version"\
             $c2"gits / g       $c1 Git status"\
-            $c0"devices        $c1 Displays local computers"\
+            $c0"tree           $c1 Runs ls with tree structure"\
             $c2"gb             $c1 Last Git commits per branch"\
             $c0"headers        $c1 Displays headers for a URL"\
             $c2"gl             $c1 Git log with merge lines"\
@@ -42,13 +43,14 @@ function help
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>     $c1 Displays simple command help"\
             $c3"backup-src     $c1 Backs up source code dirs"\
-            $c0"tree           $c1 Runs ls with tree structure"\
+            $c5"devices        $c1 Displays local computers"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
   
   draw_columns $lines
   # Now the rest of the commands - all external applications.
   # Only things that are not part of Dada shell theme.
-  draw_columns $c4"youtube-dl$c1      Downloads videos from Youtube"\
+  draw_columns $c5"servers$c1         Displays a list of servers"\
+               $c4"youtube-dl$c1      Downloads videos from Youtube"\
                $c4"streamlink$c1      Opens internet streams in VLC"\
                $c4"ascr$c1            Downloads art from social media"\
                $c4"weather$c1         Displays the current weather"\
@@ -81,6 +83,16 @@ function devices
   set c0 (set_color red)
   set c1 (set_color white)
   cat /etc/hosts | grep --color=no -i "10.0.1" | sed "s/[^[:blank:]]\{1,\}/$c0&$c1/1"
+  echo
+end
+
+function servers
+  echo
+  echo "The following servers are available:"
+  echo
+  set c0 (set_color green)
+  set c1 (set_color white)
+  cat /etc/hosts | grep --color=no -i "#server" | sed "s@ #server@@" | sed "s/[^[:blank:]]\{1,\}/$c0&$c1/1"
   echo
 end
 
