@@ -4,6 +4,7 @@ function gc
   draw_columns $c2"gb$c1              Shows last commits per branch"\
                $c2"gits/g$c1          Git status"\
                $c2"gl$c1              Git log with merge lines"\
+               $c2"gr$c1              Prints the repo remote URL"\
                $c2"gsl$c1             Git short log (one liners)"\
                $c2"gd$c1              Runs 'git diff --cached'"\
                $c2"git summary$c1     Summary of repo and authors"
@@ -14,3 +15,4 @@ alias g="git status"
 alias gd="git diff --cached"
 alias gl="git log --pretty --oneline --graph"
 alias gsl="git log --oneline --decorate --color | head"
+alias gr="git remote get-url --all origin"
