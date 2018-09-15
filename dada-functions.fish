@@ -82,7 +82,7 @@ function devices
   echo
   set c0 (set_color red)
   set c1 (set_color white)
-  cat /etc/hosts | grep --color=no -i "10.0.1" | sed "s/[^[:blank:]]\{1,\}/$c0&$c1/1"
+  cat /etc/hosts | grep --color=no -i "#device" | sed "s@ #device@@" | sed "s/[^[:blank:]]\{1,\}/$c0&$c1/1"
   echo
 end
 
