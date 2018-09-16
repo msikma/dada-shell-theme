@@ -9,18 +9,31 @@ function drewdrew
   end
 end
 
+# Updates the shell theme
+function update
+  pushd "/Users/msikma/.config/dada/"
+  set old (get_version_short)
+  set nvm (git pull)
+  set new (get_version_short)
+  if [ old != new ]
+    echo "Updated Dada Shell Theme from "(set_color blue)$old(set_color normal)" to version "(set_color red)$new(set_color normal)"."
+  else
+    echo "You are already on the latest version of Dada Shell Theme, "(set_color red)$new(set_color normal)"."
+  end
+  popd
+end
+
 # Displays help.
 function help
-  set c0 (set_color blue)
-  set c1 (set_color white)
-  set c2 (set_color purple)
-  set c3 (set_color red)
-  set c4 (set_color yellow)
-  set c5 (set_color green)
+  set c0 (set_color blue)    # Regular commands
+  set c1 (set_color white)   
+  set c2 (set_color purple)  # Git commands
+  set c3 (set_color red)     # Backup commands
+  set c4 (set_color yellow)  # External applications
+  set c5 (set_color green)   # Commands that show external servers
+  set c6 (set_color cyan)    # Shell theme management commands
   
   echo
-  #echo -n "🌿"
-  #echo (set_color green)" Dada shell theme"
   set_color normal
   echo "The following commands are available:"
   echo
@@ -43,22 +56,21 @@ function help
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>     $c1 Displays simple command help"\
             $c3"backup-src     $c1 Backs up source code dirs"\
-            $c5"devices        $c1 Displays local computers"\
+            $c6"update         $c1 Updates Dada shell theme and bins"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
+            $c5"devices        $c1 Displays local computers"\
+            $c4"youtube-dl$c1      Downloads videos from Youtube"\
+            $c5"servers$c1         Displays a list of servers"\
+            $c4"streamlink$c1      Opens internet streams in VLC"\
+            $c4"ascr$c1            Downloads art from social media"\
+            $c4"weather$c1         Displays the current weather"\
+            $c4"bat$c1             Improved version of cat"\
+            $c4"glances$c1         Computer monitoring tool"\
+            $c4"bbedit <file>$c1   Opens a file in BBEdit"\
+            $c4"fd <str>$c1        Searches for files (alt. to find)"\
+            $c4"ncdu$c1            Shows directory disk space usage"\
   
   draw_columns $lines
-  # Now the rest of the commands - all external applications.
-  # Only things that are not part of Dada shell theme.
-  draw_columns $c5"servers$c1         Displays a list of servers"\
-               $c4"youtube-dl$c1      Downloads videos from Youtube"\
-               $c4"streamlink$c1      Opens internet streams in VLC"\
-               $c4"ascr$c1            Downloads art from social media"\
-               $c4"weather$c1         Displays the current weather"\
-               $c4"bat$c1             Improved version of cat"\
-               $c4"glances$c1         Computer monitoring tool"\
-               $c4"bbedit <file>$c1   Opens a file in BBEdit"\
-               $c4"fd <str>$c1        Searches for files (alt. to find)"\
-               $c4"ncdu$c1            Shows directory disk space usage"
   echo
 end
 
