@@ -225,6 +225,13 @@ function get_version --description 'Returns version identifier string'
   echo $branch-$commits [$hash]
 end
 
+# Returns Git version, without hash.
+function get_version_short --description 'Returns version identifier string'
+  set branch (git describe --all | sed s@heads/@@)
+  set commits (git rev-list head --count)
+  echo $branch-$commits
+end
+
 # Last commit date in short format (YYYY-mm-dd).
 function get_last_commit --description 'Returns last Git commit date'
   echo (git log -n 1 --date=format:%s --pretty=format:%cd --date=short)
