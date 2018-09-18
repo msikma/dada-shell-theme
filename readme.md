@@ -6,22 +6,25 @@ Install in `~/.config/dada`.
 
 ### Other commands
 
+Start with:
+
+* brew install node python3
+
 Make sure to install:
 
+* This repository (in `~/.config/dada`)
 * [misc-bin](https://bitbucket.org/msikma/misc-bin)
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
-* `npm install --global trash-cli`
-* `npm install --global empty-trash-cli`
-* `brew install exa`
-* `brew install tldr`
-* `brew install git-extras`
-* `brew install youtube-dl`
+* `npm install --global trash-cli empty-trash-cli fileicon`
 * `pip3 install glances`
-* `brew install bat`
-* `npm install fileicon -g`
+* `brew install exa tldr git-extras youtube-dl bat fd ncdu`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
-* `brew install fd`
-* `brew install ncdu`
+
+Add a file in `~/.config/fish` called `config.fish`:
+
+```
+echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
+```
 
 ### Copyright
 
