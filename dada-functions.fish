@@ -56,7 +56,7 @@ function help
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>     $c1 Displays simple command help"\
             $c3"backup-src     $c1 Backs up source code dirs"\
-            $c0"crc32u <file>  $c1 Calculates file uppercase CRC32"\
+            $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
