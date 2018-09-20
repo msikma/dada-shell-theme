@@ -56,12 +56,13 @@ function help
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
             $c0"tldr <cmd>     $c1 Displays simple command help"\
             $c3"backup-src     $c1 Backs up source code dirs"\
-            $c6"update         $c1 Updates Dada shell theme and bins"\
+            $c0"crc32u <file>  $c1 Calculates file uppercase CRC32"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
-            $c5"devices        $c1 Displays local computers"\
+            $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
-            $c5"servers$c1         Displays a list of servers"\
+            $c5"devices        $c1 Displays local computers"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
+            $c5"servers$c1         Displays a list of servers"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\
             $c4"bat$c1             Improved version of cat"\
