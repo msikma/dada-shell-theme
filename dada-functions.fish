@@ -58,6 +58,8 @@ function help
             $c3"backup-src     $c1 Backs up source code dirs"\
             $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
+            $c0"khinsider      $c1 Downloads OSTs from khinsider.com"\
+            $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c5"devices        $c1 Displays local computers"\
