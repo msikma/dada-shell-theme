@@ -23,13 +23,13 @@ const limitSize = (str, size) => {
 }
 
 console.log('')
-console.log(`${red}${name}${normal} ${purple}(${version})${normal} ${blue}<${link}${homepage}${normal}${blue}>${normal}`)
+console.log(`${red}${name}${normal} ${purple}(${version})${normal} ${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
 console.log(`${green}${description}${normal}`)
-if (Object.keys(bin).length > 0 || Object.keys(scripts).length > 0) {
+if (Object.keys(bin || {}).length > 0 || Object.keys(scripts || {}).length > 0) {
 	console.log('')
 }
 
-Object.keys(bin).sort().forEach(b => {
+Object.keys(bin || {}).sort().forEach(b => {
 	const left = limitSize(b, leftSize)
 	const right = limitSize(bin[b], rightSize)
 	console.log([
@@ -43,7 +43,7 @@ Object.keys(bin).sort().forEach(b => {
 	.join(''))
 })
 
-Object.keys(scripts).sort().forEach(s => {
+Object.keys(scripts || {}).sort().forEach(s => {
 	const left = limitSize(s, leftSize)
 	const right = limitSize(scripts[s], rightSize)
 	console.log([
