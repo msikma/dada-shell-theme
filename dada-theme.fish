@@ -24,6 +24,14 @@ set -g __fish_prompt_normal (set_color normal)
 # Hostname, used in several backup scripts.
 set -gx hostname (hostname -s)
 
+function check_node_project \
+  --description 'Display project info if we changed to a Node project directory' \
+  --on-variable PWD
+  # Don't fire on command substitution, or if there's no package.json.
+  status --is-command-substitution; or not test -f ./package.json; and return
+  node-project.js
+end
+
 # Copied from one of the default prompts and edited a bit.
 # Displays a shortened cwd and VCS information.
 function fish_prompt --description 'Write out the left prompt'
