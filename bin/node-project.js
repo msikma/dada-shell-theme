@@ -24,7 +24,9 @@ const limitSize = (str, size) => {
 
 console.log('')
 console.log(`${red}${name}${normal} ${purple}(${version})${normal} ${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
-console.log(`${green}${description}${normal}`)
+if (description) {
+	console.log(`${green}${description}${normal}`)
+}
 if (Object.keys(bin || {}).length > 0 || Object.keys(scripts || {}).length > 0) {
 	console.log('')
 }
