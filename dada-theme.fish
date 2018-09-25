@@ -26,9 +26,16 @@ set -gx hostname (hostname -s)
 
 function check_node_project \
   --description 'Display project info if we changed to a Node project directory' \
-  --on-variable PWD
-  # Don't fire on command substitution, or if there's no package.json.
-  status --is-command-substitution; or not test -f ./package.json; and return
+  --on-variable dirprev
+  
+  # Don't display project info if:
+  status --is-command-substitution; # this is command substitution \ 
+    or not test -f ./package.json; # there's no package.json \ 
+    or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \ 
+    or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
+    and return
+  
+  # Displays project name, version, and a list of bin files and npm scripts.
   node-project.js
 end
 
