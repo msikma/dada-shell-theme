@@ -65,6 +65,7 @@ set -x NIMLIB ~/Source/Nim/lib/
 set -x LDFLAGS -L/usr/local/opt/qt5/lib
 set -x CPPFLAGS -I/usr/local/opt/qt5/include
 
-# For testing web scrapers project
+# For testing web scrapers projects and others
 set -gx WEB_SCRAPERS_USE_SRC 1
+set -gx MSIKMA_WEB_SCRAPERS_SRC 1
 set -gx MSIKMA_USE_SRC 1
