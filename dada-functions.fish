@@ -91,6 +91,39 @@ function cdbackup
   cd $bdir
 end
 
+function backup --description "Displays backup commands and info"
+  # Colors
+  set c0 (set_color white)
+  set c1 (set_color red)     # Backup commands
+  set c2 (set_color purple)  # Backup info
+  
+  # Get a string of when the backup was done
+  set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
+  set backup_music (backup_time_str "/Users/msikma/.cache/dada/backup-music")
+  set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
+  set backup_src (backup_time_str "/Users/msikma/.cache/dada/backup-src")
+  set backup_ftp (backup_time_str "/Users/msikma/.cache/dada/backup-ftp")
+  set backup_zoo (backup_time_str "/Users/msikma/.cache/dada/backup-zoo")
+  
+  echo
+  echo "Backup commands and status:"
+  echo
+  draw_columns $c1"backup-dbs      "$c0"Backs up SQL databases"\
+               $c2"MySQL backup:   "$c0"$backup_dbs"\
+               $c1"backup-music    "$c0"Backs up music"\
+               $c2"Music backup:   "$c0"$backup_music"\
+               $c1"backup-src      "$c0"Backs up source code directories"\
+               $c2"Source backup:  "$c0"$backup_src"\
+               $c1"backup-files    "$c0"Backs up various other things"\
+               $c2"Files backup:   "$c0"$backup_files"\
+               $c1"backup-zoo      "$c0"Backs up music to the Happy Zoo"\
+               $c2"Zoo backup:     "$c0"$backup_zoo"\
+               $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
+               $c2"FTP backup:     "$c0"$backup_ftp"
+  
+  echo
+end
+
 function devices
   echo
   echo "The following devices are on the network:"
