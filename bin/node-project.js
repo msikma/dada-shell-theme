@@ -5,25 +5,40 @@
 
 const fs = require('fs')
 if (!fs.existsSync(`${process.cwd()}/package.json`)) process.exit()
+const isYarn = fs.existsSync(`${process.cwd()}/yarn.lock`)
 const { name, description, version, homepage, bin, scripts } = require(`${process.cwd()}/package.json`)
-const leftSize = 15
+const lernaVersion = fs.existsSync(`${process.cwd()}/lerna.json`)
+  ? require(`${process.cwd()}/lerna.json`).version
+  : ''
+const leftSize = 18
 const rightSize = process.stdout.columns - leftSize - 1
 
 const green = '[32m'
 const normal = '[30m(B[m'
 const red = '[31m'
 const yellow = '[33m'
+const cyan = '[36m'
 const blue = '[34m'
 const purple = '[35m'
 const link = '[4m[34m'
 
+// In case the project hasn't defined any.
+const binItems = bin ? bin : {}
+const scriptItems = scripts ? scripts : {}
+
+// Limits the size of a string to a certain value and adds an ellipsis if shortened.
 const limitSize = (str, size) => {
 	if (str.length <= size) return str
 	return str.slice(0, size - 1) + '…'
 }
+// Pads the size of a string to a certain value with spaces.
+const padSize = (str, size) => {
+  return str + ' '.repeat(Math.max(size - str.length, 0))
+}
 
+// Print the title, version and description.
 console.log('')
-console.log(`${red}${name}${normal} ${purple}(${version})${normal} ${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
+console.log(`${red}${name}${normal} ${version || lernaVersion ? `${purple}(${lernaVersion || version})${normal} ` : ``}${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
 if (description) {
 	console.log(`${green}${description}${normal}`)
 }
@@ -31,32 +46,42 @@ if (Object.keys(bin || {}).length > 0 || Object.keys(scripts || {}).length > 0) 
 	console.log('')
 }
 
-Object.keys(bin || {}).sort().forEach(b => {
-	const left = limitSize(b, leftSize)
-	const right = limitSize(bin[b], rightSize)
-	console.log([
-		yellow,
-		left,
-		normal,
-		' '.repeat(leftSize - left.length),
-		' ',
-		right
-	]
-	.join(''))
-})
+// Find out which of the two is the longest - we'll use that many iterations.
+const binKeys = Object.keys(binItems).sort()
+const scriptKeys = Object.keys(scriptItems).sort()
+const iterate = Math.max(binKeys.length, scriptKeys.length)
 
-Object.keys(scripts || {}).sort().forEach(s => {
-	const left = limitSize(s, leftSize)
-	const right = limitSize(scripts[s], rightSize)
+for (let n = 0; n < iterate; ++n) {
+	const scriptName = scriptKeys[n]
+	  ? limitSize(scriptKeys[n], leftSize)
+	  : ' '.repeat(leftSize)
+	const binName = binKeys[n]
+	  ? limitSize(binKeys[n], leftSize)
+	  : ' '.repeat(leftSize)
+	const scriptLabel = n === 0
+	  ? isYarn
+	    ? 'yarn run'
+	    : 'npm run'
+	  : isYarn
+	    ? '        '
+	    : '       '
+	const binLabel = n === 0 && binKeys.length > 0
+	  ? 'bin'
+	  : '   '
 	console.log([
-		blue,
-		left,
-		normal,
-		' '.repeat(leftSize - left.length),
-		' ',
-		right
-	]
-	.join(''))
-})
+	  yellow,
+	  scriptLabel,
+	  ' ',
+	  blue,
+	  padSize(scriptName, leftSize),
+	  ' ',
+	  yellow,
+	  binLabel,
+	  ' ',
+	  red,
+	  binName,
+	  normal
+	].join(''))
+}
 
 console.log('')
