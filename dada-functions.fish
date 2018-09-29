@@ -49,6 +49,8 @@ function help
             $c0"cdbackup       $c1 Changes directory to backup dir"\
             $c2"gc             $c1 Displays Git commands help"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
+            $c3"backup         $c1 Displays backup commands and info"\
+            $c0"REMOVE_ME      $c1 REMOVE_ME"\
             $c3"backup-music   $c1 Backs up music"\
             $c0"color          $c1 Adds a colored icon to a folder"\
             $c3"backup-files   $c1 Backs up ~/Files"\
@@ -96,6 +98,7 @@ function backup --description "Displays backup commands and info"
   set c0 (set_color white)
   set c1 (set_color red)     # Backup commands
   set c2 (set_color purple)  # Backup info
+  set c3 (set_color green)   # User info
   
   # Get a string of when the backup was done
   set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
@@ -106,7 +109,7 @@ function backup --description "Displays backup commands and info"
   set backup_zoo (backup_time_str "/Users/msikma/.cache/dada/backup-zoo")
   
   echo
-  echo "Backup commands and status:"
+  echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
   echo
   draw_columns $c1"backup-dbs      "$c0"Backs up SQL databases"\
                $c2"MySQL backup:   "$c0"$backup_dbs"\
