@@ -50,9 +50,9 @@ function help
             $c2"gc             $c1 Displays Git commands help"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
             $c3"backup         $c1 Displays backup commands and info"\
-            $c0"REMOVE_ME      $c1 REMOVE_ME"\
-            $c3"backup-music   $c1 Backs up music"\
             $c0"color          $c1 Adds a colored icon to a folder"\
+            $c3"backup-music   $c1 Backs up music"\
+            $c0"trash          $c1 Sends files to the OSX trash"\
             $c3"backup-files   $c1 Backs up ~/Files"\
             $c0"empty-trash    $c1 Empties the trash bin"\
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
