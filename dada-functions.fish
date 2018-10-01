@@ -9,6 +9,44 @@ function drewdrew
   end
 end
 
+function keys --description "Displays keys installed for this user"
+	echo
+	echo "Installed keys for "(set_color green)(whoami)(set_color normal)" in "(set_color yellow)"~/.ssh/"(set_color normal)
+	echo
+	set c0 (set_color yellow)
+	set c1 (set_color normal)
+	set c2 (set_color blue)
+	set col 20
+	
+	set pubs (ls ~/.ssh/*.pub)
+	set active (ssh-add -l)
+	for key in $pubs
+		set key (basename $key | sed 's/\.[^.]*$//')
+		set installed 0
+		for act in $active
+			set sz (echo $act | cut -d' ' -f1)
+			set type (echo $act | cut -d' ' -f4)
+			set path (echo $act | cut -d' ' -f3)
+			if [ (echo $path | grep -i "$key\$") ];
+				set len (string length $key)
+				set rem (math "$col - $len")
+				echo -n $c0$key
+				echo -n (string repeat ' ' -n $rem)
+				echo $sz bit $type - installed$c1
+				set installed 1
+			end
+		end
+		if [ $installed -eq 0 ];
+			set len (string length $key)
+			set rem (math "$col - $len")
+			echo -n $c2$key
+			echo -n (string repeat ' ' -n $rem)
+			echo not installed$c1
+		end
+	end
+	echo
+end
+
 # Updates the shell theme
 function update
   pushd "/Users/msikma/.config/dada/"
