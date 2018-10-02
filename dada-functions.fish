@@ -100,6 +100,8 @@ function help
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
             $c0"khinsider      $c1 Downloads OSTs from khinsider.com"\
             $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
+            $c0"keys           $c1 Lists installed SSH keys"\
+            $c4"-              $c1 -"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c5"devices        $c1 Displays local computers"\
