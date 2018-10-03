@@ -66,7 +66,7 @@ const padSize = (str, size) => {
 const printInfo = (gitLine) => {
   // Print the title, version and description.
   console.log('')
-  console.log(`${red}${name}${normal} ${version || lernaVersion ? `${purple}(${lernaVersion || version})${normal} ` : ``}${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
+  console.log(`${red}${name}${normal} ${version || lernaVersion ? `${purple}(${version || lernaVersion})${normal} ` : ``}${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
   if (description) {
     console.log(`${green}${description}${normal}`)
   }
