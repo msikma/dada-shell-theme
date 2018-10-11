@@ -77,7 +77,7 @@ function help
   echo
   
   set lines $c0"sphp           $c1 Changes PHP version"\
-            $c2"gits / g       $c1 Git status"\
+            $c2"g              $c1 Git status"\
             $c0"tree           $c1 Runs ls with tree structure"\
             $c2"gb             $c1 Last Git commits per branch"\
             $c0"headers        $c1 Displays headers for a URL"\
