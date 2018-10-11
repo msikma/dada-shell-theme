@@ -37,6 +37,9 @@ Promise.all([
   const gitLine = `Last commit: ${gitInfo[0]} (${gitInfo[1]})`
   printInfo(gitLine);
 })
+.catch(_ => {
+  printInfo()
+})
 
 
 
