@@ -85,7 +85,7 @@ function help
             $c0"scrapemp3s     $c1 Scrapes MP3 files from a URL"\
             $c2"gsl            $c1 Git short log (one liners)"\
             $c0"cdbackup       $c1 Changes directory to backup dir"\
-            $c2"gc             $c1 Displays Git commands help"\
+            $c2"gith           $c1 Displays Git commands help"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
             $c3"backup         $c1 Displays backup commands and info"\
             $c0"color          $c1 Adds a colored icon to a folder"\
