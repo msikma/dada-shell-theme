@@ -110,17 +110,17 @@ const printInfo = (gitLine) => {
     const mgrLabel = n === 0
       ? isYarn
         ? 'yarn'
-        : 'npm'
+        : ' npm'
       : isYarn
         ? '    '
-        : '   '
+        : '    '
     const scriptLabel = n === 0
       ? 'run'
       : '   '
-    const binLabel = n === 0 && binKeys.length > 0
+    const binLabel = n === 0
       ? 'bin'
       : '   '
-    const mdLabel = n === 0 && mdFiles.length > 0
+    const mdLabel = n === 0
       ? 'doc'
       : '   '
     console.log([
@@ -132,7 +132,7 @@ const printInfo = (gitLine) => {
       scriptLabel,
       ' ',
       blue,
-      padSize(!scriptName.trim() && n === 0 ? '(none)' : scriptName, leftSize),
+      padSize(!scriptName.trim() && n === 0 ? '-' : scriptName, leftSize),
       ' ',
       yellow,
       line,
@@ -140,7 +140,7 @@ const printInfo = (gitLine) => {
       binLabel,
       ' ',
       purple,
-      padSize(!binName.trim() && n === 0 ? '(none)' : binName, leftSize),
+      padSize(!binName.trim() && n === 0 ? '-' : binName, leftSize),
       ' ',
       yellow,
       line,
@@ -148,7 +148,7 @@ const printInfo = (gitLine) => {
       mdLabel,
       ' ',
       red,
-      padSize(!mdName.trim() && n === 0 ? '(none)' : mdName, leftSize),
+      padSize(!mdName.trim() && n === 0 ? '-' : mdName, leftSize),
       normal
     ].join(''))
   }
