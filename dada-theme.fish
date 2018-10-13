@@ -32,7 +32,8 @@ function check_node_project \
   status --is-command-substitution; # this is command substitution \ 
     or not test -f ./package.json; # there's no package.json \ 
     or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \ 
-    or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
+    # On second thought, whether we came from a lower directory isn't very important.
+    # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
     and return
   
   # Displays project name, version, and a list of bin files and npm scripts.
