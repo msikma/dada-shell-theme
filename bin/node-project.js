@@ -53,7 +53,8 @@ const purple = '[35m'
 const link = '[4m[34m'
 
 // In case the project hasn't defined any.
-const binItems = bin ? bin : {}
+const binObj = typeof bin === 'string' ? { [bin.split('/').slice(-1)[0]]: bin } : bin
+const binItems = binObj ? binObj : {}
 const scriptItems = scripts ? scripts : {}
 
 // Limits the size of a string to a certain value and adds an ellipsis if shortened.
