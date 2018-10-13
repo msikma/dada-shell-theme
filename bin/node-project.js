@@ -95,6 +95,8 @@ const printInfo = (gitLine) => {
   const scriptKeys = Object.keys(scriptItems).sort()
   const iterate = Math.max(binKeys.length, scriptKeys.length)
 
+  const line = '\u2502'
+
   for (let n = 0; n < iterate; ++n) {
     const scriptName = scriptKeys[n]
       ? limitSize(scriptKeys[n], leftSize)
@@ -105,13 +107,16 @@ const printInfo = (gitLine) => {
     const mdName = mdFiles[n]
       ? limitSize(mdFiles[n], leftSize)
       : ' '.repeat(leftSize)
-    const scriptLabel = n === 0
+    const mgrLabel = n === 0
       ? isYarn
-        ? 'yarn run'
-        : 'npm run'
+        ? 'yarn'
+        : 'npm'
       : isYarn
-        ? '        '
-        : '       '
+        ? '    '
+        : '   '
+    const scriptLabel = n === 0
+      ? 'run'
+      : '   '
     const binLabel = n === 0 && binKeys.length > 0
       ? 'bin'
       : '   '
@@ -120,22 +125,30 @@ const printInfo = (gitLine) => {
       : '   '
     console.log([
       yellow,
+      mgrLabel,
+      ' ',
+      line,
+      ' ',
       scriptLabel,
       ' ',
       blue,
       padSize(!scriptName.trim() && n === 0 ? '(none)' : scriptName, leftSize),
       ' ',
       yellow,
+      line,
+      ' ',
       binLabel,
       ' ',
       purple,
       padSize(!binName.trim() && n === 0 ? '(none)' : binName, leftSize),
       ' ',
       yellow,
+      line,
+      ' ',
       mdLabel,
       ' ',
       red,
-      mdName,
+      padSize(!mdName.trim() && n === 0 ? '(none)' : mdName, leftSize),
       normal
     ].join(''))
   }
