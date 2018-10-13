@@ -16,7 +16,7 @@ Make sure to install:
 * [misc-bin](https://bitbucket.org/msikma/misc-bin)
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
 * `npm install --global trash-cli empty-trash-cli fileicon ascr`
-* `pip3 install glances`
+* `pip3 install glances mdv`
 * `brew install exa tldr git-extras youtube-dl bat fd ncdu`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
 
