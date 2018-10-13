@@ -77,16 +77,14 @@ function help
   echo
   
   set lines $c0"sphp           $c1 Changes PHP version"\
-            $c2"gits / g       $c1 Git status"\
+            $c2"g              $c1 Git status"\
             $c0"tree           $c1 Runs ls with tree structure"\
-            $c2"gb             $c1 Last Git commits per branch"\
+            $c2"gith           $c1 Displays Git commands help"\
             $c0"headers        $c1 Displays headers for a URL"\
             $c2"gl             $c1 Git log with merge lines"\
             $c0"scrapemp3s     $c1 Scrapes MP3 files from a URL"\
-            $c2"gsl            $c1 Git short log (one liners)"\
+            $c2"gb             $c1 Last Git commits per branch"\
             $c0"cdbackup       $c1 Changes directory to backup dir"\
-            $c2"gc             $c1 Displays Git commands help"\
-            $c0"fdupes         $c1 Finds duplicate files by hash"\
             $c3"backup         $c1 Displays backup commands and info"\
             $c0"color          $c1 Adds a colored icon to a folder"\
             $c3"backup-music   $c1 Backs up music"\
@@ -100,13 +98,13 @@ function help
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
             $c0"khinsider      $c1 Downloads OSTs from khinsider.com"\
             $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
+            $c0"fdupes         $c1 Finds duplicate files by hash"\
+            $c5"devices        $c1 Displays local computers"\
             $c0"keys           $c1 Lists installed SSH keys"\
-            $c4"-              $c1 -"\
+            $c5"servers$c1         Displays a list of servers"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
-            $c5"devices        $c1 Displays local computers"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
-            $c5"servers$c1         Displays a list of servers"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\
             $c4"bat$c1             Improved version of cat"\
