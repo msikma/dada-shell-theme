@@ -14,6 +14,15 @@ const lernaVersion = fs.existsSync(`${process.cwd()}/lerna.json`)
 const leftSize = 18
 const rightSize = process.stdout.columns - leftSize - 1
 
+// List all Markdown files in the directory. Always sort readme.md on top.
+const dirCont = fs.readdirSync(process.cwd())
+const mdFiles = dirCont.filter((f) => /.*\.(md)/gi.test(f))
+  .sort((a, b) => {
+    if (a.toLowerCase() === 'readme.md') return -1
+    if (b.toLowerCase() === 'readme.md') return 1
+    return a > b
+  })
+
 // Calls an external program and returns the result.
 const callExternal = (cmd) => (
   new Promise((resolve, reject) => {
@@ -93,6 +102,9 @@ const printInfo = (gitLine) => {
     const binName = binKeys[n]
       ? limitSize(binKeys[n], leftSize)
       : ' '.repeat(leftSize)
+    const mdName = mdFiles[n]
+      ? limitSize(mdFiles[n], leftSize)
+      : ' '.repeat(leftSize)
     const scriptLabel = n === 0
       ? isYarn
         ? 'yarn run'
@@ -103,18 +115,27 @@ const printInfo = (gitLine) => {
     const binLabel = n === 0 && binKeys.length > 0
       ? 'bin'
       : '   '
+    const mdLabel = n === 0 && mdFiles.length > 0
+      ? 'doc'
+      : '   '
     console.log([
       yellow,
       scriptLabel,
       ' ',
       blue,
-      padSize(scriptName, leftSize),
+      padSize(!scriptName.trim() && n === 0 ? '(none)' : scriptName, leftSize),
       ' ',
       yellow,
       binLabel,
       ' ',
+      purple,
+      padSize(!binName.trim() && n === 0 ? '(none)' : binName, leftSize),
+      ' ',
+      yellow,
+      mdLabel,
+      ' ',
       red,
-      binName,
+      mdName,
       normal
     ].join(''))
   }
