@@ -112,6 +112,7 @@ function help
             $c4"bbedit <file>$c1   Opens a file or dir in BBEdit"\
             $c4"fd <str>$c1        Searches for files (alt. to find)"\
             $c4"ncdu$c1            Shows directory disk space usage"\
+            $c4"doc <file>$c1      Reads Markdown file in terminal"\
   
   draw_columns $lines
   echo

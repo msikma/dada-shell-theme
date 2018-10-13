@@ -19,3 +19,7 @@ alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 alias weather="curl wttr.in"
 alias ncdu="ncdu --color dark -q -r"
+
+function doc
+  mdv $argv | less -r
+end
