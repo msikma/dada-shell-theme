@@ -102,6 +102,7 @@ function help
             $c5"devices        $c1 Displays local computers"\
             $c0"keys           $c1 Lists installed SSH keys"\
             $c5"servers$c1         Displays a list of servers"\
+            $c0"proj           $c1 Displays current project info"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
