@@ -36,7 +36,7 @@ function check_node_project \
     # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
     and return
   
-  # Displays project name, version, and a list of bin files and npm scripts.
+  # Displays project name, version, and a list of bin files, npm scripts and docs.
   node-project.js
 end
 

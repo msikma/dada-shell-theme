@@ -1,57 +1,24 @@
 #!/usr/bin/env node
 
 // Displays some basic information about the Node project in this directory.
-// If there is no package.json in the directory, nothing will be output.
+// Example output:
+//
+//    msikma-lib-projects (1.0.0) <https://github.com/msikma/msikma-lib-projects>
+//    Monorepo container for msikma-lib-projects, containing a number of client libraries
+//    Last commit: 2018-10-14 22:29:35 +0200 (63 minutes ago)
+//
+//    yarn │ run compile            │ bin buyee-cli          │ doc readme.md
+//         │     dev                │     marktplaats-cli    │     license.md
+//         │                        │     mlib               │     todo.md
+//
+// To set up a trigger so that this script gets run whenever entering a project folder,
+// on Fish Shell it needs to be run on a change of the 'dirprev' variable.
+// Example: <https://gist.github.com/msikma/addce5c8cd218c863e1e4b297aa6ae7b>
 
 const { exec } = require('child_process')
-const fs = require('fs')
-if (!fs.existsSync(`${process.cwd()}/package.json`)) process.exit()
-const isYarn = fs.existsSync(`${process.cwd()}/yarn.lock`)
-const { name, description, version, homepage, bin, scripts } = require(`${process.cwd()}/package.json`)
-const lernaVersion = fs.existsSync(`${process.cwd()}/lerna.json`)
-  ? require(`${process.cwd()}/lerna.json`).version
-  : ''
-const leftSize = 18
-const rightSize = process.stdout.columns - leftSize - 1
+const { existsSync, readdirSync } = require('fs')
 
-// List all Markdown files in the directory. Always sort readme.md on top.
-const dirCont = fs.readdirSync(process.cwd())
-const mdFiles = dirCont.filter((f) => /.*\.(md)/gi.test(f))
-  .sort((a, b) => {
-    if (a.toLowerCase() === 'readme.md') return -1
-    if (b.toLowerCase() === 'readme.md') return 1
-    return a > b
-  })
-
-// Calls an external program and returns the result.
-const callExternal = (cmd) => (
-  new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout = '', stderr = '') => {
-      if (error) return reject(stdout.trim(), stderr.trim(), error)
-      else resolve(stdout.trim(), stderr.trim())
-    })
-  })
-)
-
-// Get Git info.
-Promise.all([
-  // callExternal('git describe --all | sed s@heads/@@'),
-  // callExternal('git rev-parse --short head'),
-  // callExternal('git rev-parse head'),
-  // callExternal('git rev-list head --count'),
-  callExternal('git log -n 1 --date=iso8601 --pretty=format:%cd'),
-  callExternal('git log -n 1 --date=relative --pretty=format:%cd')
-])
-.then(gitInfo => {
-  const gitLine = `Last commit: ${gitInfo[0]} (${gitInfo[1]})`
-  printInfo(gitLine);
-})
-.catch(_ => {
-  printInfo()
-})
-
-
-
+// Terminal color codes used in output.
 const green = '[32m'
 const normal = '[30m(B[m'
 const red = '[31m'
@@ -60,43 +27,96 @@ const cyan = '[36m'
 const blue = '[34m'
 const purple = '[35m'
 const link = '[4m[34m'
+// Vertical line: U+2502 BOX DRAWINGS LIGHT VERTICAL
+const line = '\u2502'
 
-// In case the project hasn't defined any.
-const binObj = typeof bin === 'string' ? { [bin.split('/').slice(-1)[0]]: bin } : bin
-const binItems = binObj ? binObj : {}
-const scriptItems = scripts ? scripts : {}
+// Calls an external program and returns the result.
+const callExternal = cmd => new Promise((resolve, reject) => {
+  exec(cmd, (err, stdout = '', stderr = '') => {
+    if (err) return reject(stdout.trim(), stderr.trim(), err)
+    else resolve(stdout.trim(), stderr.trim())
+  })
+})
 
 // Limits the size of a string to a certain value and adds an ellipsis if shortened.
 const limitSize = (str, size) => {
 	if (str.length <= size) return str
 	return str.slice(0, size - 1) + '…'
 }
+
 // Pads the size of a string to a certain value with spaces.
 const padSize = (str, size) => {
   return str + ' '.repeat(Math.max(size - str.length, 0))
 }
 
-const printInfo = (gitLine) => {
+// Files we'll load to determine output.
+const cwd = process.cwd()
+const pkg = `${cwd}/package.json`
+const yarn = `${cwd}/yarn.lock`
+const lerna = `${cwd}/lerna.json`
+
+// We'll print three columns of this size: 'run', 'bin', 'doc'.
+const leftSize = 18
+
+if (!existsSync(pkg)) {
+  // If there is no package.json in the directory, just exit.
+  process.exit()
+}
+
+// Does this project prefer Yarn or npm?
+const isYarn = existsSync(yarn)
+
+// Retrieve project info. If a version isn't set in the package.json we'll try for lerna.json.
+const { name, description, version, homepage, bin, scripts } = require(pkg)
+const lernaVersion = existsSync(lerna) ? require(lerna).version : ''
+
+// List all Markdown files in the directory. Always sort readme.md on top.
+const isReadme = fn => fn.toLowerCase() === 'readme.md'
+const dirCont = readdirSync(cwd)
+const mdFiles = (dirCont.filter((f) => /.*\.(md)/gi.test(f))
+  .sort((a, b) => isReadme(a) ? -1 : isReadme(b) ? 1 : a > b) || [])
+
+// Prints the project info. First the title and description, then Git info,
+// and finally three lists containing all npm scripts, bins and docs.
+const printInfo = (git) => {
+  // Bin can be a string; in that case duplicate the filename for the key.
+  const binObj = typeof bin === 'string' ? { [bin.split('/').slice(-1)[0]]: bin } : bin
+  // Items to print in the columns. Default these items to an empty object.
+  const binItems = binObj ? binObj : {}
+  const scriptItems = scripts ? scripts : {}
+  
+  // Git information string. Uses the items we loaded in 'gitCmds'.
+  const gitLine = git ? `Last commit: ${git.date} (${git.dateRel})` : ''
+  
   // Print the title, version and description.
   console.log('')
-  console.log(`${red}${name}${normal} ${version || lernaVersion ? `${purple}(${version || lernaVersion})${normal} ` : ``}${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`)
+  console.log([
+    `${red}${name}${normal} `,
+    `${version || lernaVersion ? `${purple}(${version || lernaVersion})${normal} ` : ``}`,
+    `${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`
+  ].join(''))
   if (description) {
     console.log(`${green}${description}${normal}`)
   }
   if (gitLine) {
     console.log(`${yellow}${gitLine}${normal}`)
   }
-  if (Object.keys(bin || {}).length > 0 || Object.keys(scripts || {}).length > 0) {
+  
+  // If we're displaying any columns, add a linebreak before them.
+  if (Object.keys(binItems).length > 0 ||
+      Object.keys(scriptItems).length > 0 ||
+      Object.keys(mdFiles).length > 0) {
     console.log('')
   }
 
-  // Find out which of the two is the longest - we'll use that many iterations.
+  // Find out which of the three is the longest - we'll use that many iterations.
   const binKeys = Object.keys(binItems).sort()
   const scriptKeys = Object.keys(scriptItems).sort()
-  const iterate = Math.max(binKeys.length, scriptKeys.length)
-
-  const line = '\u2502'
-
+  const docKeys = Object.keys(mdFiles) // already sorted earlier.
+  const iterate = Math.max(binKeys.length, scriptKeys.length, docKeys.length)
+  
+  // Draw the columns. We're drawing it one row at a time,
+  // printing all three columns with every iteration.
   for (let n = 0; n < iterate; ++n) {
     const scriptName = scriptKeys[n]
       ? limitSize(scriptKeys[n], leftSize)
@@ -155,3 +175,22 @@ const printInfo = (gitLine) => {
 
   console.log('')
 }
+
+// We'll display this information from the Git repo.
+const gitCmds = {
+  // We don't particularly need these.
+  // branch: 'git describe --all | sed s@heads/@@',
+  // hash: 'git rev-parse --short head',
+  // count: 'git rev-list head --count',
+  date: 'git log -n 1 --date=iso8601 --pretty=format:%cd',
+  dateRel: 'git log -n 1 --date=relative --pretty=format:%cd'
+}
+
+// Load Git info (if this is a repo) and then construct the output.
+Promise.all(Object.keys(gitCmds).map(type => callExternal(gitCmds[type])))
+  .then(gitInfo => {
+    // Reintegrate the results with the command object.
+    const gitObj = Object.keys(gitCmds).reduce((acc, item, idx) => ({ ...acc, [item]: gitInfo[idx] }), {})
+    printInfo(gitObj)
+  })
+  .catch(_ => printInfo())
