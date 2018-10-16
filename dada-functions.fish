@@ -104,6 +104,8 @@ function help
             $c5"servers$c1         Displays a list of servers"\
             $c0"proj           $c1 Displays current project info"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
+            $c0"jira           $c1 Lists Jira issue branches in repo"\
+            $c4"-$c1"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
