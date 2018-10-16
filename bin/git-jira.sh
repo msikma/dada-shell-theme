@@ -50,6 +50,8 @@ MSG_COLS=$((COLS-64))
 
 JIRA_BASE="https://syftapp.atlassian.net/browse/"
 
+# Retrieve the raw information using Git.
+# These lines get processed one by one and split by the '|' character.
 git for-each-ref \
   --sort=-committerdate refs/heads/ \
   --count=25 \
@@ -81,8 +83,10 @@ git for-each-ref \
       color="TYPE_$typevar"
       color="${!color}"
       
+      # Since $project and $number can technically be longer than other lines,
+      # we need to limit this whole section to 32 characters. Plus extra bytes for the color codes.
       line=`printf "$color%8s ${YELLOW_BOLD}%s-%s ${NORMAL}%-15s" $type $project $number $rest`
-      printf "%s${NORMAL}" "${line:0:50}" # width of the first three columns, plus extra bytes for the color codes.
+      printf "%s${NORMAL}" "${line:0:50}" # column width plus color codes
     fi
     
     # Latest commit message
