@@ -47,8 +47,15 @@ TYPE_HOTFIX=$CYAN
 # Width (number of cols) of the terminal window, and width minus fixed width items.
 COLS=$(tput cols)
 MSG_COLS=$((COLS-64))
+HEADER_COLS=$((COLS-77))
 
 JIRA_BASE="https://syftapp.atlassian.net/browse/"
+
+# Print a header describing what each column means.
+echo -ne "    ${CYAN_UNDERLINE}Type${NORMAL} ${CYAN_UNDERLINE}Issue${NORMAL}    ${CYAN_UNDERLINE}Name${NORMAL}          ${CYAN_UNDERLINE}Latest commit${NORMAL} "
+printf "%${HEADER_COLS}s" " "
+echo -ne "${CYAN_UNDERLINE}Committer${NORMAL}       ${CYAN_UNDERLINE}Time${NORMAL}"
+echo
 
 # Retrieve the raw information using Git.
 # These lines get processed one by one and split by the '|' character.
