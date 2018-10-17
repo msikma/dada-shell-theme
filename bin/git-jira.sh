@@ -27,9 +27,11 @@
 # task/CMS2-745-overpayments|Implement overpayments CSV API|Michiel Sikma|3 weeks ago
 
 RED='\033[0;31m'
+RED_UNDERLINE='\033[4;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 YELLOW_BOLD='\033[1;33m'
+YELLOW_UNDERLINE='\033[4;33m'
 BLUE='\033[0;34m'
 BLUE_UNDERLINE='\033[4;34m'
 PURPLE='\033[0;35m'
@@ -52,9 +54,10 @@ HEADER_COLS=$((COLS-77))
 JIRA_BASE="https://syftapp.atlassian.net/browse/"
 
 # Print a header describing what each column means.
-echo -ne "    ${CYAN_UNDERLINE}Type${NORMAL} ${CYAN_UNDERLINE}Issue${NORMAL}    ${CYAN_UNDERLINE}Name${NORMAL}          ${CYAN_UNDERLINE}Latest commit${NORMAL} "
+HEADER_COLOR=$YELLOW_UNDERLINE
+echo -ne "    ${HEADER_COLOR}Type${NORMAL} ${HEADER_COLOR}Issue${NORMAL}    ${HEADER_COLOR}Name${NORMAL}          ${HEADER_COLOR}Latest commit${NORMAL} "
 printf "%${HEADER_COLS}s" " "
-echo -ne "${CYAN_UNDERLINE}Committer${NORMAL}       ${CYAN_UNDERLINE}Time${NORMAL}"
+echo -ne "${HEADER_COLOR}Committer${NORMAL}       ${HEADER_COLOR}Time${NORMAL}"
 echo
 
 # Retrieve the raw information using Git.
@@ -92,8 +95,8 @@ git for-each-ref \
       
       # Since $project and $number can technically be longer than other lines,
       # we need to limit this whole section to 32 characters. Plus extra bytes for the color codes.
-      line=`printf "$color%8s ${YELLOW_BOLD}%s-%s ${NORMAL}%-15s" $type $project $number $rest`
-      printf "%s${NORMAL}" "${line:0:50}" # column width plus color codes
+      line=`printf "$color%8s ${YELLOW_BOLD}%s-%s ${GREEN}%-18s${NORMAL}" $type $project $number $rest`
+      printf "%s${NORMAL}" "${line:0:53}" # column width plus color codes
     fi
     
     # Latest commit message
