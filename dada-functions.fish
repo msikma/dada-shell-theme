@@ -116,6 +116,7 @@ function help
             $c4"fd <str>$c1        Searches for files (alt. to find)"\
             $c4"ncdu$c1            Shows directory disk space usage"\
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
+            $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
   
   draw_columns $lines
   echo
