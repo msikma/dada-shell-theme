@@ -19,6 +19,7 @@ Make sure to install:
 * `pip3 install glances mdv`
 * `brew install exa tldr git-extras youtube-dl bat fd ncdu`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
+* VS Code: `code-insiders` command - ⇧⌘P and search for 'install'
 
 For icons:
 
