@@ -105,8 +105,8 @@ function help
             $c0"proj           $c1 Displays current project info"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c0"jira           $c1 Lists Jira issue branches in repo"\
-            $c4"-$c1"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
+            $c0"code <dir>$c1      Opens directory in VS Code"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\

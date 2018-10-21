@@ -21,6 +21,7 @@ alias weather="curl wttr.in"
 alias ncdu="ncdu --color dark -q -r"
 alias proj="node-project.js"
 alias jira="git-jira.sh"
+alias code="code-insiders"
 
 function doc
   mdv $argv | less -r
