@@ -77,7 +77,9 @@ git for-each-ref \
       type=$(echo $item | cut -f1 -d/) # 'task', 'bugfix', etc., or branch name if it isn't an issue branch.
       code=$(echo $item | cut -f2 -d/) # e.g. 'CMS2-123-fix-something', or branch name.
       
-      # Don't print non-issue branches, which will have the same for $type and $code.
+      # Don't print merges, since they currently mess up the layout (TODO).
+      # Also, don't print non-issue branches, which will have the same for $type and $code.
+      [[ $type == "Merge "* ]] && continue
       [ "$type" = "$code" ] && continue
       
       # 'bugfix' is sometimes written as 'bug' or 'fix'.
