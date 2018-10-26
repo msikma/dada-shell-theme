@@ -8,6 +8,7 @@ source ~/.config/dada/secrets/keys.fish
 # Functions and aliases
 source ~/.config/dada/dada-functions.fish
 source ~/.config/dada/dada-aliases.fish
+source ~/.config/dada/dada-cron.fish
 
 # A ton of path segments to add
 set PATH ~ $PATH
@@ -34,6 +35,8 @@ if test -d /usr/local/djgpp/bin/
 end
 set PATH ~/.composer/vendor/bin $PATH
 set PATH ~/.cargo/bin $PATH
+
+set -gx FLOPPY_IMAGING_PATH ~/"Files/Floppy disk images/"
 
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")

@@ -33,6 +33,7 @@ function check_node_project \
     or not test -f ./package.json; # there's no package.json \ 
     or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \ 
     # On second thought, whether we came from a lower directory isn't very important.
+    # Note: this has to be -eq 2, since we change directories in the fish_greeting that runs before this.
     # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
     and return
   

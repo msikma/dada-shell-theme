@@ -105,6 +105,7 @@ function help
             $c0"proj           $c1 Displays current project info"\
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c0"jira           $c1 Lists Jira issue branches in repo"\
+            $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c0"code <dir>$c1      Opens directory in VS Code"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
