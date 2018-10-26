@@ -17,10 +17,14 @@ Make sure to install:
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
 * `npm install --global trash-cli empty-trash-cli fileicon ascr`
 * `pip3 install glances mdv`
-* `brew install exa tldr git-extras youtube-dl bat fd ncdu`
+* `brew install exa tldr git-extras youtube-dl bat fd ncdu coreutils`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
 * VS Code: `code-insiders` command - ⇧⌘P and search for 'install'
 * [vgmpfdl](https://github.com/msikma/vgmpfdl)
+
+Other utilities (unlisted):
+
+* [MultiPatch](http://www.romhacking.net/utilities/746/)
 
 For icons:
 
