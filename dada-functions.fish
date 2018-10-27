@@ -151,6 +151,7 @@ function backup --description "Displays backup commands and info"
   set backup_src (backup_time_str "/Users/msikma/.cache/dada/backup-src")
   set backup_ftp (backup_time_str "/Users/msikma/.cache/dada/backup-ftp")
   set backup_zoo (backup_time_str "/Users/msikma/.cache/dada/backup-zoo")
+  set backup_config (backup_time_str "/Users/msikma/.cache/dada/backup-config")
   
   echo
   echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
@@ -166,7 +167,9 @@ function backup --description "Displays backup commands and info"
                $c1"backup-zoo      "$c0"Backs up music to the Happy Zoo"\
                $c2"Zoo backup:     "$c0"$backup_zoo"\
                $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
-               $c2"FTP backup:     "$c0"$backup_ftp"
+               $c2"FTP backup:     "$c0"$backup_ftp"\
+               $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
+               $c2"Config backup:  "$c0"$backup_config"
   
   echo
 end

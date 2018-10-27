@@ -1,0 +1,49 @@
+#!/usr/bin/env fish
+
+set err "backup-config: Error:"
+
+set src "/Users/"(whoami)"/.config/"
+set dst "/Volumes/Files/Backups/$hostname/Config"
+
+set do_not_backup "yarn"
+
+if not test -d $src
+  echo "$err Can't access source directory: "$src
+  exit 1
+end
+if not test -d $dst
+  echo "$err Can't access target directory: "$dst
+  exit 1
+end
+
+set orig (pwd)
+cd $src
+set dirs (find . -type d -depth 1)
+
+echo
+echo (set_color cyan)"Backup script for ~/.config/ files"(set_color normal)
+echo (set_color green)"Backing up to: "(set_color blue)"$dst"(set_color normal)
+echo
+
+for dir in $dirs
+  set full $src$dir
+  set name (basename $dir)
+  set zipname $dst"/"$name".zip"
+  
+  if contains $name $do_not_backup
+    echo (set_color yellow)"Skipping: "(set_color blue)"$name"(set_color yellow)" (in ignore list)"(set_color normal)
+    continue
+  end
+  
+  set files (find $dir | wc -l | awk '{print $1}')
+  set fsize (du -hs $dir | awk '{print $1}')
+  #zip -r9q $zipname $dir
+  echo (set_color green)"Backed up: "(set_color blue)"$name"(set_color yellow)" ($fsize, $files files)"(set_color normal)
+end
+
+cd $orig
+echo
+
+# Save last backup timestamp.
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-config
