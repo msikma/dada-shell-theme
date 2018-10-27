@@ -8,7 +8,8 @@ function gith
                $c2"gsl$c1             Git short log (one liners)"\
                $c2"gd$c1              Runs 'git diff --cached'"\
                $c2"gs$c1              Shows list of commit messages"\
-               $c2"git summary$c1     Summary of repo and authors"
+               $c2"git summary$c1     Summary of repo and authors"\
+               $c2"git-jira$c1        Lists Jira issue branches"
 end
 alias gb="git for-each-ref --count=25 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias g="git status"
