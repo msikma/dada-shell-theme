@@ -1,7 +1,5 @@
 #!/usr/bin/env fish
 
-# ls | xargs -I '{}' ls '{}/.git/index'
-
 set home "/Users/"(whoami)
 set orig (pwd)
 set cols (tput cols)
@@ -31,7 +29,7 @@ end
 set projs (__get_project_names)
 
 echo
-echo "Projects with recent commits"
+echo "Projects with recent commits on "(set_color red)$hostname(set_color normal)
 
 # Temporarily turn off the dirprev hook that runs when changing directories.
 set -x NO_DIRPREV_HOOK 1
