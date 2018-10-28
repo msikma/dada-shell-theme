@@ -30,6 +30,7 @@ function check_node_project \
   
   # Don't display project info if:
   status --is-command-substitution; # this is command substitution \ 
+  	or test "$NO_DIRPREV_HOOK" = 1;
     or not test -f ./package.json; # there's no package.json \ 
     or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \ 
     # On second thought, whether we came from a lower directory isn't very important.
