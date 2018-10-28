@@ -96,7 +96,7 @@ function help
             $c3"backup-src     $c1 Backs up source code dirs"\
             $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
-            $c0"khinsider      $c1 Downloads OSTs from khinsider.com"\
+            $c0"projects       $c1 Prints recently edited projects"\
             $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
             $c5"devices        $c1 Displays local computers"\
@@ -106,8 +106,8 @@ function help
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c0"jira           $c1 Lists Jira issue branches in repo"\
             $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
-            $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c0"code <dir>$c1      Opens directory in VS Code"\
+            $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\
@@ -118,6 +118,7 @@ function help
             $c4"ncdu$c1            Shows directory disk space usage"\
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
             $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
+            $c4"khinsider      $c1 Downloads OSTs from khinsider.com"\
   
   draw_columns $lines
   echo
