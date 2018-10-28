@@ -7,9 +7,10 @@
 //    Monorepo container for msikma-lib-projects, containing a number of client libraries
 //    Last commit: 2018-10-14 22:29:35 +0200 (63 minutes ago)
 //
-//    yarn │ run compile            │ bin buyee-cli          │ doc readme.md
-//         │     dev                │     marktplaats-cli    │     license.md
-//         │                        │     mlib               │     todo.md
+//    lerna | bootstrap
+//     yarn │ run compile            │ bin buyee-cli          │ doc readme.md
+//          │     dev                │     marktplaats-cli    │     license.md
+//          │                        │     mlib               │     todo.md
 //
 // To set up a trigger so that this script gets run whenever entering a project folder,
 // on Fish Shell it needs to be run on a change of the 'dirprev' variable.
@@ -49,72 +50,13 @@ const padSize = (str, size) => {
   return str + ' '.repeat(Math.max(size - str.length, 0))
 }
 
-// Files we'll load to determine output.
-const cwd = process.cwd()
-const pkg = `${cwd}/package.json`
-const yarn = `${cwd}/yarn.lock`
-const lerna = `${cwd}/lerna.json`
-
-// We'll print three columns of this size: 'run', 'bin', 'doc'.
-const leftSize = 18
-
-if (!existsSync(pkg)) {
-  // If there is no package.json in the directory, just exit.
-  process.exit()
-}
-
-// Does this project prefer Yarn or npm?
-const isYarn = existsSync(yarn)
-
-// Retrieve project info. If a version isn't set in the package.json we'll try for lerna.json.
-const { name, description, version, homepage, bin, scripts } = require(pkg)
-const lernaVersion = existsSync(lerna) ? require(lerna).version : ''
-
-// List all Markdown files in the directory. Always sort readme.md on top.
-const isReadme = fn => fn.toLowerCase() === 'readme.md'
-const dirCont = readdirSync(cwd)
-const mdFiles = (dirCont.filter((f) => /.*\.(md)/gi.test(f))
-  .sort((a, b) => isReadme(a) ? -1 : isReadme(b) ? 1 : a > b) || [])
-
-// Prints the project info. First the title and description, then Git info,
-// and finally three lists containing all npm scripts, bins and docs.
-const printInfo = (git) => {
-  // Bin can be a string; in that case duplicate the filename for the key.
-  const binObj = typeof bin === 'string' ? { [bin.split('/').slice(-1)[0]]: bin } : bin
-  // Items to print in the columns. Default these items to an empty object.
-  const binItems = binObj ? binObj : {}
-  const scriptItems = scripts ? scripts : {}
-  
-  // Git information string. Uses the items we loaded in 'gitCmds'.
-  const gitLine = git ? `Last commit: ${git.date} (${git.dateRel})` : ''
-  
-  // Print the title, version and description.
-  console.log('')
-  console.log([
-    `${red}${name}${normal} `,
-    `${version || lernaVersion ? `${purple}(${version || lernaVersion})${normal} ` : ``}`,
-    `${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`
-  ].join(''))
-  if (description) {
-    console.log(`${green}${description}${normal}`)
-  }
-  if (gitLine) {
-    console.log(`${yellow}${gitLine}${normal}`)
-  }
-  
-  // If we're displaying any columns, add a linebreak before them.
-  if (Object.keys(binItems).length > 0 ||
-      Object.keys(scriptItems).length > 0 ||
-      Object.keys(mdFiles).length > 0) {
-    console.log('')
-  }
-
+const printLines = (binItems, scriptItems, mdFiles, leftSize, isYarn, isLerna) => {
   // Find out which of the three is the longest - we'll use that many iterations.
   const binKeys = Object.keys(binItems).sort()
   const scriptKeys = Object.keys(scriptItems).sort()
   const docKeys = Object.keys(mdFiles) // already sorted earlier.
   const iterate = Math.max(binKeys.length, scriptKeys.length, docKeys.length)
-  
+
   // Draw the columns. We're drawing it one row at a time,
   // printing all three columns with every iteration.
   for (let n = 0; n < iterate; ++n) {
@@ -127,13 +69,22 @@ const printInfo = (git) => {
     const mdName = mdFiles[n]
       ? limitSize(mdFiles[n], leftSize)
       : ' '.repeat(leftSize)
-    const mgrLabel = n === 0
-      ? isYarn
-        ? 'yarn'
-        : ' npm'
-      : isYarn
-        ? '    '
-        : '    '
+    const mgrLabel =
+      isLerna
+      ? n === 0
+        ? isYarn
+          ? ' yarn'
+          : '  npm'
+        : isYarn
+          ? '     '
+          : '     '
+      : n === 0
+        ? isYarn
+          ? 'yarn'
+          : 'npm'
+        : isYarn
+          ? '    '
+          : '   '
     const scriptLabel = n === 0
       ? 'run'
       : '   '
@@ -172,8 +123,86 @@ const printInfo = (git) => {
       normal
     ].join(''))
   }
+}
 
+// Files we'll load to determine output.
+const cwd = process.cwd()
+const pkg = `${cwd}/package.json`
+const yarn = `${cwd}/yarn.lock`
+const lerna = `${cwd}/lerna.json`
+
+// We'll print three columns of this size: 'run', 'bin', 'doc'.
+const leftSize = 19
+
+if (!existsSync(pkg)) {
+  // If there is no package.json in the directory, just exit.
+  process.exit()
+}
+
+// Does this project prefer Yarn or npm?
+const isYarn = existsSync(yarn)
+
+// Retrieve project info. If a version isn't set in the package.json we'll try for lerna.json.
+const { name, description, version, homepage, bin, scripts } = require(pkg)
+const lernaData = existsSync(lerna) ? require(lerna) : ''
+const lernaVersion = lernaData ? lernaData.version : ''
+
+// List all Markdown files in the directory. Always sort readme.md on top.
+const isReadme = fn => fn.toLowerCase() === 'readme.md'
+const dirCont = readdirSync(cwd)
+const mdFiles = (dirCont.filter((f) => /.*\.(md)/gi.test(f))
+  .sort((a, b) => isReadme(a) ? -1 : isReadme(b) ? 1 : a > b) || [])
+
+// Prints the project info. First the title and description, then Git info,
+// and finally three lists containing all npm scripts, bins and docs.
+const printInfo = (git) => {
+  // Bin can be a string; in that case duplicate the filename for the key.
+  const binObj = typeof bin === 'string' ? { [bin.split('/').slice(-1)[0]]: bin } : bin
+  // Items to print in the columns. Default these items to an empty object.
+  const binItems = binObj ? binObj : {}
+  const scriptItems = scripts ? scripts : {}
+
+  // Git information string. Uses the items we loaded in 'gitCmds'.
+  const gitLine = git ? `Last commit: ${git.date} (${git.dateRel})` : ''
+
+  // Print the title, version and description.
   console.log('')
+  console.log([
+    `${red}${name}${normal} `,
+    `${version || lernaVersion ? `${purple}(${version || lernaVersion})${normal} ` : ``}`,
+    `${homepage ? `${blue}<${link}${homepage}${normal}${blue}>${normal}` : ''}`
+  ].join(''))
+  if (description) {
+    console.log(`${green}${description}${normal}`)
+  }
+  if (gitLine) {
+    console.log(`${yellow}${gitLine}${normal}`)
+  }
+
+  // If we're displaying any columns, add a linebreak before them.
+  if (Object.keys(binItems).length > 0 ||
+      Object.keys(scriptItems).length > 0 ||
+      Object.keys(mdFiles).length > 0) {
+    console.log('')
+  }
+
+  // Print Lerna string if a lerna.json file is present.
+  if (lernaVersion) {
+    Promise.all(lernaData.packages.map(item => callExternal(`ls -d ${item}`)))
+      .then((value) => {
+        // 'value' will have multiple entries if the lerna.json file has
+        // multiple 'packages' fields.
+        const items = value.reduce((acc, item) => [...acc, ...item.split('\n')], [])
+        console.log(`${blue}lerna │ bootstrap (${items.length} packages) |${normal}`)
+        printLines(binItems, scriptItems, mdFiles, leftSize, isYarn, true)
+        console.log('')
+      })
+
+  }
+  else {
+    printLines(binItems, scriptItems, mdFiles, leftSize, isYarn, false)
+    console.log('')
+  }
 }
 
 // We'll display this information from the Git repo.
