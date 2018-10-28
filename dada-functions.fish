@@ -119,6 +119,7 @@ function help
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
             $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
             $c4"khinsider      $c1 Downloads OSTs from khinsider.com"\
+            $c4"imgfloppy      $c1 Copy floppy data to .img file"\
   
   draw_columns $lines
   echo

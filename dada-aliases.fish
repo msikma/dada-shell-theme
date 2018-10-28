@@ -23,7 +23,7 @@ alias code="code-insiders"
 
 # Dada scripts
 alias proj="node-project.js"
-alias jira="git-jira.sh"
+alias jira="git-jira"
 alias projects="view-projects.fish"
 
 function doc
