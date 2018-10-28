@@ -86,7 +86,6 @@ for proj in $projs
         set displayname (string sub -s 1 -l (math $namelen - 1) $name)
       end
     end
-    set rel "21 minutes ago"
     printf (set_color green)'%-'$daylen's'(set_color normal)'%-'$desclen's '(set_color blue)'%-'$namelen's'(set_color purple)'%-'$rellen's\n' $day $desclimit $displayname $rel
     set prevname (echo $name)
   end
