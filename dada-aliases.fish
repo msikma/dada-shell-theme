@@ -25,6 +25,7 @@ alias code="code-insiders"
 alias proj="node-project.js"
 alias jira="git-jira"
 alias projects="view-projects.fish"
+alias updrepos="update-projects.fish"
 
 function doc
   mdv $argv | less -r
