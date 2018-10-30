@@ -47,16 +47,13 @@ for proj in $projs
   case "fatal:*"
     set msg (set_color cyan)" - "(set_color red)"$output"
   case "*->*"
-    # Extract the update hashes: b5887eb..0a39e27
-    set updhash (echo $output | grep -o "[0-9a-f]\{7\}\.\.[0-9a-f]\{7\}")
-    set hash_old (echo $updhash | cut -d'.' -f1)
-    set hash_new (echo $updhash | cut -d'.' -f3)
+    set new_hash (git rev-parse --short head)
     set commits (math $new_count - $old_count)
     set commits_sfx "commits"
     if [ "$commits" -eq 1 ]
       set commits_sfx "commit"
     end
-    set msg (set_color green)" has been updated to $hash_new ($commits $commits_sfx)"
+    set msg (set_color green)" has been updated (+$commits $commits_sfx; commit #$new_count, $new_hash)."
   end
   
   echo (set_color cyan)"$name$msg"(set_color normal)
