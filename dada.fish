@@ -19,7 +19,8 @@ set PATH /usr/bin $PATH
 set PATH /bin /usr/sbin /sbin $PATH
 set PATH /usr/local/sbin $PATH
 set PATH /usr/local/bin $PATH
-set PATH ~/.config/dada/bin $PATH
+set PATH ~/.config/dada/bin $PATH      # for larger scripts, with extension
+set PATH ~/.config/dada/scripts $PATH  # for smaller scripts/commands
 set PATH ~/.bin/ $PATH
 set PATH ~/.bin/misc-scripts $PATH  # clone from https://github.com/msikma/misc-scripts
 set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/misc-bin

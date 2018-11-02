@@ -23,9 +23,10 @@ alias code="code-insiders"
 
 # Dada scripts
 alias proj="node-project.js"
-alias jira="git-jira"
+alias jira="git-jira.fish"
 alias projects="view-projects.fish"
 alias updrepos="update-projects.fish"
+alias imgfloppy="image-floppy.fish"
 
 function doc
   mdv $argv | less -r
