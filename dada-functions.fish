@@ -1,3 +1,18 @@
+set a_secs
+set a_ms
+
+function timer_start --description "Saves the current time in ms to compare later"
+  set a_secs (gdate +%s)
+  set a_ms (gdate +%N)
+end
+
+function timer_end --description "Prints the difference between timer_start and now"
+  set b_secs (gdate +%s)
+  set b_ms (gdate +%N)
+
+  awk "BEGIN{ print $b_secs.00$b_ms - $a_secs.00$a_ms; }"
+end
+
 # I forgot what this is
 function drewdrew
   for x in (seq 500)
