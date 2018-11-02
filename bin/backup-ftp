@@ -1,0 +1,31 @@
+#!/usr/bin/env fish
+
+set err "backup-ftp: Error:"
+
+set src "/Users/msikma/Library/Group Containers/G69SCX94XU.duck/Library/Application Support/duck/Bookmarks"
+set dst "/Volumes/Files/Backups/FTP"
+
+set c1 (set_color blue)
+set c2 (set_color normal)
+set c3 (set_color red)
+
+if not test -d $dst
+  echo "$err Can't access target directory: "$dst
+  exit 1
+end
+if not test -d $src
+  echo "$err Cyberduck is not installed."
+  exit 1
+end
+
+echo "Backing up Cyberduck bookmarks to $c3$dst$c2"
+
+for n in (ls $src/*)
+  # Filename in $n, set $nn to the plain name of the bookmark.
+  set nn (awk '/Nickname/,/string/' $n | grep -io "<string>.*</string>" | cut -d '>' -f2 | cut -d '<' -f1)
+  echo "Backing up: $c1$nn$c2 ("(basename $n)")"
+  cp $n $dst"/"$nn".duck"
+end
+
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-ftp

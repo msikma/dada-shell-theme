@@ -1,0 +1,29 @@
+#!/usr/bin/env fish
+
+set err "backup-zoo: Error:"
+set src "/Users/"(whoami)"/Files/Music"
+set dst "/Volumes/happy zoo/dada/Music"
+
+if not set -q hostname
+  echo "$err \$hostname is not set"
+  exit 1
+end
+
+if not test -d $src
+  echo "$err Can't access source directory: $src"
+  exit 1
+end
+
+if not test -d $dst
+  echo "$err Can't access target directory: $dst"
+  exit 1
+end
+
+# Using the old directories anyway. Fix someday.
+rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Tracker/" "/Volumes/happy zoo/dada/Music/Tracker/"
+rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Game music covers/" "/Volumes/happy zoo/dada/Music/Game music covers/"
+rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Game music/" "/Volumes/happy zoo/dada/Music/Game music/"
+rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Classical/" "/Volumes/happy zoo/dada/Music/Classical/"
+
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-zoo

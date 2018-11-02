@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+SRC_DIRS=("/Users/msikma/Projects" "/Users/msikma/Client projects" "/Users/msikma/Source")
+DEST_DIRS=("/Volumes/Files/Backups/$hostname/Projects" "/Volumes/Files/Backups/$hostname/Client projects" "/Volumes/Files/Backups/$hostname/Source")
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+WORK_DIR=`mktemp -d`
+
+err="backup-src: Error:"
+
+if [ -z ${hostname+x} ]; then
+  echo "$err \$hostname is not set"
+  exit 1
+fi
+
+# Check whether our directories exist.
+for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
+  src="${SRC_DIRS[a]}"
+  dest="${DEST_DIRS[a]}"
+  if [[ ! "$src" || ! -d "$src" ]]; then
+    echo "$err Could not access source directory: $src"
+    exit 1
+  fi
+  if [[ ! "$dest" || ! -d "$dest" ]]; then
+    echo "$err Could not access destination directory: $dest"
+    exit 1
+  fi
+done
+
+# Create a temporary directory to store our zip files in.
+if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+  echo "$err Could not create temp directory: $WORK_DIR"
+  exit 1
+fi
+
+function cleanup {      
+  rm -rf "$WORK_DIR"
+  cd "$DIR"
+  echo "Deleted temp working directory: $WORK_DIR"
+}
+
+# Ensure we always clean up.
+trap cleanup EXIT
+
+# Now run the backup script.
+for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
+  src="${SRC_DIRS[a]}"
+  dest="${DEST_DIRS[a]}"
+  echo "Backing up directory ($((a+1))/${#SRC_DIRS[@]}): $src"
+  for b in "$src/"*; do
+    base="${b##*/}"
+    zipf="$base.zip"
+    tmp="$WORK_DIR/$zipf"
+    zipdest="$dest/$zipf"
+    
+    if [ -d "$b" ]; then
+      cd "$src"
+      zip -r9q "$tmp" "$base" -x "$base/"node_modules/**\*
+      fs=`stat -f%z "$tmp"`
+      
+      if [[ "$zipdest" && -f "$zipdest" ]]; then
+        # If the destination file exists, check if the new zip file has a different size.
+        # Copy over the file if that's the case.
+        oldstat=`stat -f%z "$tmp"`
+        newstat=`stat -f%z "$zipdest"`
+        if [[ "$oldstat" -ne "$newstat" ]]; then
+          cp "$tmp" "$zipdest"
+          echo "@ Updated: $base"
+        else
+          echo "- No need to update: $base"
+        fi
+        # Remove our temporary file.
+        rm "$tmp"
+        
+      else
+        # If not, copy it over right away.
+        cp "$tmp" "$zipdest"
+        echo "+ New backup: $base"
+      fi
+    fi
+  done
+done
+
+mkdir -p ~/.cache/dada
+echo `date +"%a, %b %d %Y %X %z"` > ~/.cache/dada/backup-src

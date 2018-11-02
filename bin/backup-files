@@ -1,0 +1,39 @@
+#!/usr/bin/env fish
+
+set err "backup-files: Error:"
+
+if not set -q hostname
+  echo "$err \$hostname is not set"
+  exit 1
+end
+
+set src \
+~/"Files/" \
+~/"Documents/"
+
+set dst \
+"/Volumes/Files/Backups/$hostname/Files" \
+"/Volumes/Files/Backups/$hostname/Documents"
+
+for n in (seq (count $src))
+  set s $src[$n]
+  set d $dst[$n]
+  if not test -d $s
+    echo "$err Can't access source directory: "$s
+    exit 1
+  end
+  if not test -d $d
+    echo "$err Can't access target directory: "$d
+    exit 1
+  end
+end
+
+for n in (seq (count $src))
+  set s $src[$n]
+  set d $dst[$n]
+  echo "backup-files: Syncing: "$s" -> "$d
+  rsync -ahvrESH8 --delete --progress --stats --exclude=".*/" --exclude=".*" $s $d
+end
+
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-files

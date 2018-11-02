@@ -1,0 +1,33 @@
+#!/usr/bin/env fish
+
+set err "backup-dbs: Error:"
+
+if not set -q hostname
+  echo "$err \$hostname is not set"
+  exit 1
+end
+
+set ts (date "+%Y-%m-%d")
+set dest "/Volumes/Files/Backups/$hostname/Databases"
+set user "root"
+set pass "root"
+set sqlcmd "/Applications/MAMP/Library/bin/mysql"
+set dumpcmd "/Applications/MAMP/Library/bin/mysqldump"
+
+if not test -d "$dest"
+    echo "$err could not access destination: $dest"
+    exit 1
+end
+
+set databases (eval $sqlcmd -u$user -p$pass -e "'show databases;'" 2> /dev/null | grep -Ev "(mysql|Database|information_schema|performance_schema)")
+set dbcount (count $databases)
+echo "Backing up $dbcount databases."
+
+for i in $databases
+  eval $dumpcmd --force -u$user -p$pass --databases $i 2> /dev/null | gzip > "$dest/$i.sql.gz"
+  du -h "$dest/$i.sql.gz"
+end
+du -h "$dest"
+
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-dbs
