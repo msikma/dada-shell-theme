@@ -9,6 +9,11 @@ function drewdrew
   end
 end
 
+# Makes a new Fish script. Invoke like: 'newfish file.fish'.
+function newfish --description "Makes a new Fish script"
+  echo "#!/usr/bin/env fish"\n > $argv[1]; chmod +x $argv[1];
+end
+
 function keys --description "Displays keys installed for this user"
 	echo
 	echo "Installed keys for "(set_color green)(whoami)(set_color normal)" in "(set_color yellow)"~/.ssh/"(set_color normal)
@@ -108,6 +113,7 @@ function help
             $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
             $c0"code <dir>$c1      Opens directory in VS Code"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
+            $c0"newfish <file>$c1  Creates a new Fish script"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\
