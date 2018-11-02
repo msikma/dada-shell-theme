@@ -4,7 +4,7 @@ timer_start
 
 set err "backup-config: Error:"
 
-set last_backup (backup_time_rel "/Users/msikma/.cache/dada/backup-config")
+set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-config")
 set src "/Users/"(whoami)"/.config/"
 set dst "/Volumes/Files/Backups/$hostname/Config"
 
@@ -26,7 +26,7 @@ set dirs (find . -type d -depth 1)
 echo
 echo (set_color cyan)"Backup script for ~/.config/ files"(set_color normal)
 echo (set_color green)"Last backup was "$last_backup"."(set_color normal)
-echo (set_color green)"Backing up to: "(set_color blue)"$dst"(set_color normal)
+echo (set_color green)"Backing up to: "(set_color yellow)"$dst"(set_color normal)
 echo
 
 for dir in $dirs

@@ -1,5 +1,8 @@
 #!/usr/bin/env fish
 
+timer_start
+set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-zoo")
+
 set err "backup-zoo: Error:"
 set src "/Users/"(whoami)"/Files/Music"
 set dst "/Volumes/happy zoo/dada/Music"
@@ -19,11 +22,18 @@ if not test -d $dst
   exit 1
 end
 
+echo (set_color cyan)"Backup script for Happy Zoo content"(set_color normal)
+echo (set_color yellow)"Last backup was "$last_backup"."(set_color normal)
+
 # Using the old directories anyway. Fix someday.
 rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Tracker/" "/Volumes/happy zoo/dada/Music/Tracker/"
 rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Game music covers/" "/Volumes/happy zoo/dada/Music/Game music covers/"
 rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Game music/" "/Volumes/happy zoo/dada/Music/Game music/"
 rsync -ahvrESH8 --delete --progress --stats --no-links --exclude=".*/" --exclude=".*" "/Volumes/Glitch/Music/Classical/" "/Volumes/happy zoo/dada/Music/Classical/"
+
+set result (timer_end)
+echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo
 
 mkdir -p ~/.cache/dada
 echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-zoo

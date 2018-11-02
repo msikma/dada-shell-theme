@@ -1,11 +1,19 @@
 #!/usr/bin/env fish
 
+timer_start
+
 set err "backup-dbs: Error:"
+set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-dbs")
 
 if not set -q hostname
   echo "$err \$hostname is not set"
   exit 1
 end
+
+echo
+echo (set_color cyan)"Backup script MySQL databases"(set_color normal)
+echo (set_color green)"Last backup was "$last_backup"."(set_color normal)
+echo
 
 set ts (date "+%Y-%m-%d")
 set dest "/Volumes/Files/Backups/$hostname/Databases"
@@ -15,8 +23,8 @@ set sqlcmd "/Applications/MAMP/Library/bin/mysql"
 set dumpcmd "/Applications/MAMP/Library/bin/mysqldump"
 
 if not test -d "$dest"
-    echo "$err could not access destination: $dest"
-    exit 1
+  echo "$err could not access destination: $dest"
+  exit 1
 end
 
 set databases (eval $sqlcmd -u$user -p$pass -e "'show databases;'" 2> /dev/null | grep -Ev "(mysql|Database|information_schema|performance_schema)")
@@ -28,6 +36,10 @@ for i in $databases
   du -h "$dest/$i.sql.gz"
 end
 du -h "$dest"
+
+set result (timer_end)
+echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo
 
 mkdir -p ~/.cache/dada
 echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-dbs

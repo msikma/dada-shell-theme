@@ -1,6 +1,9 @@
 #!/usr/bin/env fish
 
+timer_start
+
 set err "backup-files: Error:"
+set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-files")
 
 if not set -q hostname
   echo "$err \$hostname is not set"
@@ -28,12 +31,19 @@ for n in (seq (count $src))
   end
 end
 
+echo (set_color cyan)"Backup script for "(set_color blue)"~/Files/"(set_color normal)
+echo (set_color yellow)"Last backup was "$last_backup"."(set_color normal)
+
 for n in (seq (count $src))
   set s $src[$n]
   set d $dst[$n]
   echo "backup-files: Syncing: "$s" -> "$d
   rsync -ahvrESH8 --delete --progress --stats --exclude=".*/" --exclude=".*" $s $d
 end
+
+set result (timer_end)
+echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo
 
 mkdir -p ~/.cache/dada
 echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-files
