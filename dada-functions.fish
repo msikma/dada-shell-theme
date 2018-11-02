@@ -127,6 +127,8 @@ function help
             $c0"jira           $c1 Lists Jira issue branches in repo"\
             $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
             $c0"code <dir>$c1      Opens directory in VS Code"\
+            $c4"imgfloppy      $c1 Copy floppy data to .img file"\
+            $c0"updrepos       $c1 Updates all project repos"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c0"newfish <file>$c1  Creates a new Fish script"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
@@ -140,7 +142,6 @@ function help
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
             $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
             $c4"khinsider      $c1 Downloads OSTs from khinsider.com"\
-            $c4"imgfloppy      $c1 Copy floppy data to .img file"\
   
   draw_columns $lines
   echo
