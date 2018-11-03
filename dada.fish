@@ -49,8 +49,8 @@ set -gx LESS_TERMCAP_us (printf "\e[01;32m")
 # For CeeGee
 set -gx DEBUG 1;
 
-set -gx CEEGEE_ROOT_DIR "/Users/msikma/Personal projects/ceegee";
-set -gx CEEGEE_BUILD_DEST_DIR "/Users/msikma/Personal projects/ceegee_nightly";
+set -gx CEEGEE_ROOT_DIR "/Users/"(whoami)"/Personal projects/ceegee";
+set -gx CEEGEE_BUILD_DEST_DIR "/Users/"(whoami)"/Personal projects/ceegee_nightly";
 
 set -x SCSCRAPE_DIR ~/Music/scscrape
 set -x VAGRANT_DEFAULT_PROVIDER virtualbox
