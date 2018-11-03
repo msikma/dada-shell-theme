@@ -41,7 +41,7 @@ for dir in $dirs
   
   set files (find $dir | wc -l | awk '{print $1}')
   set fsize (du -hs $dir | awk '{print $1}')
-  #zip -r9q $zipname $dir
+  zip -r9q $zipname $dir
   echo (set_color green)"Backed up: "(set_color blue)"$name"(set_color yellow)" ($fsize, $files files)"(set_color normal)
 end
 
