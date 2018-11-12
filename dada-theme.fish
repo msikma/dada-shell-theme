@@ -24,20 +24,25 @@ set -g __fish_prompt_normal (set_color normal)
 # Hostname, used in several backup scripts.
 set -gx hostname (hostname -s)
 
+# In case we want to make a network request.
+set -gx dada_ua "Dada Shell Theme/unknown" # modified after we get our version info
+# Accept language string for getting localized content.
+set -gx dada_acceptlang "ja,en-US;q=0.7,en;q=0.3"
+
 function check_node_project \
   --description 'Display project info if we changed to a Node project directory' \
   --on-variable dirprev
-  
+
   # Don't display project info if:
-  status --is-command-substitution; # this is command substitution \ 
+  status --is-command-substitution; # this is command substitution \
   	or test "$NO_DIRPREV_HOOK" = 1;
-    or not test -f ./package.json; # there's no package.json \ 
-    or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \ 
+    or not test -f ./package.json; # there's no package.json \
+    or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \
     # On second thought, whether we came from a lower directory isn't very important.
     # Note: this has to be -eq 2, since we change directories in the fish_greeting that runs before this.
-    # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \ 
+    # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \
     and return
-  
+
   # Displays project name, version, and a list of bin files, npm scripts and docs.
   node-project.js
 end
@@ -55,7 +60,7 @@ function fish_right_prompt --description 'Write out the right prompt'
   if test $exit_code -ne 0
     echo -n "⚠️  "
   end
-  
+
   set_color 222
   echo $datestr
   set_color normal
@@ -65,12 +70,12 @@ end
 function backup_time_str --description 'Prints the time a backup was last performed'
   set bfile $argv[1]
   set now (date +%s)
-  
+
   # If a backup is older than a week, display the value in yellow.
   # If it's older than a month, display the value in red.
   set yellow_cutoff 604800
   set red_cutoff 2628000
-  
+
   if test -e $bfile
     set bu (cat $bfile)
     set bu_unix (backup_date_unix $bu)
@@ -122,29 +127,34 @@ function fish_greeting --description 'Display the login greeting'
   # Total disk size in GB, one decimal
   set disk_total_gb (math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 2)"*512)/1000000000")
   # user@hostname
-  set user (whoami)'@'(uname -n)
+  set curr_uname (uname -n)
+  set user (whoami)"@$curr_uname"
   # Current IP (10.0.1.3)
   set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1)
   # Current Dada-theme version, e.g. master-12-abcdef
   # Make sure we return to where we were.
   set dir (pwd)
   cd ~/.config/dada
-  set version (get_version)
+  set version_main (get_version_short)
+  set version_hash (get_version_hash)
+  set version "$version_main [$version_hash]"
   set last_commit (get_last_commit)
   set last_commit_rel (get_last_commit_rel)
   cd "$dir"
-  
-  set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
-  set backup_music (backup_time_str "/Users/msikma/.cache/dada/backup-music")
-  set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
-  set backup_src (backup_time_str "/Users/msikma/.cache/dada/backup-src")
-  
+  # Modify our user agent to contain the version string.
+  set -gx dada_ua "Dada Shell Theme/$version_main ($curr_uname)"
+
+  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
+  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
+  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
+  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
+
   # Display the gray uname section.
   set_color brblack
   echo $darwin_version
   uptime
   echo
-  
+
   # Display the theme name.
   echo -n "🌿"
   set_color green
@@ -164,7 +174,7 @@ function fish_greeting --description 'Display the login greeting'
   set_color 2b4e03
   echo " to see available commands"
   echo
-  
+
   # Display the info columns.
   set c0 (set_color purple)
   set c1 (set_color white)
@@ -180,7 +190,7 @@ function fish_greeting --description 'Display the login greeting'
   set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
   set l8 $c0"Files backup:   $c1$backup_files"
   set lines $l1 $l2 $l3 $l4 $l5 $l6 $l7 $l8
-  
+
   draw_columns $lines
   echo
   set_color normal
@@ -209,14 +219,14 @@ function time_ago --description 'Formats the relative difference between two dat
   set date1 $argv[1]
   set date2 $argv[2]
   set diff (math "$date1 - $date2")
-  
+
   set year_l 31536000
   set month_l 2628000
   set week_l 604800
   set day_l 86400
   set hour_l 3600
   set minute_l 60
-  
+
   set years (math "$diff / $year_l")
   if [ $years -gt 0 ]
     time_ago_echo $years "year" "years"
@@ -265,6 +275,12 @@ function get_version_short --description 'Returns version identifier string'
   echo $branch-$commits
 end
 
+# Returns only the Git hash.
+function get_version_hash --description 'Returns version identifier string'
+  set hash (git rev-parse --short head)
+  echo $hash
+end
+
 # Last commit date in short format (YYYY-mm-dd).
 function get_last_commit --description 'Returns last Git commit date'
   echo (git log -n 1 --date=format:%s --pretty=format:%cd --date=short)
@@ -287,14 +303,14 @@ function draw_columns --description 'Draws lines as columns'
     set len (string length $line)
     # Remainder
     set rem (math "$colwidth - $len")
-    
+
     # Echo the string
     echo -n $line
     # Echo spaces until we reach the column width
     if [ $rem -gt 0 ]
       echo -n (string repeat ' ' -n $rem)
     end
-    
+
     # Linebreak after 2 columns
     if [ (math "$n % $columns") -eq 0 ]
       echo

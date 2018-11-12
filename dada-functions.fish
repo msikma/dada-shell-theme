@@ -1,3 +1,6 @@
+# Imports anything we split off into separate files.
+source $DADA"/functions/"*.fish
+
 set a_secs
 set a_ms
 
@@ -11,6 +14,14 @@ function timer_end --description "Prints the difference between timer_start and 
   set b_ms (gdate +%N)
 
   awk "BEGIN{ print $b_secs.00$b_ms - $a_secs.00$a_ms; }"
+end
+
+function weather --description "Queries wttr.in for the weather"
+	# Note: uses negative head value to erase the author name at the bottom.
+	curl -s "wttr.in" \
+		-H "Accept-Language: $dada_acceptlang" \
+		| \
+		ghead -n -2
 end
 
 # I forgot what this is
@@ -30,46 +41,46 @@ function newfish --description "Makes a new Fish script"
 end
 
 function keys --description "Displays keys installed for this user"
-	echo
-	echo "Installed keys for "(set_color green)(whoami)(set_color normal)" in "(set_color yellow)"~/.ssh/"(set_color normal)
-	echo
-	set c0 (set_color yellow)
-	set c1 (set_color normal)
-	set c2 (set_color blue)
-	set col 20
-	
-	set pubs (ls ~/.ssh/*.pub)
-	set active (ssh-add -l)
-	for key in $pubs
-		set key (basename $key | sed 's/\.[^.]*$//')
-		set installed 0
-		for act in $active
-			set sz (echo $act | cut -d' ' -f1)
-			set type (echo $act | cut -d' ' -f4)
-			set path (echo $act | cut -d' ' -f3)
-			if [ (echo $path | grep -i "$key\$") ];
-				set len (string length $key)
-				set rem (math "$col - $len")
-				echo -n $c0$key
-				echo -n (string repeat ' ' -n $rem)
-				echo $sz bit $type - installed$c1
-				set installed 1
-			end
-		end
-		if [ $installed -eq 0 ];
-			set len (string length $key)
-			set rem (math "$col - $len")
-			echo -n $c2$key
-			echo -n (string repeat ' ' -n $rem)
-			echo not installed$c1
-		end
-	end
-	echo
+  echo
+  echo "Installed keys for "(set_color green)(whoami)(set_color normal)" in "(set_color yellow)"~/.ssh/"(set_color normal)
+  echo
+  set c0 (set_color yellow)
+  set c1 (set_color normal)
+  set c2 (set_color blue)
+  set col 20
+
+  set pubs (ls ~/.ssh/*.pub)
+  set active (ssh-add -l)
+  for key in $pubs
+    set key (basename $key | sed 's/\.[^.]*$//')
+    set installed 0
+    for act in $active
+      set sz (echo $act | cut -d' ' -f1)
+      set type (echo $act | cut -d' ' -f4)
+      set path (echo $act | cut -d' ' -f3)
+      if [ (echo $path | grep -i "$key\$") ];
+        set len (string length $key)
+        set rem (math "$col - $len")
+        echo -n $c0$key
+        echo -n (string repeat ' ' -n $rem)
+        echo $sz bit $type - installed$c1
+        set installed 1
+      end
+    end
+    if [ $installed -eq 0 ];
+      set len (string length $key)
+      set rem (math "$col - $len")
+      echo -n $c2$key
+      echo -n (string repeat ' ' -n $rem)
+      echo not installed$c1
+    end
+  end
+  echo
 end
 
 # Updates the shell theme
 function update
-  pushd "/Users/msikma/.config/dada/"
+  pushd "/Users/"(whoami)"/.config/dada/"
   set old (get_version_short)
   set nvm (git pull)
   set new (get_version_short)
@@ -84,18 +95,18 @@ end
 # Displays help.
 function help
   set c0 (set_color blue)    # Regular commands
-  set c1 (set_color white)   
+  set c1 (set_color white)
   set c2 (set_color purple)  # Git commands
   set c3 (set_color red)     # Backup commands
   set c4 (set_color yellow)  # External applications
   set c5 (set_color green)   # Commands that show external servers
   set c6 (set_color cyan)    # Shell theme management commands
-  
+
   echo
   set_color normal
   echo "The following commands are available:"
   echo
-  
+
   set lines $c0"sphp           $c1 Changes PHP version"\
             $c2"g              $c1 Git status"\
             $c0"tree           $c1 Runs ls with tree structure"\
@@ -142,9 +153,13 @@ function help
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
             $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
             $c4"khinsider      $c1 Downloads OSTs from khinsider.com"\
-  
+
   draw_columns $lines
   echo
+end
+
+function in_git_dir --description "Returns whether we're inside of a Git project"
+	test -f ./.git/index
 end
 
 function cdbackup
@@ -167,16 +182,16 @@ function backup --description "Displays backup commands and info"
   set c1 (set_color red)     # Backup commands
   set c2 (set_color purple)  # Backup info
   set c3 (set_color green)   # User info
-  
+
   # Get a string of when the backup was done
-  set backup_dbs (backup_time_str "/Users/msikma/.cache/dada/backup-dbs")
-  set backup_music (backup_time_str "/Users/msikma/.cache/dada/backup-music")
-  set backup_files (backup_time_str "/Users/msikma/.cache/dada/backup-files")
-  set backup_src (backup_time_str "/Users/msikma/.cache/dada/backup-src")
-  set backup_ftp (backup_time_str "/Users/msikma/.cache/dada/backup-ftp")
-  set backup_zoo (backup_time_str "/Users/msikma/.cache/dada/backup-zoo")
-  set backup_config (backup_time_str "/Users/msikma/.cache/dada/backup-config")
-  
+  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
+  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
+  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
+  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
+  set backup_ftp (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-ftp")
+  set backup_zoo (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-zoo")
+  set backup_config (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-config")
+
   echo
   echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
   echo
@@ -194,7 +209,7 @@ function backup --description "Displays backup commands and info"
                $c2"FTP backup:     "$c0"$backup_ftp"\
                $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
                $c2"Config backup:  "$c0"$backup_config"
-  
+
   echo
 end
 
@@ -219,19 +234,19 @@ function servers
 end
 
 function video2gif
-    ffmpeg -y -i $argv[1] -vf fps=20,scale=320:-1:flags=lanczos,palettegen palette.png
-    ffmpeg -i $argv[1] -i palette.png -filter_complex "fps=20,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse" $argv[1].gif
-    rm palette.png
+  ffmpeg -y -i $argv[1] -vf fps=20,scale=320:-1:flags=lanczos,palettegen palette.png
+  ffmpeg -i $argv[1] -i palette.png -filter_complex "fps=20,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse" $argv[1].gif
+  rm palette.png
 end
 
 function scrapemp3s
-    wget -r -l1 -H -t3 -nd -N -np -A.mp3 -erobots=off $argv
+  wget -r -l1 -H -t3 -nd -N -np -A.mp3 -erobots=off $argv
 end
 
 function findfile
-    find / -name $argv 2> /dev/null
+  find / -name $argv 2> /dev/null
 end
 
 function headers
-    curl -sILk $argv | sed '$d'
+  curl -sILk $argv | sed '$d'
 end

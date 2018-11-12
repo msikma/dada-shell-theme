@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SRC_DIRS=("/Users/msikma/Projects" "/Users/msikma/Client projects" "/Users/msikma/Source")
+SRC_DIRS=("/Users/$(whoami)/Projects" "/Users/$(whoami)/Client projects" "/Users/$(whoami)/Source")
 DEST_DIRS=("/Volumes/Files/Backups/$hostname/Projects" "/Volumes/Files/Backups/$hostname/Client projects" "/Volumes/Files/Backups/$hostname/Source")
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORK_DIR=`mktemp -d`
@@ -32,7 +32,7 @@ if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
   exit 1
 fi
 
-function cleanup {      
+function cleanup {
   rm -rf "$WORK_DIR"
   cd "$DIR"
   echo "Deleted temp working directory: $WORK_DIR"
@@ -51,12 +51,12 @@ for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
     zipf="$base.zip"
     tmp="$WORK_DIR/$zipf"
     zipdest="$dest/$zipf"
-    
+
     if [ -d "$b" ]; then
       cd "$src"
       zip -r9q "$tmp" "$base" -x "$base/"node_modules/**\*
       fs=`stat -f%z "$tmp"`
-      
+
       if [[ "$zipdest" && -f "$zipdest" ]]; then
         # If the destination file exists, check if the new zip file has a different size.
         # Copy over the file if that's the case.
@@ -70,7 +70,7 @@ for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
         fi
         # Remove our temporary file.
         rm "$tmp"
-        
+
       else
         # If not, copy it over right away.
         cp "$tmp" "$zipdest"

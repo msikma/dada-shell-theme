@@ -17,15 +17,15 @@ alias tree="exa -Tla --git-ignore -I .git"
 alias wget="wget --no-check-certificate"
 alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
-alias weather="curl wttr.in"
 alias ncdu="ncdu --color dark -q -r"
 alias code="code-insiders"
 
 # Dada scripts
 alias proj="node-project.js"
-alias jira="git-jira"
+alias jira="git-jira.fish"
 alias projects="view-projects.fish"
 alias updrepos="update-projects.fish"
+alias imgfloppy="image-floppy.fish"
 
 function doc
   mdv $argv | less -r
