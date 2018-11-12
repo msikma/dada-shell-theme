@@ -153,6 +153,8 @@ function help
             $c4"doc <file>$c1      Reads Markdown file in terminal"\
             $c4"vgmpfdl <url>$c1   Downloads albums from vgmpf.com"\
             $c4"khinsider      $c1 Downloads OSTs from khinsider.com"\
+            $c4"rip-music <url>$c1 Rips music files from a URL"\
+            $c4"rip-imgs <url>$c1  Rips image files from a URL"\
 
   draw_columns $lines
   echo

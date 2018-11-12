@@ -19,17 +19,29 @@ set __moz_ag "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36
 # --execute robots=off  totally ignore robots.txt telling us to fuck off (sorry)
 # --accept <list>       accept only these filetypes
 #
-function rip_url_files --description "Rip audio files from a URL"
+function rip_url_files --description "Rip files from a URL"
   set target $argv[1]
   set types $argv[2]
+  set level 0  # hardcoded for now
+  echo (set_color yellow)"Ripping files from URL: "(set_color blue)"$target"(set_color normal)
+  echo (set_color yellow)"Saving file types: "(set_color purple)"$types"(set_color yellow)" (depth: $level)"(set_color normal)
+  
   if test -n "types"
     set types "--accept=$types"
   end
+  
+  # If level is 0, we need to pass --page-requisites instead of --level;
+  # a level value of 0 stands for 'infinite' otherwise.
+  if [ "$level" = "0" ]
+    set rec_opts "--page-requisites"
+  else
+    set rec_opts "--recursive" "--level=$level"
+  end
+  
   wget --no-verbose \
        --no-clobber \
        --user-agent=$__moz_ag \
-       --recursive \
-       --level=0 \
+       $rec_opts \
        --span-hosts \
        --tries=1 \
        --no-directories \
@@ -42,10 +54,26 @@ end
 
 # Rips all music files from a URL.
 function rip_url_music --description "Rips audio files from a URL"
+  if test -z "$argv[1]"
+    echo 'rip-music: error: no URL given'
+    return 1
+  end
   rip_url_files $argv[1] "mp3,flac,wmv,ogg,m4a,opus,rar"
 end
 
 # Rips all image files from a URL.
 function rip_url_images --description "Rips image files from a URL"
+  if test -z "$argv[1]"
+    echo 'rip-imgs: error: no URL given'
+    return 1
+  end
   rip_url_files $argv[1] "jpg,jpeg,gif,png,bmp,tiff,psd"
+end
+
+# Shortcuts.
+function rip-music
+  rip_url_music $argv[1]
+end
+function rip-imgs
+  rip_url_images $argv[1]
 end
