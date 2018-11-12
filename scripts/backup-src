@@ -7,6 +7,15 @@ WORK_DIR=`mktemp -d`
 
 err="backup-src: Error:"
 
+function cleanup {
+  rm -rf "$WORK_DIR"
+  cd "$DIR"
+  echo "Deleted temp working directory: $WORK_DIR"
+}
+
+# Ensure we always clean up.
+trap cleanup EXIT
+
 if [ -z ${hostname+x} ]; then
   echo "$err \$hostname is not set"
   exit 1
@@ -31,15 +40,6 @@ if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
   echo "$err Could not create temp directory: $WORK_DIR"
   exit 1
 fi
-
-function cleanup {
-  rm -rf "$WORK_DIR"
-  cd "$DIR"
-  echo "Deleted temp working directory: $WORK_DIR"
-}
-
-# Ensure we always clean up.
-trap cleanup EXIT
 
 # Now run the backup script.
 for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
