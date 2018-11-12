@@ -1,3 +1,6 @@
+# Imports anything we split off into separate files.
+source $DADA"/functions/"*.fish
+
 set a_secs
 set a_ms
 
@@ -11,6 +14,14 @@ function timer_end --description "Prints the difference between timer_start and 
   set b_ms (gdate +%N)
 
   awk "BEGIN{ print $b_secs.00$b_ms - $a_secs.00$a_ms; }"
+end
+
+function weather --description "Queries wttr.in for the weather"
+	# Note: uses negative head value to erase the author name at the bottom.
+	curl -s "wttr.in" \
+		-H "Accept-Language: $dada_acceptlang" \
+		| \
+		ghead -n -2
 end
 
 # I forgot what this is
@@ -145,6 +156,10 @@ function help
 
   draw_columns $lines
   echo
+end
+
+function in_git_dir --description "Returns whether we're inside of a Git project"
+	test -f ./.git/index
 end
 
 function cdbackup

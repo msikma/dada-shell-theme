@@ -24,6 +24,11 @@ set -g __fish_prompt_normal (set_color normal)
 # Hostname, used in several backup scripts.
 set -gx hostname (hostname -s)
 
+# In case we want to make a network request.
+set -gx dada_ua "Dada Shell Theme/unknown" # modified after we get our version info
+# Accept language string for getting localized content.
+set -gx dada_acceptlang "ja,en-US;q=0.7,en;q=0.3"
+
 function check_node_project \
   --description 'Display project info if we changed to a Node project directory' \
   --on-variable dirprev
@@ -122,17 +127,22 @@ function fish_greeting --description 'Display the login greeting'
   # Total disk size in GB, one decimal
   set disk_total_gb (math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 2)"*512)/1000000000")
   # user@hostname
-  set user (whoami)'@'(uname -n)
+  set curr_uname (uname -n)
+  set user (whoami)"@$curr_uname"
   # Current IP (10.0.1.3)
   set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1)
   # Current Dada-theme version, e.g. master-12-abcdef
   # Make sure we return to where we were.
   set dir (pwd)
   cd ~/.config/dada
-  set version (get_version)
+  set version_main (get_version_short)
+  set version_hash (get_version_hash)
+  set version "$version_main [$version_hash]"
   set last_commit (get_last_commit)
   set last_commit_rel (get_last_commit_rel)
   cd "$dir"
+  # Modify our user agent to contain the version string.
+  set -gx dada_ua "Dada Shell Theme/$version_main ($curr_uname)"
 
   set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
   set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
@@ -263,6 +273,12 @@ function get_version_short --description 'Returns version identifier string'
   set branch (git describe --all | sed s@heads/@@)
   set commits (git rev-list head --count)
   echo $branch-$commits
+end
+
+# Returns only the Git hash.
+function get_version_hash --description 'Returns version identifier string'
+  set hash (git rev-parse --short head)
+  echo $hash
 end
 
 # Last commit date in short format (YYYY-mm-dd).
