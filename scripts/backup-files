@@ -31,14 +31,14 @@ for n in (seq (count $src))
   end
 end
 
-echo (set_color cyan)"Backup script for "(set_color blue)"~/Files/"(set_color normal)
+echo (set_color cyan)"Backup script for "(set_color blue)"~/Files/ "(set_color cyan)"and"(set_color blue)" ~/Documents/"(set_color normal)
 echo (set_color yellow)"Last backup was "$last_backup"."(set_color normal)
 
 for n in (seq (count $src))
   set s $src[$n]
   set d $dst[$n]
   echo "backup-files: Syncing: "$s" -> "$d
-  rsync -ahvrESH8 --delete --progress --stats --exclude=".*/" --exclude=".*" $s $d
+  rsync -ahvrESH8 --delete --progress --stats --exclude="Music" --exclude=".*/" --exclude=".*" $s $d
 end
 
 set result (timer_end)
