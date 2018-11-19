@@ -26,6 +26,7 @@ alias jira="git-jira.fish"
 alias projects="view-projects.fish"
 alias updrepos="update-projects.fish"
 alias imgfloppy="image-floppy.fish"
+alias tasks="jira-list.js"
 
 function doc
   mdv $argv | less -r
