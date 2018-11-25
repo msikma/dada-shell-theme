@@ -103,6 +103,9 @@ const weightStatus = (status) => ({ to_do: 20, in_progress: 10, done: 30 }[statu
 /** Assigns an integer importance to a priority value. Lower is more important. */
 const weightPriority = (prio) => ({ highest: 10, high: 20, medium: 30, low: 40, lowest: 50 }[prio] || prio)
 
+/** Crops and pads a string to a specific length. */
+const crop = (str, len) => (str + ' '.repeat(len)).slice(0, len)
+
 /** Generates a simple sorting function that uses multiple keys. */
 const sortGen = keys => data => data.sort((a, b) => {
   for (key of keys) {
@@ -135,21 +138,30 @@ const main = () => {
   const rawData = getJiraData()
   if (!rawData) return
 
-  // Sorting function that takes several types of Jira data into account.
-  const sorter = sortGen(['statusWeight', 'priorityWeight', 'key'])
+  // Tasks will be listed by status, priority and key - but subtasks will always appear
+  // underneath their parent task. In order to do this, we'll split the issues list
+  // into regular tasks and subtasks, sort both, and then reintegrate them.
+  
+  // Sorting function that takes Jira data into account.
+  const jiraSorter = sortGen(['statusWeight', 'priorityWeight', 'key'])
 
-  const data = sorter(preprocessJiraData(rawData))
+  const regTasks = jiraSorter(preprocessJiraData(rawData.filter(t => t.type !== 'Sub-task')))
+  const subTasks = jiraSorter(preprocessJiraData(rawData.filter(t => t.type === 'Sub-task')))
+  const allTasks = regTasks.reduce((tasks, task) => {
+    const childTasks = subTasks.filter(t => t.parent === task.key)
+    return [...tasks, task, ...childTasks]
+  }, [])
 
   // List the largest items for each key, which we'll use as size for that column
   const largest = {
-    key: findLargest('key', data),
-    priority: findLargest('priority', data),
-    statusNice: findLargest('statusNice', data),
-    assignee: findLargest('assignee', data) // Currently unused.
+    key: findLargest('key', allTasks),
+    priority: findLargest('priority', allTasks),
+    statusNice: findLargest('statusNice', allTasks),
+    assignee: findLargest('assignee', allTasks) // Currently unused.
   }
 
   // Iterate over the data to print it line by line.
-  data.forEach(item => {
+  allTasks.forEach(item => {
     const isChild = item.parent
     const summaryLength = cols - 2 - 2 - largest.key - 2 - largest.statusNice - 2
     const priorityArrow = priorityIcon(item.priority) // priorityIcon(['highest', 'high', 'medium', 'low', 'lowest'][Math.round(Math.random() * 4)])
@@ -157,7 +169,7 @@ const main = () => {
 
     console.log([
       // Task icon
-      ' ',
+      isChild ? '   ' : ' ',
       taskItem,
       // Key, e.g. 'KMK-5'
       ' ',
@@ -165,9 +177,9 @@ const main = () => {
       ' '.repeat(largest.key - item.key.length + 1),
       // Priority icon
       priorityArrow,
-      // Summary (cropped to max. length)
+      // Summary (cropped/padded to max. length)
       ' ',
-      (item.summary + ' '.repeat(summaryLength)).slice(0, summaryLength),
+      crop(item.summary, isChild ? summaryLength - 2 : summaryLength),
       // Status
       ' ',
       item.statusNice,
