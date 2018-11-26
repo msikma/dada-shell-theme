@@ -156,6 +156,7 @@ function help
             $c4"rip-music <url>$c1 Rips music files from a URL"\
             $c4"rip-imgs <url>$c1  Rips image files from a URL"\
             $c4"tasks$c1           Displays Theorycraft Jira tasks"\
+            $c4"colortest$c1       Tests Terminal color settings"\
 
   draw_columns $lines
   echo
