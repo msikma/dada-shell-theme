@@ -118,18 +118,20 @@ function help
             $c0"cdbackup       $c1 Changes directory to backup dir"\
             $c3"backup         $c1 Displays backup commands and info"\
             $c0"color          $c1 Adds a colored icon to a folder"\
-            $c3"backup-music   $c1 Backs up music"\
+            $c3"backup-config  $c1 Backs up ~/.config/ dirs"\
             $c0"trash          $c1 Sends files to the OSX trash"\
-            $c3"backup-files   $c1 Backs up ~/Files"\
-            $c0"empty-trash    $c1 Empties the trash bin"\
-            $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
-            $c0"tldr <cmd>     $c1 Displays simple command help"\
-            $c3"backup-src     $c1 Backs up source code dirs"\
-            $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
             $c3"backup-dbs     $c1 Backs up MySQL databases"\
-            $c0"projects       $c1 Prints recently edited projects"\
+            $c0"empty-trash    $c1 Empties the trash bin"\
+            $c3"backup-files   $c1 Backs up ~/Files"\
+            $c0"tldr <cmd>     $c1 Displays simple command help"\
             $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
+            $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
+            $c3"backup-music   $c1 Backs up music"\
+            $c0"projects       $c1 Prints recently edited projects"\
+            $c3"backup-src     $c1 Backs up source code dirs"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
+            $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
+            $c0"newfish <file> $c1 Creates a new Fish script"\
             $c5"devices        $c1 Displays local computers"\
             $c0"keys           $c1 Lists installed SSH keys"\
             $c5"servers$c1         Displays a list of servers"\
@@ -141,7 +143,6 @@ function help
             $c4"imgfloppy      $c1 Copy floppy data to .img file"\
             $c0"updrepos       $c1 Updates all project repos"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
-            $c0"newfish <file>$c1  Creates a new Fish script"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
             $c4"weather$c1         Displays the current weather"\
