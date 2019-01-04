@@ -157,6 +157,7 @@ function help
             $c4"rip-music <url>$c1 Rips music files from a URL"\
             $c4"rip-imgs <url>$c1  Rips image files from a URL"\
             $c4"tasks$c1           Displays Theorycraft Jira tasks"\
+            $c4"colortest$c1       Tests Terminal color settings"\
 
   draw_columns $lines
   echo
@@ -195,6 +196,7 @@ function backup --description "Displays backup commands and info"
   set backup_ftp (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-ftp")
   set backup_zoo (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-zoo")
   set backup_config (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-config")
+  set backup_3ds (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-3ds")
 
   echo
   echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
@@ -212,7 +214,9 @@ function backup --description "Displays backup commands and info"
                $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
                $c2"FTP backup:     "$c0"$backup_ftp"\
                $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
-               $c2"Config backup:  "$c0"$backup_config"
+               $c2"Config backup:  "$c0"$backup_config"\
+               $c1"backup-3ds      "$c0"Backs up 3DS SD card"\
+               $c2"3DS SD backup:  "$c0"$backup_3ds"
 
   echo
 end

@@ -19,6 +19,7 @@ alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 alias ncdu="ncdu --color dark -q -r"
 alias code="code-insiders"
+alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
 
 # Dada scripts
 alias proj="node-project.js"
