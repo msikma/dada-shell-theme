@@ -1,0 +1,47 @@
+#!/usr/bin/env fish
+
+timer_start
+
+set err "backup-config: Error:"
+set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-config")
+set dstdir "/Volumes/Files/Games/3DS backups"
+set svsdir "/Volumes/Files/Games/3DS save files"
+
+# Check whether the 3DS SD card is mounted.
+set bootfile (find "/Volumes" -maxdepth 2 -type f -name "boot.3dsx")
+if set -q $bootfile
+  echo "$err Could not find 3DS SD card"
+  exit
+end
+# Determine the base dir for backing up 3DS files.
+set dir (dirname $bootfile)
+if not test -e $dir"/3ds_id.txt"
+  echo "$err Could not find 3DS identity string: "$dir"/3ds_id.txt"
+  exit
+end
+set idstr (string trim -- (cat $dir"/3ds_id.txt"))
+set dst "$dstdir/$idstr"
+
+echo
+echo (set_color cyan)"Backing up 3DS SD card: "(set_color yellow)$idstr(set_color normal)
+echo (set_color green)"Last backup was "$last_backup"."(set_color normal)
+echo (set_color green)"Backing up to: "(set_color yellow)"$dst"(set_color normal)
+echo
+mkdir -p "$dst"
+
+# Copy over everything.
+rsync -ahvrESH8 --delete --progress --stats --exclude=".*/" --exclude=".*" $dir $dst
+
+# Now *separately* copy over the save files as well.
+mkdir -p $svsdir"/saves"
+mkdir -p $svsdir"/extdata"
+rsync -ahvrESH8 --progress --stats --exclude=".*/" --exclude=".*" $dir"/3ds/Checkpoint/saves/" $svsdir"/saves"
+rsync -ahvrESH8 --progress --stats --exclude=".*/" --exclude=".*" $dir"/3ds/Checkpoint/extdata/" $svsdir"/extdata"
+
+set result (timer_end)
+echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo
+
+# Save last backup timestamp.
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-3ds
