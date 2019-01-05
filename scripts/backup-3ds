@@ -4,8 +4,8 @@ timer_start
 
 set err "backup-config: Error:"
 set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-config")
-set dstdir "/Volumes/Files/Games/3DS backups"
-set svsdir "/Volumes/Files/Games/3DS save files"
+set dstdir "/Volumes/Files/Backups/Nintendo 3DS backups"
+set svsdir "/Volumes/Files/Backups/Nintendo 3DS save files"
 
 # Check whether the 3DS SD card is mounted.
 set bootfile (find "/Volumes" -maxdepth 2 -type f -name "boot.3dsx")
