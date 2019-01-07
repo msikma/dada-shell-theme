@@ -15,7 +15,7 @@ Make sure to install:
 * This repository (in `~/.config/dada`)
 * [misc-bin](https://bitbucket.org/msikma/misc-bin)
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
-* `npm install --global trash-cli empty-trash-cli fileicon ascr`
+* `npm install --global trash-cli empty-trash-cli fileicon ascr cheerio request feedparser-promised`
 * `pip3 install glances mdv`
 * `brew install exa tldr git-extras youtube-dl bat fd ncdu coreutils`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
