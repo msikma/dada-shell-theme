@@ -7,10 +7,17 @@ WORK_DIR=`mktemp -d`
 
 err="backup-src: Error:"
 
+RED="\E[31m$3"
+YELLOW="\E[33m$3"
+CYAN="\E[36m$3"
+GREEN="\E[32m$3"
+NORMAL="\E[0m$3"
+
 function cleanup {
   rm -rf "$WORK_DIR"
   cd "$DIR"
   echo "Deleted temp working directory: $WORK_DIR"
+  echo
 }
 
 # Ensure we always clean up.
@@ -42,10 +49,16 @@ if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
 fi
 
 # Now run the backup script.
+echo
+echo -e $GREEN"Projects backup script running on "$RED$hostname$NORMAL
+echo
 for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
   src="${SRC_DIRS[a]}"
   dest="${DEST_DIRS[a]}"
-  echo "Backing up directory ($((a+1))/${#SRC_DIRS[@]}): $src"
+  dest_c=$YELLOW$(echo -e ${dest//$hostname/$RED$hostname$YELLOW})
+  echo -e $CYAN"Backing up directory ($((a+1))/${#SRC_DIRS[@]}): $GREEN$src$NORMAL"
+  echo -e $YELLOW"Copying to: "$dest_c$NORMAL
+
   for b in "$src/"*; do
     base="${b##*/}"
     zipf="$base.zip"

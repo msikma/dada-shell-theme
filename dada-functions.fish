@@ -101,11 +101,20 @@ function help
   set c4 (set_color yellow)  # External applications
   set c5 (set_color green)   # Commands that show external servers
   set c6 (set_color cyan)    # Shell theme management commands
-
   echo
   set_color normal
   echo "The following commands are available:"
   echo
+  # Correct order of the backup commands:
+  # backup-3ds
+  # backup-config
+  # backup-dbs
+  # backup-files
+  # backup-ftp
+  # backup-games
+  # backup-music
+  # backup-src
+  # backup-zoo
 
   set lines $c0"sphp           $c1 Changes PHP version"\
             $c2"g              $c1 Git status"\
@@ -118,30 +127,32 @@ function help
             $c0"cdbackup       $c1 Changes directory to backup dir"\
             $c3"backup         $c1 Displays backup commands and info"\
             $c0"color          $c1 Adds a colored icon to a folder"\
-            $c3"backup-config  $c1 Backs up ~/.config/ dirs"\
+            $c3"backup-3ds     $c1 Backs up 3DS SD card if connected"\
             $c0"trash          $c1 Sends files to the OSX trash"\
-            $c3"backup-dbs     $c1 Backs up MySQL databases"\
+            $c3"backup-config  $c1 Backs up ~/.config/ dirs"\
             $c0"empty-trash    $c1 Empties the trash bin"\
-            $c3"backup-files   $c1 Backs up ~/Files"\
+            $c3"backup-dbs     $c1 Backs up MySQL databases"\
             $c0"tldr <cmd>     $c1 Displays simple command help"\
-            $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
+            $c3"backup-files   $c1 Backs up ~/Files"\
             $c0"crc32u <file>  $c1 Prints CRC32 hash of file"\
-            $c3"backup-music   $c1 Backs up music"\
+            $c3"backup-ftp     $c1 Backs up Cyberduck bookmarks"\
             $c0"projects       $c1 Prints recently edited projects"\
-            $c3"backup-src     $c1 Backs up source code dirs"\
+            $c3"backup-games   $c1 Backs up game content"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
-            $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
+            $c3"backup-music   $c1 Backs up music"\
             $c0"newfish <file> $c1 Creates a new Fish script"\
-            $c5"devices        $c1 Displays local computers"\
+            $c3"backup-src     $c1 Backs up source code dirs"\
             $c0"keys           $c1 Lists installed SSH keys"\
-            $c5"servers$c1         Displays a list of servers"\
+            $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
             $c0"proj           $c1 Displays current project info"\
-            $c6"update         $c1 Updates Dada shell theme and bins"\
+            $c5"devices        $c1 Displays local computers"\
             $c0"jira           $c1 Lists Jira issue branches in repo"\
-            $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
+            $c5"servers$c1         Displays a list of servers"\
             $c0"code <dir>$c1      Opens directory in VS Code"\
-            $c4"imgfloppy      $c1 Copy floppy data to .img file"\
+            $c6"update         $c1 Updates Dada shell theme and bins"\
             $c0"updrepos       $c1 Updates all project repos"\
+            $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
+            $c4"imgfloppy      $c1 Copy floppy data to .img file"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
@@ -189,34 +200,37 @@ function backup --description "Displays backup commands and info"
   set c3 (set_color green)   # User info
 
   # Get a string of when the backup was done
-  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
-  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
-  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
-  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
-  set backup_ftp (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-ftp")
-  set backup_zoo (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-zoo")
-  set backup_config (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-config")
   set backup_3ds (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-3ds")
+  set backup_config (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-config")
+  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
+  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
+  set backup_ftp (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-ftp")
+  set backup_games (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-games")
+  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
+  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
+  set backup_zoo (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-zoo")
 
   echo
   echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
   echo
-  draw_columns $c1"backup-dbs      "$c0"Backs up SQL databases"\
+  draw_columns $c1"backup-3ds      "$c0"Backs up 3DS SD card"\
+               $c2"3DS SD backup:  "$c0"$backup_3ds"\
+               $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
+               $c2"Config backup:  "$c0"$backup_config"\
+               $c1"backup-dbs      "$c0"Backs up SQL databases"\
                $c2"MySQL backup:   "$c0"$backup_dbs"\
+               $c1"backup-files    "$c0"Backs up various other things"\
+               $c2"Files backup:   "$c0"$backup_files"\
+               $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
+               $c2"FTP backup:     "$c0"$backup_ftp"\
+               $c1"backup-games    "$c0"Backs up game content"\
+               $c2"Games backup:   "$c0"$backup_games"\
                $c1"backup-music    "$c0"Backs up music"\
                $c2"Music backup:   "$c0"$backup_music"\
                $c1"backup-src      "$c0"Backs up source code directories"\
                $c2"Source backup:  "$c0"$backup_src"\
-               $c1"backup-files    "$c0"Backs up various other things"\
-               $c2"Files backup:   "$c0"$backup_files"\
                $c1"backup-zoo      "$c0"Backs up music to the Happy Zoo"\
                $c2"Zoo backup:     "$c0"$backup_zoo"\
-               $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
-               $c2"FTP backup:     "$c0"$backup_ftp"\
-               $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
-               $c2"Config backup:  "$c0"$backup_config"\
-               $c1"backup-3ds      "$c0"Backs up 3DS SD card"\
-               $c2"3DS SD backup:  "$c0"$backup_3ds"
 
   echo
 end

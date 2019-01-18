@@ -38,7 +38,11 @@ for n in (seq (count $src))
   set s $src[$n]
   set d $dst[$n]
   echo "backup-files: Syncing: "$s" -> "$d
-  rsync -ahvrESH8 --delete --progress --stats --exclude="Music" --exclude=".*/" --exclude=".*" $s $d
+
+  # Note: excluding the following:
+  # - OpenTTD, Games (use the backup-games script)
+  # - Music (use the backup-music script)
+  rsync -ahvrESH8 --delete --progress --stats --exclude="Music" --exclude="Games" --exclude="OpenTTD" --exclude=".*/" --exclude=".*" $s $d
 end
 
 set result (timer_end)
