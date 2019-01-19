@@ -140,7 +140,7 @@ function help
             $c3"backup-games   $c1 Backs up game content"\
             $c0"fdupes         $c1 Finds duplicate files by hash"\
             $c3"backup-music   $c1 Backs up music"\
-            $c0"newfish <file> $c1 Creates a new Fish script"\
+            $c0"ftypes         $c1 Lists files grouped by filetype"\
             $c3"backup-src     $c1 Backs up source code dirs"\
             $c0"keys           $c1 Lists installed SSH keys"\
             $c3"backup-zoo     $c1 Copies some music to Happy Zoo"\
@@ -152,6 +152,7 @@ function help
             $c6"update         $c1 Updates Dada shell theme and bins"\
             $c0"updrepos       $c1 Updates all project repos"\
             $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
+            $c0"newfish <file> $c1 Creates a new Fish script"\
             $c4"imgfloppy      $c1 Copy floppy data to .img file"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
