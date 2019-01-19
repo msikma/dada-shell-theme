@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 const fs = require('fs')
+const request = require('request')
 const cheerio = require('cheerio')
 const feedparser = require('feedparser-promised')
 const exiftool = require('node-exiftool')
 const exiftoolBin = require('dist-exiftool')
+const sanitize = require('sanitize-filename')
 
 // Path to where we'll store the images, without trailing slash.
 // If this doesn't exist we'll silently fail.
@@ -54,12 +56,34 @@ const thumbToFullURL = thumbURL => {
   return String(parsed);
 }
 
+// Downloads a file from a URL and saves it as a local file.
+// Calls the given callback when done.
+const downloadFile = (url, dest, cb) => {
+  const file = fs.createWriteStream(dest)
+  const sendReq = request.get(encodeURI(url))
+  sendReq.on('response', (response) => {
+    if (response.statusCode !== 200) {
+      return cb('Response status was ' + response.statusCode)
+    }
+    sendReq.pipe(file)
+  })
+  sendReq.on('error', (err) => {
+    fs.unlinkSync(dest)
+    return cb(err.message)
+  })
+  file.on('finish', () => file.close(cb))
+  file.on('error', (err) => {
+    fs.unlinkSync(dest)
+    return cb(err.message)
+  })
+}
+
 // Checks whether the save path exists, and whether we're able to write to it.
-const canSaveToPath = () => {
-  const dirExists = fs.existsSync(imgPath)
+const canSaveToPath = (path) => {
+  const dirExists = fs.existsSync(path)
   if (!dirExists) process.exit(1)
   try {
-    fs.accessSync(imgPath, fs.constants.W_OK)
+    fs.accessSync(path, fs.constants.W_OK)
   }
   catch (err) {
     process.exit(1)
@@ -67,7 +91,7 @@ const canSaveToPath = () => {
 }
 
 // Check if we are able to save.
-canSaveToPath()
+canSaveToPath(imgPath)
 
 feedparser.parse(atomURL)
   .then(items => items.some(item => {
@@ -75,35 +99,38 @@ feedparser.parse(atomURL)
     if (itemDate !== today) return false
 
     const $ = cheerio.load(item.description)
-    const img = thumbToFullURL(decodeURIComponent($('img').attr('src')))
-    const imgFn = `${today}_${img.split('/').slice(-1)}`
-    const desc = $('div[lang=en].description').text()
+    const imgRaw = $('img').attr('src')
+    const img = decodeURI(thumbToFullURL(imgRaw))
+    const imgFn = sanitize(`${today}_${img.split('/').slice(-1)}`)
+    const desc = $('div[lang=en].description').text().trim()
     const hrDay = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(item.pubDate)
+    const imgFnPath = `${imgPath}/${imgFn}`
+
+    // Check if file has already been downloaded before.
+    if (fs.existsSync(imgFnPath)) {
+      process.exit(0)
+    }
 
     console.log()
     console.log(`${color.fgYellow}Wikimedia Commons picture of the day for ${color.fgGreen}${hrDay}${color.reset}`)
     console.log()
 
-    console.log(`${color.fgMagenta}Image: ${color.fgCyan}${img}`)
-    console.log(`${color.fgMagenta}Desc.: ${color.fgBlue}${desc}${color.reset}`)
-    console.log(`${color.fgMagenta}   Fn: ${color.fgGreen}${imgFn}${color.reset}`)
+    console.log(`${color.fgMagenta}Remote image: ${color.fgCyan}${img}`)
+    console.log(`${color.fgMagenta}   Saving as: ${color.fgCyan}${imgFn}${color.reset}`)
+    console.log(`${color.fgMagenta} Description: ${color.fgBlue}${desc}${color.reset}`)
+    console.log()
 
-    // Attach the description as Exif comment.
-    ep.open().then(() => ep.writeMetadata('test.jpg', {
-      all: '',
-      comment: 'Exiftool rules!'
-    }, ['overwrite_original']))
-    .then(console.log, console.error)
-    .then(() => ep.close())
-    .catch(console.error);
-
-    ep
-      .open()
-      // include only some tags
-      .then(() => ep.readMetadata('test.jpg', ['comment', 'CreatorWorkURL', 'Orientation']))
-      .then(console.log, console.error)
+    downloadFile(img, imgFnPath, () => {
+      // Write the description as metadata.
+      ep.open().then(() => ep.writeMetadata(imgFnPath, {
+        all: '',
+        comment: desc
+      }, ['overwrite_original', 'codedcharacterset=utf8']))
+      .then(() => console.log('Added description as EXIF tag.'), (res) => console.error(res))
       .then(() => ep.close())
-      .catch(console.error)
+      .catch((res) => console.error(res))
 
+      console.log('File saved.')
+    })
   }))
   .catch(err => console.error(`wiki-potd.js: error: ${err.toString()}`));
