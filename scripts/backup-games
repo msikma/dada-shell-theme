@@ -44,5 +44,5 @@ echo (set_color cyan)"Done in $result ms."(set_color normal)
 echo
 
 # Save last backup timestamp.
-#mkdir -p ~/.cache/dada
-#echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-ottd
+mkdir -p ~/.cache/dada
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-games
