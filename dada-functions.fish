@@ -24,6 +24,12 @@ function weather --description "Queries wttr.in for the weather"
 		ghead -n -2
 end
 
+function jv --description "Quick display of JSON files"
+  set -x jv_json_file (pwd)/$argv[1]
+  node -e "console.log(JSON.parse(require('fs').readFileSync(process.env.jv_json_file, 'utf8')));"
+  set -e jv_json_file
+end
+
 # I forgot what this is
 function drewdrew
   for x in (seq 500)
@@ -154,6 +160,7 @@ function help
             $c6"dada-cron      $c1 Runs the theme's hourly cron script"\
             $c0"newfish <file> $c1 Creates a new Fish script"\
             $c4"imgfloppy      $c1 Copy floppy data to .img file"\
+            $c0"jv <file> $c1      Displays JSON file content"\
             $c4"youtube-dl$c1      Downloads videos from Youtube"\
             $c4"streamlink$c1      Opens internet streams in VLC"\
             $c4"ascr$c1            Downloads art from social media"\
