@@ -18,7 +18,14 @@ alias wget="wget --no-check-certificate"
 alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 alias ncdu="ncdu --color dark -q -r"
-alias code="code-insiders"
+#alias code="if test -d code-insiders"
+function code
+  if not test -d "$argv"
+    echo "code: Error: can't find ""$argv"
+    return 1
+  end
+  code-insiders $argv
+end
 alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
 
 # Dada scripts
