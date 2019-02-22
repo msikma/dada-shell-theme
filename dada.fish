@@ -82,3 +82,4 @@ set -gx MSIKMA_USE_SRC 1
 
 # For compiling DOSBox
 set -gx DOSBOX_SRC_DIR "/Users/msikma/Source/dosbox-code-0"
+set -gx DOSBOX_APP_DIR "/Users/msikma/Files/Games/DOSBox"
