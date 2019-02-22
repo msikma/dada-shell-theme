@@ -28,7 +28,7 @@ echo
 
 for n in (ls $src/*)
   # Filename in $n, set $nn to the plain name of the bookmark.
-  set nn (awk '/Nickname/,/string/' $n | grep -io "<string>.*</string>" | cut -d '>' -f2 | cut -d '<' -f1)
+  set nn (awk '/Nickname/,/string/' $n | grep -io "<string>.*</string>" | cut -d '>' -f2 | cut -d '<' -f1 | sed 's/\//-/g')
   echo "Backing up: $c1$nn$c2 ("(basename $n)")"
   cp $n $dst"/"$nn".duck"
 end
