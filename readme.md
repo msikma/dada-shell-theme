@@ -22,6 +22,8 @@ Make sure to install:
 * VS Code: `code-insiders` command - ⇧⌘P and search for 'install'
 * [vgmpfdl](https://github.com/msikma/vgmpfdl)
 
+`ps2pdf` should be installed by default, but just in case it isn't it can be found [here](https://www.ghostscript.com/doc/current/Ps2pdf.htm).
+
 Other utilities (unlisted):
 
 * [MultiPatch](http://www.romhacking.net/utilities/746/)
