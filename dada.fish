@@ -79,3 +79,7 @@ set -x CPPFLAGS -I/usr/local/opt/qt5/include
 set -gx WEB_SCRAPERS_USE_SRC 1
 set -gx MSIKMA_WEB_SCRAPERS_SRC 1
 set -gx MSIKMA_USE_SRC 1
+
+# For compiling DOSBox
+set -gx DOSBOX_SRC_DIR "/Users/msikma/Source/dosbox-code-0"
+set -gx DOSBOX_APP_DIR "/Users/msikma/Files/Games/DOSBox"
