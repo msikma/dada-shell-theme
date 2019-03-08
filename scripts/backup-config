@@ -61,6 +61,7 @@ echo
 
 # Copy over everything. No deleting; merge everything together.
 for sshfile in (ls $srcssh)
+  cp $srcssh$sshfile $dstssh
   echo (set_color green)"Backed up: "(set_color blue)"$sshfile"(set_color normal)
 end
 
