@@ -177,7 +177,7 @@ function help
             $c4"rip-imgs <url>$c1  Rips image files from a URL"\
             $c4"tasks$c1           Displays Theorycraft Jira tasks"\
             $c4"colortest$c1       Tests Terminal color settings"\
-            $c4"ps2pdf$c1          Convert PS to PDF; ps2pdf *.prn"\
+            $c4"ps2pdf <file>$c1   Convert PS to PDF; ps2pdf *.prn"\
 
   draw_columns $lines
   echo
