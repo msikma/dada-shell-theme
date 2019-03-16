@@ -178,6 +178,7 @@ function help
             $c4"tasks$c1           Displays Theorycraft Jira tasks"\
             $c4"colortest$c1       Tests Terminal color settings"\
             $c4"ps2pdf <file>$c1   Convert PS to PDF; ps2pdf *.prn"\
+            $c4"setssh$c1          Turns remote SSH access on/off"\
 
   draw_columns $lines
   echo
