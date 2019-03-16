@@ -6,10 +6,10 @@ switch $o
 case "on" "off"
   sudo systemsetup -f -setremotelogin $o
   sudo systemsetup -getremotelogin
-case check
+case "check"
   sudo systemsetup -getremotelogin
   exit 0
-case '*'
+case "*"
   echo 'usage: setssh {on,off,check}'
   exit 1
 end
