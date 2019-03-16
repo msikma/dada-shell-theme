@@ -10,6 +10,16 @@ set dstdir "/Volumes/Files/Backups/Game data/Nintendo 3DS backups"
 set svsdir "/Volumes/Files/Backups/Game data/Nintendo 3DS save files"
 set picdir "/Volumes/Files/Backups/Game data/Nintendo 3DS pictures"
 
+set needdirs $pwsdir $dstdir $svsdir $picdir
+
+for n in (seq (count $needdirs))
+  set s $needdirs[$n]
+  if not test -d $s
+    echo "$err Can't access target directory: "$s
+    exit 1
+  end
+end
+
 # Check whether the 3DS SD card is mounted.
 set bootfile (find "/Volumes" -maxdepth 2 -type f -name "boot.3dsx")
 if set -q $bootfile
