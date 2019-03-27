@@ -179,9 +179,22 @@ function help
             $c4"colortest$c1       Tests Terminal color settings"\
             $c4"ps2pdf <file>$c1   Convert PS to PDF; ps2pdf *.prn"\
             $c4"setssh$c1          Turns remote SSH access on/off"\
+            $c4"eatsql$c1          Shortcut to import SQL dumps"\
 
   draw_columns $lines
   echo
+end
+
+function filesize_bytes --description "Prints the size of a file in bytes"
+  stat -f%z $argv[1]
+end
+
+function filesize --description "Prints a human readable filesize"
+  ls -la $argv[1] | cut -f2 -d' '
+end
+
+function filelines --description "Returns number of lines in a file as an integer"
+  wc -l < $argv[1] | tr -d '[:space:]'
 end
 
 function in_git_dir --description "Returns whether we're inside of a Git project"
