@@ -41,6 +41,14 @@ function drewdrew
   end
 end
 
+function urlredirs --description "Displays URL redirects"
+  if not count $argv > /dev/null
+    echo 'usage: urlredirs "http://example.com/"'
+    return
+  end
+  wget $argv[1] 2>&1 | grep 'Location:'
+end
+
 # Makes a new Fish script. Invoke like: 'newfish file.fish'.
 function newfish --description "Makes a new Fish script"
   echo "#!/usr/bin/env fish"\n > $argv[1]; chmod +x $argv[1];
@@ -180,6 +188,7 @@ function help
             $c4"ps2pdf <file>$c1   Convert PS to PDF; ps2pdf *.prn"\
             $c4"setssh$c1          Turns remote SSH access on/off"\
             $c4"eatsql$c1          Shortcut to import SQL dumps"\
+            $c4"urlredirs <url>$c1 Displays what redirects a URL has"\
 
   draw_columns $lines
   echo
