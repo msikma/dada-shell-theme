@@ -213,12 +213,12 @@ end
 function cdbackup
   if not set -q hostname
     echo "$err \$hostname is not set"
-    exit 1
+    return
   end
   set bdir "/Volumes/Files/Backups/"$hostname
   if not test -d $bdir
     echo "Error: Can't access backup directory: $bdir"
-    exit 1
+    return
   end
   echo $bdir
   cd $bdir
