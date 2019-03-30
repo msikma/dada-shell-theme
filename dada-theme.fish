@@ -98,21 +98,6 @@ function backup_time_str --description 'Prints the time a backup was last perfor
   end
 end
 
-# Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
-function backup_time_rel --description 'Prints the time a backup was last performed, relative only'
-  set bfile $argv[1]
-  set now (date +%s)
-  if test -e $bfile
-    set bu (cat $bfile)
-    set bu_unix (backup_date_unix $bu)
-    set bu_rel (time_ago $now $bu_unix)
-    set bu_diff (math "$now - $bu_unix")
-    echo "$bu_rel"
-  else
-    echo '(unknown)'
-  end
-end
-
 # Prints a greeting message when logging in.
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.

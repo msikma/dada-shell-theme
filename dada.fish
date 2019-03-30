@@ -14,6 +14,8 @@ source ~/.config/dada/functions/mysql.fish
 source ~/.config/dada/dada-aliases.fish
 source ~/.config/dada/dada-cron.fish
 
+set home "/Users/"(whoami)
+
 # Node path so we can import global packages. Be careful!
 set -gx NODE_PATH /usr/local/lib/node_modules $NODE_PATH
 
