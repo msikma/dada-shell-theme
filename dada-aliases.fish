@@ -28,13 +28,30 @@ function code
 end
 alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
 
-# Dada scripts
-alias proj="node-project.js"
+# Bin
+alias encflac="enc-flac.bash"
 alias jira="git-jira.fish"
+alias proj="node-project.js"
 alias projects="view-projects.fish"
 alias updrepos="update-projects.fish"
 alias imgfloppy="image-floppy.fish"
 alias tasks="jira-list.js"
+alias wikipotd="wiki-potd.js"
+
+# Scripts
+alias backup-3ds="backup-3ds.fish"
+alias backup-config="backup-config.fish"
+alias backup-dbs="backup-dbs.fish"
+alias backup-files="backup-files.fish"
+alias backup-ftp="backup-ftp.fish"
+alias backup-games="backup-games.fish"
+alias backup-music="backup-music.fish"
+alias backup-src="backup-src.bash"
+alias backup-zoo="backup-zoo.fish"
+alias color="color.fish"
+alias crc32u="crc32u.bash"
+alias ftypes="ftypes.fish"
+alias setssh="setssh.fish"
 
 function doc
   mdv $argv | less -r
