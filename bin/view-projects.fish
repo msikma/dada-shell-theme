@@ -44,7 +44,7 @@ for proj in $projs
   if test -e $pkgfile
     set pkgdesc (cat $pkgfile | grep "description\":" | awk '{ $1 = ""; gsub("^ *\"|\" *,?$", ""); print $0 }')
   else
-    set pkgdesc 0
+    set pkgdesc '(no description)'
   end
   cd $proj
   set commits (__get_commits)
