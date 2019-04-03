@@ -21,6 +21,7 @@ Make sure to install:
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
 * VS Code: `code-insiders` command - ⇧⌘P and search for 'install'
 * [vgmpfdl](https://github.com/msikma/vgmpfdl)
+* [bfg](https://rtyley.github.io/bfg-repo-cleaner/)
 
 `ps2pdf` should be installed by default, but just in case it isn't it can be found [here](https://www.ghostscript.com/doc/current/Ps2pdf.htm).
 

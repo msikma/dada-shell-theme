@@ -18,6 +18,7 @@ alias wget="wget --no-check-certificate"
 alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 alias ncdu="ncdu --color dark -q -r"
+alias bfg="java -jar ~/.bin/bfg.jar"
 #alias code="if test -d code-insiders"
 function code
   if not test -d "$argv"
