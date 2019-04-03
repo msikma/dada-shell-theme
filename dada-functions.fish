@@ -188,6 +188,7 @@ function help
             $c4"ps2pdf <file>$c1   Convert PS to PDF; ps2pdf *.prn"\
             $c4"setssh$c1          Turns remote SSH access on/off"\
             $c4"cutvid$c1          Handles common video editing tasks"\
+            $c4"serverinfo$c1      Displays local Apache server info"\
             $c4"eatsql$c1          Shortcut to import SQL dumps"\
             $c4"urlredirs <url>$c1 Displays what redirects a URL has"\
 
