@@ -53,6 +53,7 @@ alias color="color.fish"
 alias crc32u="crc32u.bash"
 alias ftypes="ftypes.fish"
 alias setssh="setssh.fish"
+alias serverinfo="serverinfo.fish"
 
 function doc
   mdv $argv | less -r
