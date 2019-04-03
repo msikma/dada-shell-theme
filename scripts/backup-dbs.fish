@@ -28,7 +28,7 @@ if test -f $mampsql
   set dumpcmd "/Applications/MAMP/Library/bin/mysqldump"
 else
   set user "root"
-  set pass "***REMOVED***"
+  set pass "root"
   set sqlcmd "mysql"
   set dumpcmd "mysqldump"
 end
