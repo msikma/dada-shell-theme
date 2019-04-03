@@ -12,10 +12,12 @@ end
 
 set src \
 ~/"Files/" \
+~/"Desktop/" \
 ~/"Documents/"
 
 set dst \
 "/Volumes/Files/Backups/$hostname/Files" \
+"/Volumes/Files/Backups/$hostname/Desktop" \
 "/Volumes/Files/Backups/$hostname/Documents"
 
 for n in (seq (count $src))
