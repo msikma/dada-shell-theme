@@ -37,6 +37,7 @@ alias updrepos="update-projects.fish"
 alias imgfloppy="image-floppy.fish"
 alias tasks="jira-list.js"
 alias wikipotd="wiki-potd.js"
+alias cutvid="cutvid.py"
 
 # Scripts
 alias backup-3ds="backup-3ds.fish"
