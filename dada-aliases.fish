@@ -10,24 +10,19 @@ alias youtube-mp3="youtube-dl -x --add-metadata --audio-format mp3"
 alias youtube-audio="youtube-dl --audio-format best -x"
 alias chrome="open -a Google\ Chrome\ Canary"
 alias vlc="/Applications/VLC.app/Contents/MacOS/VLC"
-alias ls="exa"
-alias l='exa -la --git -I Icon\r"|.DS_Store"'
-alias ll='exa -lah --git'
-alias tree="exa -Tla --git-ignore -I .git"
 alias wget="wget --no-check-certificate"
-alias latest="ls -1t | head -5"
 alias wifireset="networksetup -setairportpower en0 off & networksetup -setairportpower en0 on"
 alias ncdu="ncdu --color dark -q -r"
 alias bfg="java -jar ~/.bin/bfg.jar"
-#alias code="if test -d code-insiders"
-function code
-  if not test -d "$argv"
-    echo "code: Error: can't find ""$argv"
-    return 1
-  end
-  code-insiders $argv
-end
 alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
+
+# ls replacement exa
+alias ls="exa"
+alias l='exa -la --git -I Icon\r"|.DS_Store"' # remove pesky .DS_Store and Icon
+alias ll='exa -lah --git' # like l but with all files, with header
+alias le='exa -lah@ --git' # like le but with extended attributes
+alias tree="exa -Tla --git-ignore -I .git" # displays a tree (ignoring .git dirs)
+alias latest="ls -lah --git -s old --color=always | head -11" # shows 10 latest modifications
 
 # Bin
 alias encflac="enc-flac.bash"

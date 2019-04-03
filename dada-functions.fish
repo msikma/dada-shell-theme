@@ -30,6 +30,16 @@ function jv --description "Quick display of JSON files"
   set -e jv_json_file
 end
 
+# Opens 'code' or 'code-insiders' if that's the one we use on this machine.
+# Use like e.g.: code . # opens current dir in code
+function code
+  if not test -d "$argv"
+    echo "code: Error: can't find ""$argv"
+    return 1
+  end
+  code-insiders $argv
+end
+
 # I forgot what this is
 function drewdrew
   for x in (seq 500)
