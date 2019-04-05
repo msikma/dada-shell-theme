@@ -15,6 +15,7 @@ alias wifireset="networksetup -setairportpower en0 off & networksetup -setairpor
 alias ncdu="ncdu --color dark -q -r"
 alias bfg="java -jar ~/.bin/bfg.jar"
 alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
+alias md="open -a MacDown"
 
 # ls replacement exa
 alias ls="exa"

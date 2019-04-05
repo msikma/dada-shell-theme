@@ -201,6 +201,7 @@ function help
             $c4"serverinfo$c1      Displays local Apache server info"\
             $c4"eatsql$c1          Shortcut to import SQL dumps"\
             $c4"urlredirs <url>$c1 Displays what redirects a URL has"\
+            $c4"md <file>$c1       Opens a file in MacDown"\
 
   draw_columns $lines
   echo
