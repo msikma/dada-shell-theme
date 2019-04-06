@@ -29,6 +29,7 @@ end
 
 # Determine the base dir for backing up 3DS files.
 # Note: the white 3DS: "NTSC-J Animal Crossing New Leaf 3DS LL"
+# Note: the new 3DS HHA: "PAL-E Animal Crossing HHA N3DS XL"
 set dir (dirname $bootfile)
 if not test -e $dir"/3ds_id.txt"
   echo "$err Could not find 3DS identity string: "$dir"/3ds_id.txt"
