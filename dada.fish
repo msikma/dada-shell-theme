@@ -10,7 +10,6 @@ source ~/.config/dada/dada-git.fish
 source ~/.config/dada/secrets/keys.fish
 # Functions and aliases
 source ~/.config/dada/dada-functions.fish
-source ~/.config/dada/functions/mysql.fish
 source ~/.config/dada/dada-aliases.fish
 source ~/.config/dada/dada-cron.fish
 

@@ -1,5 +1,7 @@
-# Imports anything we split off into separate files.
-source $DADA"/functions/"*.fish
+source "functions/backup.fish"
+source "functions/help.fish"
+source "functions/mysql.fish"
+source "functions/rip-files.fish"
 
 set a_secs
 set a_ms
