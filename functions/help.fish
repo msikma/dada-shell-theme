@@ -22,8 +22,8 @@ set cmd_regular \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
-  "scrapemp3s <url>"  "Scrapes MP3 files from a URL" \
-  "streamlink <url>"  "Opens internet streams in VLC" \
+  "scrapemp3s"        "Scrapes MP3 files from a URL" \
+  "streamlink"        "Opens internet streams in VLC" \
   "empty-trash"       "Empties the trash bin" \
   "weather"           "Displays the current weather" \
   "glances"           "Computer monitoring tool" \
@@ -68,37 +68,56 @@ set cmd_dada \
   "update"            "Updates Dada shell theme and bins" \
   "dada-cron"         "Runs the theme hourly cron script" \
 
-function ttestt
-  print_cmd_lines (set_color blue) $cmd_regular
-  print_cmd_lines (set_color yellow) $cmd_scripts
-  print_cmd_lines (set_color green) $cmd_project
-  print_cmd_lines (set_color purple) $cmd_git
-  print_cmd_lines (set_color red) $cmd_backup
-  print_cmd_lines (set_color cyan) $cmd_network
-  print_cmd_lines (set_color brblack) $cmd_dada
+function help
+  set neutral (set_color normal)
+
+  # Merge all various command lists together and add colors.
+  set _cmd_all
+  set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_regular)
+  set -a _cmd_all (_add_cmd_colors (set_color yellow) $cmd_scripts)
+  set -a _cmd_all (_add_cmd_colors (set_color purple) $cmd_git)
+  set -a _cmd_all (_add_cmd_colors (set_color red) $cmd_backup)
+  set -a _cmd_all (_add_cmd_colors (set_color green) $cmd_project)
+  set -a _cmd_all (_add_cmd_colors (set_color cyan) $cmd_network)
+  set -a _cmd_all (_add_cmd_colors (set_color brblack) $cmd_dada)
+
+  echo
+  echo "The following commands are available:"
+  echo
+  
+  # Iterate through our merged list and print the command name and description.
+  set m 0
+  set total (math 4 + (count $_cmd_all))
+  set half (math "(floor($total / 8) * 4)")
+  for n in (seq 1 4 (math $half))
+    set m (math $m + 1)
+
+    set l_color $_cmd_all[$n]
+    set l_cmd_n $_cmd_all[(math $n + 1)]
+    set l_cmd_d $_cmd_all[(math $n + 3)]
+
+    set r_color $_cmd_all[(math $n + $half)]
+    set r_cmd_n $_cmd_all[(math $n + $half + 1)]
+    set r_cmd_d $_cmd_all[(math $n + $half + 3)]
+    
+    printf "%s%-16s%s%-34s%s%-16s%s%-34s\\n" $l_color $l_cmd_n $neutral $l_cmd_d $r_color $r_cmd_n $neutral $r_cmd_d
+  end
+  
+  echo
 end
 
-function print_cmd_lines \
-  --description "Iterates through a list of commands and prints the items as columns"
-  set items (math (count $argv[2..-1]) / 2)
-  set normal (set_color normal)
+# Injects colors into a list of commands
+function _add_cmd_colors
   set color $argv[1]
+  set neutral (set_color normal)
 
-  for n in (seq $items)
-    set offset (math $n \* 2 - 1)
-    set name $color$argv[(math $offset + 1)]
-    set desc $normal$argv[(math $offset + 2)]
-    # Note: columns are 16 and 34, plus space for escape codes.
-    printf "%-21s%-45s" "$name" "$desc"
-    if [ (math $n \% 2) -eq 0 ]; or [ $n -eq $items ]
-      echo -n \n
-    end
+  set items (math (count $argv[2..-1]) + 1)
+  for n in (seq 2 2 $items)
+    echo $color
+    echo $argv[$n]
+    echo $neutral
+    echo $argv[(math $n + 1)]
   end
 end
 
-function print_cols \
-  --argument-names lines \
-  --description "Prints lines in columns"
-
-end
 
