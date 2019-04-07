@@ -21,8 +21,8 @@ set -g __fish_git_prompt_color_cleanstate green
 set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
-# Hostname, used in several backup scripts.
-set -gx hostname (hostname -s)
+# Hostname, used in several backup scripts. E.g. 'Vesuvius'; without .local suffix.
+set -gx dada_hostname (hostname -s)
 
 # In case we want to make a network request.
 set -gx dada_ua "Dada Shell Theme/unknown" # modified after we get our version info
@@ -120,14 +120,14 @@ function fish_greeting --description 'Display the login greeting'
   # Make sure we return to where we were.
   set dir (pwd)
   cd ~/.config/dada
-  set version_main (get_version_short)
-  set version_hash (get_version_hash)
-  set version "$version_main [$version_hash]"
+  set theme_version_main (get_version_short)
+  set theme_version_hash (get_version_hash)
+  set theme_version "$theme_version_main [$theme_version_hash]"
   set last_commit (get_last_commit)
   set last_commit_rel (get_last_commit_rel)
   cd "$dir"
   # Modify our user agent to contain the version string.
-  set -gx dada_ua "Dada Shell Theme/$version_main ($curr_uname)"
+  set -gx dada_ua "Dada Shell Theme/$theme_version_main ($curr_uname)"
 
   set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
   set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
@@ -170,7 +170,7 @@ function fish_greeting --description 'Display the login greeting'
   set l2 $c0"MySQL backup:   $c1$backup_dbs"
   set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
   set l4 $c0"Music backup:   $c1$backup_music"
-  set l5 $c2"Theme version:  $c1$version"
+  set l5 $c2"Theme version:  $c1$theme_version"
   set l6 $c0"Source backup:  $c1$backup_src"
   set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
   set l8 $c0"Files backup:   $c1$backup_files"

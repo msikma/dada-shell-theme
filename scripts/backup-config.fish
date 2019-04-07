@@ -6,9 +6,9 @@ set err "backup-config: Error:"
 
 set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-config")
 set src "/Users/"(whoami)"/.config/"
-set dst "/Volumes/Files/Backups/$hostname/Config"
+set dst "/Volumes/Files/Backups/$dada_hostname/Config"
 set srcssh "/Users/"(whoami)"/.ssh/"
-set dstssh "/Volumes/Files/Backups/$hostname/SSH"
+set dstssh "/Volumes/Files/Backups/$dada_hostname/SSH"
 
 set do_not_backup "yarn"
 

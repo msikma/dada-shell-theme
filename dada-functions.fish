@@ -1,7 +1,7 @@
-source "functions/backup.fish"
-source "functions/help.fish"
-source "functions/mysql.fish"
-source "functions/rip-files.fish"
+source $DADA"functions/backup.fish"
+source $DADA"functions/help.fish"
+source $DADA"functions/mysql.fish"
+source $DADA"functions/rip-files.fish"
 
 set a_secs
 set a_ms
@@ -226,11 +226,11 @@ function in_git_dir --description "Returns whether we're inside of a Git project
 end
 
 function cdbackup
-  if not set -q hostname
-    echo "$err \$hostname is not set"
+  if not set -q dada_hostname
+    echo "$err \$dada_hostname is not set"
     return
   end
-  set bdir "/Volumes/Files/Backups/"$hostname
+  set bdir "/Volumes/Files/Backups/"$dada_hostname
   if not test -d $bdir
     echo "Error: Can't access backup directory: $bdir"
     return

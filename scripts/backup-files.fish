@@ -5,8 +5,8 @@ timer_start
 set err "backup-files: Error:"
 set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-files")
 
-if not set -q hostname
-  echo "$err \$hostname is not set"
+if not set -q dada_hostname
+  echo "$err \$dada_hostname is not set"
   exit 1
 end
 
@@ -16,9 +16,9 @@ set src \
 ~/"Documents/"
 
 set dst \
-"/Volumes/Files/Backups/$hostname/Files" \
-"/Volumes/Files/Backups/$hostname/Desktop" \
-"/Volumes/Files/Backups/$hostname/Documents"
+"/Volumes/Files/Backups/$dada_hostname/Files" \
+"/Volumes/Files/Backups/$dada_hostname/Desktop" \
+"/Volumes/Files/Backups/$dada_hostname/Documents"
 
 for n in (seq (count $src))
   set s $src[$n]

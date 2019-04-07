@@ -5,10 +5,10 @@ timer_start
 set err "backup-music: Error:"
 set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-music")
 set src ~/"Files/Music/"
-set dst "/Volumes/Files/Backups/$hostname/Files/Music/"
+set dst "/Volumes/Files/Backups/$dada_hostname/Files/Music/"
 
-if not set -q hostname
-  echo "$err \$hostname is not set"
+if not set -q dada_hostname
+  echo "$err \$dada_hostname is not set"
   exit 1
 end
 

@@ -5,19 +5,19 @@ timer_start
 set err "backup-dbs: Error:"
 set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-dbs")
 
-if not set -q hostname
-  echo "$err \$hostname is not set"
+if not set -q dada_hostname
+  echo "$err \$dada_hostname is not set"
   exit 1
 end
 
 echo
-echo (set_color cyan)"Backing up MySQL databases for "(set_color red)$hostname(set_color normal)
-echo (set_color green)"Copying files to "(set_color yellow)"/Volumes/Files/Backups/"(set_color red)$hostname(set_color yellow)"/Databases"(set_color normal)
+echo (set_color cyan)"Backing up MySQL databases for "(set_color red)$dada_hostname(set_color normal)
+echo (set_color green)"Copying files to "(set_color yellow)"/Volumes/Files/Backups/"(set_color red)$dada_hostname(set_color yellow)"/Databases"(set_color normal)
 echo (set_color green)"Last backup was "$last_backup"."(set_color normal)
 echo
 
 set ts (date "+%Y-%m-%d")
-set dest "/Volumes/Files/Backups/$hostname/Databases"
+set dest "/Volumes/Files/Backups/$dada_hostname/Databases"
 set mampsql "/Applications/MAMP/Library/bin/mysql"
 set mampdump "/Applications/MAMP/Library/bin/mysqldump"
 

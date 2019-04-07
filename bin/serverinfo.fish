@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 # e.g. fuji (used for: https://fuji.local/)
-set address (echo "$hostname" | tr '[:upper:]' '[:lower:]')
+set address (echo "$dada_hostname" | tr '[:upper:]' '[:lower:]')
 set filepath (echo "/Users/"(whoami)"/Files/Sites")
 
 # Retrieve version numbers for Apache, PHP and MySQL.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SRC_DIRS=("/Users/$(whoami)/Projects" "/Users/$(whoami)/Client projects" "/Users/$(whoami)/Source")
-DEST_DIRS=("/Volumes/Files/Backups/$hostname/Projects" "/Volumes/Files/Backups/$hostname/Client projects" "/Volumes/Files/Backups/$hostname/Source")
+DEST_DIRS=("/Volumes/Files/Backups/$dada_hostname/Projects" "/Volumes/Files/Backups/$dada_hostname/Client projects" "/Volumes/Files/Backups/$dada_hostname/Source")
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORK_DIR=`mktemp -d`
 
@@ -23,8 +23,8 @@ function cleanup {
 # Ensure we always clean up.
 trap cleanup EXIT
 
-if [ -z ${hostname+x} ]; then
-  echo "$err \$hostname is not set"
+if [ -z ${dada_hostname+x} ]; then
+  echo "$err \$dada_hostname is not set"
   exit 1
 fi
 
@@ -50,12 +50,12 @@ fi
 
 # Now run the backup script.
 echo
-echo -e $GREEN"Projects backup script running on "$RED$hostname$NORMAL
+echo -e $GREEN"Projects backup script running on "$RED$dada_hostname$NORMAL
 echo
 for ((a = 0; a < ${#SRC_DIRS[@]}; a++)); do
   src="${SRC_DIRS[a]}"
   dest="${DEST_DIRS[a]}"
-  dest_c=$YELLOW$(echo -e ${dest//$hostname/$RED$hostname$YELLOW})
+  dest_c=$YELLOW$(echo -e ${dest//$dada_hostname/$RED$dada_hostname$YELLOW})
   echo -e $CYAN"Backing up directory ($((a+1))/${#SRC_DIRS[@]}): $GREEN$src$NORMAL"
   echo -e $YELLOW"Copying to: "$dest_c$NORMAL
 

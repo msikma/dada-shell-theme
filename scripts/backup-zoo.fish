@@ -7,8 +7,8 @@ set err "backup-zoo: Error:"
 set src "/Users/"(whoami)"/Files/Music/Music"
 set dst "/Volumes/happy zoo/dada/Music"
 
-if not set -q hostname
-  echo "$err \$hostname is not set"
+if not set -q dada_hostname
+  echo "$err \$dada_hostname is not set"
   exit 1
 end
 
