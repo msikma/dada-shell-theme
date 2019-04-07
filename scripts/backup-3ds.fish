@@ -65,7 +65,7 @@ mkdir -p "$pwsdir"
 rsync -ahvrESH8 --progress --stats --exclude=".*/" --exclude=".*" $pwssrc $pwsdir
 
 set result (timer_end)
-echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo (set_color cyan)"Done in $result s."(set_color normal)
 echo
 
 # Save last backup timestamp.

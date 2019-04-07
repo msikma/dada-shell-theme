@@ -69,7 +69,7 @@ cd $orig
 echo
 
 set result (timer_end)
-echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo (set_color cyan)"Done in $result s."(set_color normal)
 echo
 
 # Save last backup timestamp.

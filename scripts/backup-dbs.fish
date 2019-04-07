@@ -60,7 +60,7 @@ set oldcount (ls $dest)
 echo (set_color green)(du -h "$dest") (set_color yellow)"("(count $oldcount)" databases)"(set_color normal)
 
 set result (timer_end)
-echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo (set_color cyan)"Done in $result s."(set_color normal)
 echo
 
 mkdir -p ~/.cache/dada

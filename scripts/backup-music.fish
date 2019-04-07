@@ -31,7 +31,7 @@ echo
 rsync -ahvrESH8 --delete --progress --stats --exclude=".*/" --exclude=".*" $src $dst
 
 set result (timer_end)
-echo (set_color cyan)"Done in $result ms."(set_color normal)
+echo (set_color cyan)"Done in $result s."(set_color normal)
 echo
 
 mkdir -p ~/.cache/dada
