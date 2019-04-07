@@ -212,32 +212,32 @@ function time_ago --description 'Formats the relative difference between two dat
   set hour_l 3600
   set minute_l 60
 
-  set years (math "$diff / $year_l")
+  set years (math "floor($diff / $year_l)")
   if [ $years -gt 0 ]
     time_ago_echo $years "year" "years"
     return
   end
-  set months (math "$diff / $month_l")
+  set months (math "floor($diff / $month_l)")
   if [ $months -gt 0 ]
     time_ago_echo $months "month" "months"
     return
   end
-  set weeks (math "$diff / $week_l")
+  set weeks (math "floor($diff / $week_l)")
   if [ $weeks -gt 0 ]
     time_ago_echo $weeks "week" "weeks"
     return
   end
-  set days (math "$diff / $day_l")
+  set days (math "floor($diff / $day_l)")
   if [ $days -gt 0 ]
     time_ago_echo $days "day" "days"
     return
   end
-  set hours (math "$diff / $hour_l")
+  set hours (math "floor($diff / $hour_l)")
   if [ $hours -gt 0 ]
     time_ago_echo $hours "hour" "hours"
     return
   end
-  set minutes (math "$diff / $minute_l")
+  set minutes (math "floor($diff / $minute_l)")
   if [ $minutes -gt 0 ]
     time_ago_echo $minutes "minute" "minutes"
     return
