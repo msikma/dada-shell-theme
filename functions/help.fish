@@ -22,6 +22,7 @@ set cmd_regular \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
+  "cssb64"            "Outputs an image as Base64 CSS" \
   "scrapemp3s"        "Scrapes MP3 files from a URL" \
   "streamlink"        "Opens internet streams in VLC" \
   "empty-trash"       "Empties the trash bin" \

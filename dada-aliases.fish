@@ -51,6 +51,7 @@ alias crc32u="crc32u.bash"
 alias ftypes="ftypes.fish"
 alias setssh="setssh.fish"
 alias serverinfo="serverinfo.fish"
+alias cssb64="cssb64.bash"
 
 function doc
   mdv $argv | less -r
