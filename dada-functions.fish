@@ -1,4 +1,5 @@
 source $DADA"functions/backup.fish"
+source $DADA"functions/file-ops.fish"
 source $DADA"functions/help.fish"
 source $DADA"functions/mysql.fish"
 source $DADA"functions/rip-files.fish"
@@ -61,9 +62,31 @@ function urlredirs --description "Displays URL redirects"
   wget $argv[1] 2>&1 | grep 'Location:'
 end
 
-# Makes a new Fish script. Invoke like: 'newfish file.fish'.
-function newfish --description "Makes a new Fish script"
-  echo "#!/usr/bin/env fish"\n > $argv[1]; chmod +x $argv[1];
+# Makes a new executable script. Invoke like: 'newx file.fish' or 'newx file.js', etc.
+function newx \
+  --argument-names fn \
+  --description "Makes a new executable script (note: a filename ending in .py2 or .py3 will result in a .py file with appropriate shebang)"
+  # Retrieve file extension and filename (even in cases like my.file.js; it will yield 'my.file' and 'js').
+  set bn (_file_basename $fn)
+  set ext (_file_extension $fn)
+
+  # If no file extension, give a warning.
+  if [ $bn = $ext ]
+    echo 'newx: warning: no file extension was given (using bash shebang)'
+    set she (_ext_shebang 'bash')
+  end
+
+  # Ensure we keep linebreaks.
+  _ext_shebang $ext | read -lz she
+
+  # When using .py2 or .py3 we really want .py.
+  set ext (_clean_py_ext $ext)
+  set fn "$bn.$ext"
+
+  echo "$she" > $fn
+  chmod +x $fn
+  stat -f "%Sp %N:" $fn
+  echo -n $she
 end
 
 function keys --description "Displays keys installed for this user"

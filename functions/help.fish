@@ -12,7 +12,7 @@ set cmd_regular \
   "code <dir>"        "Opens file/directory in VS Code" \
   "bbedit <dir>"      "Opens file/directory in BBEdit" \
   "md <file>"         "Opens file in MacDown" \
-  "newfish <file>"    "Creates a new Fish script" \
+  "newx <file>"       "Creates a new executable script" \
   "jv <file>"         "Displays JSON file content" \
   "fd <str>"          "Searches for files (alt. to find)" \
   "doc <file>"        "Reads Markdown file in terminal" \
