@@ -39,6 +39,7 @@ set cmd_scripts \
   "rip-music <url>"   "Rips music files from a URL" \
   "eatsql <file>"     "Shortcut to import SQL dumps" \
   "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
+  "pinger"            "Continuously if we are online" \
 
 set cmd_project \
   "proj"              "Displays current project info" \
@@ -85,7 +86,7 @@ function help
   echo
   echo "The following commands are available:"
   echo
-  
+
   # Iterate through our merged list and print the command name and description.
   set m 0
   set total (math 4 + (count $_cmd_all))
@@ -100,10 +101,10 @@ function help
     set r_color $_cmd_all[(math $n + $half)]
     set r_cmd_n $_cmd_all[(math $n + $half + 1)]
     set r_cmd_d $_cmd_all[(math $n + $half + 3)]
-    
+
     printf "%s%-16s%s%-34s%s%-16s%s%-34s\\n" $l_color $l_cmd_n $neutral $l_cmd_d $r_color $r_cmd_n $neutral $r_cmd_d
   end
-  
+
   echo
 end
 
