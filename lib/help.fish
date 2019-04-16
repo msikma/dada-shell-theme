@@ -70,9 +70,8 @@ set cmd_dada \
   "update"            "Updates Dada shell theme and bins" \
   "dada-cron"         "Runs the theme hourly cron script" \
 
-function help
-  set neutral (set_color normal)
-
+function help \
+  --description "Prints all available commands"
   # Merge all various command lists together and add colors.
   set _cmd_all
   set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_regular)
@@ -86,6 +85,16 @@ function help
   echo
   echo "The following commands are available:"
   echo
+
+  _iterate_help $_cmd_all
+
+  echo
+end
+
+function _iterate_help \
+  --description "Iterate through and print a list of commands and descriptions"
+  set _cmd_all $argv
+  set neutral (set_color normal)
 
   # Iterate through our merged list and print the command name and description.
   set m 0
@@ -104,8 +113,6 @@ function help
 
     printf "%s%-16s%s%-34s%s%-16s%s%-34s\\n" $l_color $l_cmd_n $neutral $l_cmd_d $r_color $r_cmd_n $neutral $r_cmd_d
   end
-
-  echo
 end
 
 # Injects colors into a list of commands

@@ -1,3 +1,4 @@
+# Dada Shell Theme © 2019
 
 # Makes a new executable script. Invoke like: 'newx file.fish' or 'newx file.js', etc.
 function newx \

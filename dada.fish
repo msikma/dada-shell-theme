@@ -4,8 +4,6 @@ set DADA ~/.config/dada/
 # Prompt and other style things
 source ~/.config/dada/dada-theme.fish
 # source ~/.config/dada/bobthefish-custom.fish  # disabled for now.
-# Git commands/shortcuts
-source ~/.config/dada/dada-git.fish
 # API keys
 source ~/.config/dada/secrets/keys.fish
 # Functions and aliases
