@@ -70,18 +70,20 @@ function newx \
   set bn (_file_basename $fn)
   set ext (_file_extension $fn)
 
+  # Ensure we keep linebreaks.
+  _ext_shebang $ext | read -lz she
+
+  # When using .py2 or .py3 we really want .py in the actual filename.
+  set ext (_clean_py_ext $ext)
+
   # If no file extension, give a warning.
   if [ $bn = $ext ]
     echo 'newx: warning: no file extension was given (using bash shebang)'
     set she (_ext_shebang 'bash')
+    set fn "$bn"
+  else
+    set fn "$bn.$ext"
   end
-
-  # Ensure we keep linebreaks.
-  _ext_shebang $ext | read -lz she
-
-  # When using .py2 or .py3 we really want .py.
-  set ext (_clean_py_ext $ext)
-  set fn "$bn.$ext"
 
   echo "$she" > $fn
   chmod +x $fn
