@@ -23,7 +23,7 @@ def ffmpeg_cmd(in_file, out_file, start, duration, encode, copy, overwrite):
     cmd.extend(['-t', '{}'.format(duration)])
   if (in_file):
     cmd.extend(['-i', '{}'.format(in_file)])
-  if (copy):
+  if (copy and not encode):
     cmd.extend(['-c', 'copy'])
   if (encode):
     # Do nothing; converts as H.264 (libx264 in yuv420p colorspace) and AAC by default.
