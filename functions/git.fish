@@ -15,7 +15,7 @@ set cmd_git_scripts \
   "git summary"       "Summary of repo and authors" \
   "jira"              "Lists Jira issue branches" \
 
-function githh \
+function gith \
   --description "Prints all available Git commands"
   # Merge all various command lists together and add colors.
   # See <lib/help.fish>.
