@@ -1,10 +1,12 @@
+# Dada Shell Theme © 2019
+
 # ~/.cache/dada
 # ~/.cache/dada/<backup timestamps are here>
 # ~/.cache/dada/cron
 # ~/.cache/dada/cron/cron_<ts>.log
 
-set c_dir '/Users/'(whoami)'/.cache/dada/cron'
-set c_file $c_dir'/cron_.log'
+set -g c_dir '/Users/'(whoami)'/.cache/dada/cron'
+set -g c_file $c_dir'/cron_.log'
 
 function __print --description "Prints command and saves it to file"
   echo $argv
