@@ -1,3 +1,5 @@
+# Dada Shell Theme © 2019
+
 set cmd_regular \
   "tree"              "Runs ls with tree structure" \
   "headers <url>"     "Displays headers for a URL" \

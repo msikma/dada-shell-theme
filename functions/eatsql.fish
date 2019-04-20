@@ -1,3 +1,5 @@
+# Dada Shell Theme © 2019
+
 function eatsql --description "Shortcut for importing SQL files into MariaDB"
   if not count $argv > /dev/null
     echo 'usage: eatsql source.sql [dbname]'
@@ -8,8 +10,8 @@ function eatsql --description "Shortcut for importing SQL files into MariaDB"
 
   set fn $argv[1]
   set db $argv[2]
-  set size (filesize $fn)
-  set lines (filelines $fn)
+  set size (_filesize $fn)
+  set lines (_filelines $fn)
 
   if test -n "$db"
     echo "eatsql: Importing $fn into database $db ($size; $lines lines)"

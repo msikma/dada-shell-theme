@@ -1,3 +1,5 @@
+# Dada Shell Theme © 2019
+
 # Realistic user agent
 set __moz_ag "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
 
@@ -74,6 +76,7 @@ end
 function rip-music
   rip_url_music $argv[1]
 end
+
 function rip-imgs
   rip_url_images $argv[1]
 end

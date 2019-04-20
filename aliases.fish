@@ -1,3 +1,5 @@
+# Dada Shell Theme © 2019
+
 alias fdupes="jdupes"
 alias composer="php ~/.bin/composer.phar"
 alias md5sum="gmd5sum"

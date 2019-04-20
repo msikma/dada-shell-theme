@@ -1,4 +1,16 @@
-# File operation functions
+# Dada Shell Theme © 2019
+
+function _filesize_bytes --description "Prints the size of a file in bytes"
+  stat -f%z $argv[1]
+end
+
+function _filesize --description "Prints a human readable filesize"
+  ls -la $argv[1] | cut -f2 -d' '
+end
+
+function _filelines --description "Returns number of lines in a file as an integer"
+  wc -l < $argv[1] | tr -d '[:space:]'
+end
 
 function _file_extension \
   --argument-names fn \

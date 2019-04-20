@@ -1,6 +1,5 @@
 #!/usr/bin/env fish
 
-
 # If the user passes -n or --no-ignore, we won't use
 # the .gitignore file if this is being run inside a Git project.
 [ "$argv[1]" = "-n" ]; or [ "$argv[1]" = "--no-ignore" ]
