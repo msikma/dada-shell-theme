@@ -55,7 +55,3 @@ alias setssh="setssh.fish"
 alias serverinfo="serverinfo.fish"
 alias cssb64="cssb64.bash"
 alias pinger="pinger.fish"
-
-function doc
-  mdv $argv | less -r
-end

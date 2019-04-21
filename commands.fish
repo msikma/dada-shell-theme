@@ -1,5 +1,9 @@
 # Dada Shell Theme © 2019
 
+function doc
+  mdv $argv | less -r
+end
+
 function weather --description "Queries wttr.in for the weather"
   # Note: uses negative head value to erase the author name at the bottom.
   curl -s "wttr.in" \
