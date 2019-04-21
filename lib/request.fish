@@ -1,10 +1,11 @@
 # Dada Shell Theme © 2019
 
-# Realistic user agent
+# Realistic user agent. Alternative:
+# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:63.0) Gecko/20100101 Firefox/63.0"
 set __moz_ag "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
 
-# Alternative:
-# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:63.0) Gecko/20100101 Firefox/63.0"
+# Accept language string for getting localized content.
+set -gx dada_acceptlang "ja,en-US;q=0.7,en;q=0.3"
 
 # Rips all files from specific filetypes from a URL.
 # Always only follows links on the given page (depth = 1).

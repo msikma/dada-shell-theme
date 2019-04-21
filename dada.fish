@@ -3,13 +3,10 @@
 set -g DADA "/Users/"(whoami)"/.config/dada/"
 set -g home "/Users/"(whoami)
 
-# Hostname, used in several backup scripts. E.g. 'Vesuvius'; without .local suffix.
+# Hostname used in several backup scripts, e.g. "Vesuvius".
 set -gx dada_hostname (hostname -s)
-
-# In case we want to make a network request.
-set -gx dada_ua "Dada Shell Theme/unknown" # modified after we get our version info
-# Accept language string for getting localized content.
-set -gx dada_acceptlang "ja,en-US;q=0.7,en;q=0.3"
+# Username with device name, e.g "msikma@Vesuvius.local"
+set -gx dada_device_name (whoami)"@"(uname -n)
 
 source $DADA"aliases.fish"
 source $DADA"commands.fish"

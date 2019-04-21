@@ -22,6 +22,10 @@ set -g __fish_git_prompt_color_cleanstate green
 set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
+# In case we want to make a network request.
+# This is modified to the correct value when fish_greeting is run.
+set -gx dada_ua "Dada Shell Theme/unknown"
+
 # Prints a greeting message when logging in.
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
