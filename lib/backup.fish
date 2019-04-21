@@ -117,11 +117,57 @@ function backup_time_rel --description "Prints the time a backup was last perfor
   end
 end
 
-function check_needed_dirs --description "Checks if an array of directories exists and is accessible"
+function print_backup_dirs \
+  --description "Prints what directories we'll be copying files to and from"
+  for n in (seq 1 2 (count $argv))
+    set src $argv[$n]
+    set dst $argv[(math $n + 1)]
+    echo (set_color red)"Copying from "(set_color normal)"$src"(set_color red)" -> "(set_color normal)$dst
+  end
+end
+
+function print_backup_start \
+  --argument-names script purpose \
+  --description "Starts the timer; to be done right before a backup starts"
+  echo
+  echo (set_color yellow)"Backup script for $purpose:"(set_color normal)
+  timer_start
+end
+
+function print_backup_finish \
+  --argument-names script \
+  --description "Starts the timer; to be done right before a backup starts"
+  set timer_val (timer_end)
+  set timer_h (duration_humanized $timer_val)
+  echo
+  echo (set_color cyan)"Done in $timer_h."(set_color normal)
+  echo
+end
+
+function print_last_backup_time \
+  --argument-names script \
+  --description "Prints out when the last backup was done"
+  echo (set_color green)"Last backup was "(get_last_backup $script)"."(set_color normal)
+  echo
+end
+
+function check_hostname \
+  --argument-names script \
+  --description "Checks if a hostname is set"
+  if not set -q dada_hostname
+    echo $script": Error: \$dada_hostname is not set"
+    exit 1
+  end
+end
+
+function check_needed_dirs \
+  --argument-names script dtype \
+  --description "Checks if an array of directories exists and is accessible"
+  set needdirs $argv[3..-1]
   for n in (seq (count $needdirs))
     set s $needdirs[$n]
     if not test -d $s
-      echo "$err Can't access target directory: "$s
+      echo $script": Error: Can't access $dtype directory: "$s
       exit 1
     end
   end
