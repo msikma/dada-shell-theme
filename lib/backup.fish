@@ -58,11 +58,43 @@ function set_last_backup \
   echo (date +"%a, %b %d %Y %X %z") > $home"/.cache/dada/"$script
 end
 
+# Runs rsync on a source and destination directory.
+#
+# The arguments used to run rsync are -ahEANS8, which expands to the following:
+#
+# -a, --archive          archive mode; equals -rlptgoD (no -H,-A,-X)
+#    -r, --recursive     recurse into directories
+#    -l, --links         copy symlinks as symlinks
+#    -p, --perms         preserve permissions
+#    -t, --times         preserve modification times
+#    -g, --group         preserve group
+#    -o, --owner         preserve owner (super-user only)
+#    -D                  same as --devices --specials
+#       --devices        preserve device files (super-user only)
+#       --specials       preserve special files
+#  -h, --human-readable  output numbers in a human-readable format
+# -E, --executability    preserve the file's executability
+# -A, --acls             preserve ACLs (implies --perms)
+# -N, --crtimes          preserve create times (newness)
+# -S, --sparse           turn sequences of nulls into sparse blocks
+# -8, --8-bit-output     leave high-bit chars unescaped in output
+#
+# This DOES NOT delete files that already exist in the destination directory.
+#
+# Note: this doesn't copy extended attributes (-X) which won't work on btrfs.
+# Change if we're upgrading to a better fs.
+#
 function copy_rsync \
   --argument-names src dst \
   --description "Copies files from source to destination using rsync"
-  # Note: doesn't copy extended attributes (-X). Change if we're upgrading to a better fs.
-  rsync -ahrEAtNS8 --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
+  rsync -ahEANS8 --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
+end
+
+# As copy_rsync, but with --delete.
+function copy_rsync_delete \
+  --argument-names src dst \
+  --description "Copies files from source to destination using rsync"
+  rsync -ahEANS8 --delete --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
