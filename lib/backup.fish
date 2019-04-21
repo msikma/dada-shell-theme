@@ -1,47 +1,43 @@
 # Dada Shell Theme © 2019
 
+# Minimal required rsync protocol version; checked when running backup scripts.
+# Use rsync --help to see the version.
 set _rsync_min_prot_version 31
 
+# List of backup commands.
+set backup_cmd \
+  "backup-3ds"        "Backs up 3DS SD card" \
+  "backup-config"     "Backs up ~/.config/ dirs" \
+  "backup-dbs"        "Backs up SQL databases" \
+  "backup-files"      "Backs up various other things" \
+  "backup-ftp"        "Backs up FTP bookmarks" \
+  "backup-games"      "Backs up game content" \
+  "backup-music"      "Backs up music" \
+  "backup-src"        "Backs up source code directories" \
+  "backup-zoo"        "Backs up music to the Happy Zoo" \
+
 function backup --description "Displays backup commands and info"
-  # Colors
-  set c0 (set_color white)
-  set c1 (set_color red)     # Backup commands
-  set c2 (set_color purple)  # Backup info
-  set c3 (set_color green)   # User info
-
-  # Get a string of when the backup was done
-  set backup_3ds (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-3ds")
-  set backup_config (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-config")
-  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
-  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
-  set backup_ftp (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-ftp")
-  set backup_games (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-games")
-  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
-  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
-  set backup_zoo (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-zoo")
-
   echo
-  echo "Backup commands and status for $c3"(whoami)'@'(uname -n)"$c0:"
+  echo "Backup commands and status for "(set_color green)"$dada_device_name"(set_color normal)":"
   echo
-  draw_columns $c1"backup-3ds      "$c0"Backs up 3DS SD card"\
-               $c2"3DS SD backup:  "$c0"$backup_3ds"\
-               $c1"backup-config   "$c0"Backs up ~/.config/ dirs"\
-               $c2"Config backup:  "$c0"$backup_config"\
-               $c1"backup-dbs      "$c0"Backs up SQL databases"\
-               $c2"MySQL backup:   "$c0"$backup_dbs"\
-               $c1"backup-files    "$c0"Backs up various other things"\
-               $c2"Files backup:   "$c0"$backup_files"\
-               $c1"backup-ftp      "$c0"Backs up FTP bookmarks"\
-               $c2"FTP backup:     "$c0"$backup_ftp"\
-               $c1"backup-games    "$c0"Backs up game content"\
-               $c2"Games backup:   "$c0"$backup_games"\
-               $c1"backup-music    "$c0"Backs up music"\
-               $c2"Music backup:   "$c0"$backup_music"\
-               $c1"backup-src      "$c0"Backs up source code directories"\
-               $c2"Source backup:  "$c0"$backup_src"\
-               $c1"backup-zoo      "$c0"Backs up music to the Happy Zoo"\
-               $c2"Zoo backup:     "$c0"$backup_zoo"\
-
+  # Make a list of all last backup times.
+  set backup_prefix "$home/.cache/dada"
+  set backup_times \
+    "3DS SD backup:"    (backup_time_str "$backup_prefix/backup-3ds") \
+    "Config backup:"    (backup_time_str "$backup_prefix/backup-config") \
+    "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
+    "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
+    "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
+    "Games backup:"     (backup_time_str "$backup_prefix/backup-games") \
+    "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
+    "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
+    "Zoo backup:"       (backup_time_str "$backup_prefix/backup-zoo") \
+  
+  # Merge together with the backup commands.
+  set cols_all
+  set -a cols_all (_add_cmd_colors (set_color red) $backup_cmd)
+  set -a cols_all (_add_cmd_colors (set_color magenta) $backup_times)
+  _iterate_help $cols_all
   echo
 end
 
