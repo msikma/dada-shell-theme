@@ -18,7 +18,7 @@ set backup_cmd \
 
 function backup --description "Displays backup commands and info"
   echo
-  echo "Backup commands and status for "(set_color green)"$dada_device_name"(set_color normal)":"
+  echo "Backup commands and status for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
   echo
   # Make a list of all last backup times.
   set backup_prefix "$home/.cache/dada"

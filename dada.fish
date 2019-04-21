@@ -3,10 +3,11 @@
 set -g DADA "/Users/"(whoami)"/.config/dada/"
 set -g home "/Users/"(whoami)
 
-# Hostname used in several backup scripts, e.g. "Vesuvius".
+# Save short and full hostnames, e.g. "Vesuvius" and "Vesuvius.local".
 set -gx dada_hostname (hostname -s)
-# Username with device name, e.g "msikma@Vesuvius.local"
-set -gx dada_device_name (whoami)"@"(uname -n)
+set -gx dada_hostname_local (hostname)
+set -gx dada_uhostname (whoami)"@$dada_hostname"
+set -gx dada_uhostname_local (whoami)"@$dada_hostname_local"
 
 source $DADA"aliases.fish"
 source $DADA"commands.fish"
