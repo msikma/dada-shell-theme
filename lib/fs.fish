@@ -1,5 +1,20 @@
 # Dada Shell Theme © 2019
 
+# Prints disk usage as percentage.
+function get_disk_usage_perc --description "Prints disk usage in %"
+  df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1
+end
+
+# Total disk usage in GB, one decimal.
+function get_disk_usage_gb --description "Prints disk usage in GB"
+  math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 4)"*512)/1000000000"
+end
+
+# Total disk size in GB, one decimal.
+function get_disk_total_gb --description "Prints disk size in GB"
+  math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 2)"*512)/1000000000"
+end
+
 function _filesize_bytes --description "Prints the size of a file in bytes"
   stat -f%z $argv[1]
 end

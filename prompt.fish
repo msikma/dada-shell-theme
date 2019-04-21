@@ -26,87 +26,93 @@ set -g __fish_prompt_normal (set_color normal)
 # This is modified to the correct value when fish_greeting is run.
 set -gx dada_ua "Dada Shell Theme/unknown"
 
+# Returns colors for use in the Fish greeting.
+function _theme_greeting_color \
+  --argument-names color \
+  --description "Returns colors for use in the greeting"
+  if [ "$color" = "green" ]
+    echo "🌿"
+    echo (set_color "green")
+    echo (set_color "2b4e03")
+  end
+  if [ "$color" = "blue" ]
+    echo "🌎"
+    echo (set_color "blue")
+    echo (set_color "1b2b9c")
+  end
+  if [ "$color" = "red" ]
+    echo "🔥"
+    echo (set_color "red")
+    echo (set_color "703")
+  end
+end
+
 # Prints a greeting message when logging in.
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
 function fish_greeting --description 'Display the login greeting'
-  # Current Mac OS X version
-  set osx_version (defaults read loginwindow SystemVersionStampAsString)
-  set darwin_version (uname -v | sed -e 's/:.*;/;/g')
-  # Disk usage in %
-  set disk_usage_perc (df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1)
-  # Disk usage in GB, one decimal
-  set disk_usage_gb (math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 4)"*512)/1000000000")
-  # Total disk size in GB, one decimal
-  set disk_total_gb (math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 2)"*512)/1000000000")
-  # user@hostname
-  set curr_uname (uname -n)
-  set user (whoami)"@$curr_uname"
-  # Current IP (10.0.1.3)
-  set currip (ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1)
-  # Current Dada-theme version, e.g. master-12-abcdef
+  # Sets the current Dada Shell Theme version, e.g. master-12-abcdef
   # Make sure we return to where we were.
-  set dir (pwd)
-  cd ~/.config/dada
+  pushd $DADA
   set theme_version_main (get_version_short)
   set theme_version_hash (get_version_hash)
   set theme_version "$theme_version_main [$theme_version_hash]"
   set last_commit (get_last_commit)
   set last_commit_rel (get_last_commit_rel)
-  cd "$dir"
-  # Modify our user agent to contain the version string.
-  set -gx dada_ua "Dada Shell Theme/$theme_version_main ($curr_uname)"
+  popd
 
-  set backup_dbs (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-dbs")
-  set backup_music (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-music")
-  set backup_files (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-files")
-  set backup_src (backup_time_str "/Users/"(whoami)"/.cache/dada/backup-src")
+  # Modify our user agent to contain the version string.
+  set -gx dada_ua "Dada Shell Theme/$theme_version_main ($dada_hostname_local)"
 
   # Display the gray uname section.
   set_color brblack
-  echo $darwin_version
-  uptime
+  echo (get_darwin_version)
+  echo (uptime)
   echo
 
+  # Sets the colors used in the theme version name.
+  set colors (_theme_greeting_color "green")
+
   # Display the theme name.
-  echo -n "🌿"
-  set_color green
-  #echo -n "🌎"
-  #set_color blue
-  #echo -n "🔥"
-  #set_color red
+  echo -n $colors[1]
+  echo -n $colors[2]
   echo -n " Dada shell theme"
-  set_color 2b4e03
+  echo -n $colors[3]
   echo -n " on "
-  set_color green
-  echo "OSX $osx_version"
-  set_color 2b4e03
+  echo -n $colors[2]
+  echo "OSX "(get_osx_version)
+  echo -n $colors[3]
   echo -n "Type "
-  set_color green
+  echo -n $colors[2]
   echo -n "help"
-  set_color 2b4e03
+  echo -n $colors[3]
   echo " to see available commands"
   echo
 
-  # Display the info columns.
-  set c0 (set_color purple)
-  set c1 (set_color white)
-  set c2 (set_color blue)
-  set c3 (set_color yellow)
+  # Display columns containing user and theme information.
+  set main_cols \
+    "User:"             "$dada_uhostname_local ("(get_curr_ip)")" \
+    "Disk usage:"       (get_disk_usage_perc)"% ("(get_disk_usage_gb)"/"(get_disk_total_gb)" GB available)" \
+  
+  set theme_cols \
+    "Theme version:"    "$theme_version" \
+    "Last commit:"      "$last_commit ($last_commit_rel)" \
 
-  set l1 $c3"User:           $c1$user ($currip)"
-  set l2 $c0"MySQL backup:   $c1$backup_dbs"
-  set l3 $c3"Disk usage:     $c1$disk_usage_perc% ($disk_usage_gb/$disk_total_gb GB available)"
-  set l4 $c0"Music backup:   $c1$backup_music"
-  set l5 $c2"Theme version:  $c1$theme_version"
-  set l6 $c0"Source backup:  $c1$backup_src"
-  set l7 $c2"Last commit:    $c1$last_commit ($last_commit_rel)"
-  set l8 $c0"Files backup:   $c1$backup_files"
-  set lines $l1 $l2 $l3 $l4 $l5 $l6 $l7 $l8
-
-  draw_columns $lines
+  # Retrieves dates for when we last backed up important data.
+  set backup_prefix "$home/.cache/dada"
+  set backup_cols \
+    "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
+    "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
+    "Source backup:"    (backup_time_str "$backup_prefix/backup-files") \
+    "Files backup:"     (backup_time_str "$backup_prefix/backup-src") \
+  
+  # Print all columns.
+  set cols_all
+  set -a cols_all (_add_cmd_colors (set_color yellow) $main_cols)
+  set -a cols_all (_add_cmd_colors (set_color blue) $theme_cols)
+  set -a cols_all (_add_cmd_colors (set_color magenta) $backup_cols)
+  _iterate_help $cols_all
   echo
-  set_color normal
 end
 
 # Copied from one of the default prompts and edited a bit.
