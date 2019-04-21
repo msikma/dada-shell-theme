@@ -103,8 +103,8 @@ function fish_greeting --description 'Display the login greeting'
   set backup_cols \
     "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
     "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
-    "Source backup:"    (backup_time_str "$backup_prefix/backup-files") \
-    "Files backup:"     (backup_time_str "$backup_prefix/backup-src") \
+    "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
+    "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
   
   # Print all columns.
   set cols_all
