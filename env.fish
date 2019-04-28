@@ -29,6 +29,10 @@ if test -d /usr/local/djgpp/bin/
 end
 set PATH ~/.composer/vendor/bin $PATH
 set PATH ~/.cargo/bin $PATH
+# game
+if test -d ~/Projects/fishtetris
+  set PATH ~/Projects/fishtetris $PATH
+end
 
 set -gx FLOPPY_IMAGING_PATH ~/"Files/Floppy disk images/"
 
