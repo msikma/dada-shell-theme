@@ -59,16 +59,16 @@ end
 # The arguments used to run rsync are -ahEANS8, which expands to the following:
 #
 # -a, --archive          archive mode; equals -rlptgoD (no -H,-A,-X)
-#    -r, --recursive     recurse into directories
-#    -l, --links         copy symlinks as symlinks
-#    -p, --perms         preserve permissions
-#    -t, --times         preserve modification times
-#    -g, --group         preserve group
-#    -o, --owner         preserve owner (super-user only)
-#    -D                  same as --devices --specials
-#       --devices        preserve device files (super-user only)
-#       --specials       preserve special files
-#  -h, --human-readable  output numbers in a human-readable format
+#  └ -r, --recursive     recurse into directories
+#  └ -l, --links         copy symlinks as symlinks
+#  └ -p, --perms         preserve permissions
+#  └ -t, --times         preserve modification times
+#  └ -g, --group         preserve group
+#  └ -o, --owner         preserve owner (super-user only)
+#  └ -D                  same as --devices --specials
+#     └ --devices        preserve device files (super-user only)
+#     └ --specials       preserve special files
+# -h, --human-readable   output numbers in a human-readable format
 # -E, --executability    preserve the file's executability
 # -A, --acls             preserve ACLs (implies --perms)
 # -N, --crtimes          preserve create times (newness)
@@ -199,6 +199,13 @@ function check_needed_dirs \
       exit 1
     end
   end
+end
+
+function backup_error_exit \
+  --argument-names script reason \
+  --description "Prints an error message and exits"
+  echo $script": Error: "$reason
+  exit 1
 end
 
 function check_rsync_version \
