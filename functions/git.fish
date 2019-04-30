@@ -44,6 +44,7 @@ function glb \
   git branch -vv | cut -c 3- | awk '$3 !~/\[/ { print $1 }'
 end
 
+alias gith="ghelp" # legacy alias
 alias g="git status"
 alias gb="git for-each-ref --count=25 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias gd="git diff --cached"
