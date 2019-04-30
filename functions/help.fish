@@ -51,7 +51,7 @@ set cmd_project \
   "updrepos"          "Updates all project repos" \
   "tasks"             "Displays Theorycraft Jira tasks" \
 
-set cmd_git \
+set cmd_git_short \
   "g"                 "Git status" \
   "gith"              "Displays more Git commands help" \
   "gb"                "Last Git commits per branch" \
@@ -79,7 +79,7 @@ function help \
   set _cmd_all
   set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_regular)
   set -a _cmd_all (_add_cmd_colors (set_color yellow) $cmd_scripts)
-  set -a _cmd_all (_add_cmd_colors (set_color purple) $cmd_git)
+  set -a _cmd_all (_add_cmd_colors (set_color purple) $cmd_git_short)
   set -a _cmd_all (_add_cmd_colors (set_color red) $cmd_backup)
   set -a _cmd_all (_add_cmd_colors (set_color green) $cmd_project)
   set -a _cmd_all (_add_cmd_colors (set_color cyan) $cmd_network)

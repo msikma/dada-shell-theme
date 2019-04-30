@@ -10,6 +10,7 @@ set cmd_git \
   "gd"                "Runs 'git diff --cached'" \
   "gb"                "Shows last Git commits per branch" \
   "gs"                "Shows list of commit messages" \
+  "glb"               "Shows list of local-only branches" \
 
 set cmd_git_scripts \
   "git summary"       "Summary of repo and authors" \
@@ -36,6 +37,11 @@ function gitfirst \
   --description 'Returns the Git log for the first ever commit'
   set hash (git rev-list --max-parents=0 head)
   git log $hash
+end
+
+function glb \
+  --description "Shows list of local-only branches"
+  git branch -vv | cut -c 3- | awk '$3 !~/\[/ { print $1 }'
 end
 
 alias g="git status"
