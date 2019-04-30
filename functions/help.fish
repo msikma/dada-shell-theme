@@ -53,7 +53,7 @@ set cmd_project \
 
 set cmd_git_short \
   "g"                 "Git status" \
-  "gith"              "Displays more Git commands help" \
+  "ghelp"             "Displays more Git commands help" \
   "gb"                "Last Git commits per branch" \
 
 set cmd_backup \

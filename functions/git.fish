@@ -1,7 +1,7 @@
 # Dada Shell Theme © 2019
 
 set cmd_git \
-  "gith"              "Displays all Git commands" \
+  "ghelp"             "Displays all Git commands" \
   "g"                 "Git status" \
   "gl"                "Git log with merge lines" \
   "gr"                "Shows the repo's current remotes" \
@@ -16,7 +16,7 @@ set cmd_git_scripts \
   "git summary"       "Summary of repo and authors" \
   "jira"              "Lists Jira issue branches" \
 
-function gith \
+function ghelp \
   --description "Prints all available Git commands"
   # Merge all various command lists together and add colors.
   # See <lib/help.fish>.
