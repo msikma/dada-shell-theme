@@ -42,9 +42,9 @@ function backup --description "Displays backup commands and info"
 end
 
 function get_last_backup \
-  --argument-names script \
+  --argument-names script abs \
   --description "Returns last backup time for a script"
-  backup_time_rel $home"/.cache/dada/"$script
+  backup_time_rel $home"/.cache/dada/"$script $abs
 end
 
 function set_last_backup \
@@ -130,16 +130,104 @@ function backup_date_unix --description 'Converts a backup timestamp back to Uni
   date -jf "%a, %b %d %Y %X %z" $argv[1] +%s
 end
 
+function backup_list_dirs \
+  --description "Returns a list of directories inside a base directory" \
+  --argument-names basedir
+  ls -d1 --color=never $basedir"/"*"/"
+end
+
+function backup_get_latest_file \
+  --description "Prints the file with the latest modification date" \
+  --argument-names src
+  gfind "$src" -printf '%T@ %p\0' | gsort -zk 1nr | gsed -z 's/^[^ ]* //' | tr '\0' '\n' | head -1
+end
+
+function backup_dir_to_file_needed \
+  --description "Checks whether a backup is needed (if the destination doesn't exist or is older than the source)" \
+  --argument-names src dst
+  if not test -d $src
+    # Source directory does not exist, so there's nothing to backup.
+    echo 0
+    return
+  end
+  if not test -e $dst
+    # Destination file does not exist; backup needed.
+    echo 1
+    return
+  end
+  # If both targets exist, check their modification dates.
+  # Return the difference between the two. If the value is 0 or less, we won't backup.
+  # If the value is above 0, the value represents how many seconds newer our source is.
+  set src_latest_file (backup_get_latest_file $src)
+  set src_age (stat -f "%m" $src_latest_file)
+  set dst_age (stat -f "%m" $dst)
+  set diff (math "$src_age - $dst_age")
+  echo $diff
+end
+
+function backup_dir_to_file \
+  --description "Backs up a directory to a zip file" \
+  --argument-names src_base_dir dst_base_dir all_dst_base_dir type_dir src_dir_name dst_file dst_fn age_diff
+  # Make a shorter version of the source directory for display purposes.
+  set src_dir "$src_base_dir/$src_dir_name"
+  set home_escaped (echo $home | sed "s/\//\\\\\//g")
+  set src_short (echo $src_dir | sed "s/$home_escaped\\///")
+  # Check whether the backup is needed.
+  if [ $age_diff -le 0 ]
+    # Target is identical in age, or even newer, than the source.
+    echo (set_color cyan)"No backup needed for "(set_color yellow)"$src_short"(set_color cyan)" - skipping"(set_color normal)
+    return
+  end
+
+  # Create the zip file *without node_modules directory*, which is unnecessary and slow to pack.
+  set exclude ""
+  if test -d "$src_dir/node_modules"
+    set exclude "-x $src_dir/node_modules/**"
+  end
+  pushd $src_base_dir
+  zip -r9qu $dst_file $src_dir_name -x "/**/.DS_Store" $exclude
+  popd
+  pushd $all_dst_base_dir
+  set size (du -h $type_dir/$dst_fn)
+  popd
+  # Check the size of the file we made.
+  # And the age difference before the backup.
+  # Unless it's 1, which indicates the file didn't exist before now.
+  set diff ""
+  set diff_xtra ""
+  set src_latest_file (backup_get_latest_file $src_dir)
+  set src_time (stat -f "%m" $src_latest_file)
+  set now_time (date +%s)
+  set src_age (math "$now_time - $src_time")
+  if [ $age_diff -eq 1 ]
+    set diff "- last modified "(set_color blue)(_time_unit "$src_age")" ago"(set_color yellow)
+    set diff_xtra " - initial backup"
+  end
+  if [ $age_diff -gt 1 ]
+    set diff "(was "(_time_unit $age_diff)" older)"
+  end
+  # Report the result.
+  printf "%s%-42s%s%-42s%s%s\n" (set_color green) "$size" (set_color yellow) "$diff" "$diff_xtra" (set_color normal)
+end
+
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
 function backup_time_rel --description "Prints the time a backup was last performed, relative only"
   set bfile $argv[1]
+  set abs $argv[2]
   set now (date +%s)
   if test -e $bfile
     set bu (cat $bfile)
     set bu_unix (backup_date_unix $bu)
+    set bu_abs (date -r $bu_unix +"%Y-%m-%d %X %z")
     set bu_rel (time_ago $now $bu_unix)
     set bu_diff (math "$now - $bu_unix")
-    echo "$bu_rel"
+    if [ -n "$abs" ]
+      # Display absolute value and relative value.
+      echo "$bu_rel ($bu_abs)"
+    else
+      # Display only relative value.
+      echo "$bu_rel"
+    end
   else
     echo '(unknown)'
   end
@@ -161,16 +249,21 @@ function print_backup_dirs \
 end
 
 function print_backup_start \
-  --argument-names script purpose \
-  --description "Starts the timer; to be done right before a backup starts"
+  --argument-names purpose script hn \
+  --description "Prints the purpose of this backup script and starts the timer; to be done right before a backup starts"
   echo
-  echo (set_color yellow)"Backup script for $purpose:"(set_color normal)
+  echo -n (set_color yellow)"Backup script for "(set_color cyan)"$purpose"(set_color yellow)
+  if set -q hn
+    echo " on "(set_color cyan)"$hn"(set_color yellow)":"(set_color normal)
+  else
+    echo ":"(set_color normal)
+  end
   timer_start
 end
 
 function print_backup_finish \
   --argument-names script \
-  --description "Starts the timer; to be done right before a backup starts"
+  --description "Stops the timer and prints how long the backup took"
   set timer_val (timer_end)
   set timer_h (duration_humanized $timer_val)
   echo
@@ -179,9 +272,9 @@ function print_backup_finish \
 end
 
 function print_last_backup_time \
-  --argument-names script \
+  --argument-names script abs \
   --description "Prints out when the last backup was done"
-  echo (set_color green)"Last backup was "(get_last_backup $script)"."(set_color normal)
+  echo (set_color green)"Last backup was "(get_last_backup $script $abs)"."(set_color normal)
   echo
 end
 

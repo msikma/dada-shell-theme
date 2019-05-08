@@ -17,7 +17,7 @@ Make sure to install:
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
 * `npm install --global trash-cli empty-trash-cli fileicon ascr cheerio request feedparser-promised dist-exiftool node-exiftool sanitize-filename`
 * `pip3 install glances mdv`
-* `brew install exa tldr git-extras youtube-dl bat fd ncdu coreutils flac ecm`
+* `brew install exa tldr git-extras youtube-dl bat fd ncdu coreutils flac ecm findutils`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
 * VS Code: `code-insiders` command - ⇧⌘P and search for 'install'
 * [vgmpfdl](https://github.com/msikma/vgmpfdl)
