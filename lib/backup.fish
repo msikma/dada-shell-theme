@@ -32,7 +32,7 @@ function backup --description "Displays backup commands and info"
     "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
     "Zoo backup:"       (backup_time_str "$backup_prefix/backup-zoo") \
-  
+
   # Merge together with the backup commands.
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color red) $backup_cmd)
@@ -145,6 +145,12 @@ function backup_time_rel --description "Prints the time a backup was last perfor
   end
 end
 
+function print_backup_dir \
+  --description "Prints one directory we'll be copying files to" \
+  --argument-names src dst
+  echo (set_color red)"Copying "(set_color normal)"$src"(set_color red)" -> "(set_color normal)$dst
+end
+
 function print_backup_dirs \
   --description "Prints what directories we'll be copying files to and from"
   for n in (seq 1 2 (count $argv))
@@ -217,7 +223,8 @@ function check_rsync_version \
   end
   set rsv (_get_rsync_version)
   if [ $rsv -lt $_rsync_min_prot_version ]
-    echo $prefix "rsync protocol version is too low ($rsv); update to a newer version to use this script."
+    echo $prefix "rsync protocol version is too low ($rsv); update to a newer version (at least $_rsync_min_prot_version) to use this script."
+    exit 1
   end
 end
 
