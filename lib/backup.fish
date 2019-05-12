@@ -81,16 +81,29 @@ end
 # Change if we're upgrading to a better fs.
 #
 function copy_rsync \
-  --argument-names src dst \
+  --argument-names src dst quiet delete \
   --description "Copies files from source to destination using rsync"
-  rsync -ahEANS8 --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
+  if [ -n "$quiet" ]
+    set q 'q'
+  else
+    set q ''
+  end
+  if [ -n "$delete" ]
+    set d '--delete'
+  else
+    set d ''
+  end
+  rsync -ahEANS8$q $d --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
 end
 
 # As copy_rsync, but with --delete.
 function copy_rsync_delete \
-  --argument-names src dst \
+  --argument-names src dst quiet \
   --description "Copies files from source to destination using rsync"
-  rsync -ahEANS8 --delete --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
+  if not [ -n "$quiet" ]
+    set quiet ''
+  end
+  copy_rsync $src $dst $quiet 1
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
