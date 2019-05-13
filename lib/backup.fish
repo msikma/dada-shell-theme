@@ -83,25 +83,22 @@ end
 function copy_rsync \
   --argument-names src dst quiet delete \
   --description "Copies files from source to destination using rsync"
-  if [ -n "$quiet" ]
+  if [ -n "$quiet" -a "$quiet" -eq 1 ]
     set q 'q'
-  else
-    set q ''
   end
-  if [ -n "$delete" ]
+  if [ -n "$delete" -a "$delete" -eq 1 ]
     set d '--delete'
-  else
-    set d ''
   end
-  rsync -ahEANS8$q $d --progress --exclude=".*" --exclude="Icon*" --stats $src $dst
+
+  rsync -ahEANS8"$q" $d --progress --exclude=".*" --exclude="Icon*" --stats "$src" "$dst"
 end
 
 # As copy_rsync, but with --delete.
 function copy_rsync_delete \
   --argument-names src dst quiet \
   --description "Copies files from source to destination using rsync"
-  if not [ -n "$quiet" ]
-    set quiet ''
+  if [ -z "$quiet" ]
+    set quiet '0'
   end
   copy_rsync $src $dst $quiet 1
 end
