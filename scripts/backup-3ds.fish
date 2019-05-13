@@ -32,10 +32,12 @@ set sd_backups_dst_dir "$sd_backups_dst_basedir/$id_str"
 set pictures_src_dir $sd_backups_src_dir"/DCIM"
 set saves_src_dir $sd_backups_src_dir"/3ds/Checkpoint/saves/"
 set extdata_src_dir $sd_backups_src_dir"/3ds/Checkpoint/extdata/"
+set screenshots_src_dir $sd_backups_src_dir"/luma/screenshots/"
 
 set pictures_dst_dir $pictures_dst_basedir"/"$id_str
 set saves_dst_dir $saves_dst_basedir"/saves"
 set extdata_dst_dir $saves_dst_basedir"/extdata"
+set screenshots_dst_dir $pictures_dst_dir"/screenshots"
 
 check_rsync_version $name
 check_hostname $name
@@ -44,13 +46,21 @@ check_needed_dirs $name 'target' $sd_backups_dst_dir $saves_dst_dir $extdata_dst
 
 print_backup_start $purpose $name
 print_last_backup_time $name
-print_backup_dirs $sd_backups_src_dir $sd_backups_dst_dir $saves_src_dir $saves_dst_dir $extdata_src_dir $extdata_dst_dir $pictures_src_dir $pictures_dst_dir $powersaves_src_dir $powersaves_dst_dir
+echo (set_color blue)"Backing up the following 3DS: "(set_color purple)"$id_str"(set_color normal)
+echo
+print_backup_dirs $sd_backups_src_dir $sd_backups_dst_dir $saves_src_dir $saves_dst_dir $extdata_src_dir $extdata_dst_dir $pictures_src_dir $pictures_dst_dir $screenshots_src_dir $screenshots_dst_dir $powersaves_src_dir $powersaves_dst_dir
 
-copy_rsync_delete $sd_backups_src_dir $sd_backups_dst_dir
-copy_rsync $saves_src_dir $saves_dst_dir
-copy_rsync $extdata_src_dir $extdata_dst_dir
-copy_rsync $pictures_src_dir $pictures_dst_dir
-copy_rsync $powersaves_src_dir $powersaves_dst_dir
+copy_rsync_delete $sd_backups_src_dir $sd_backups_dst_dir 1
+copy_rsync $saves_src_dir $saves_dst_dir 1
+copy_rsync $extdata_src_dir $extdata_dst_dir 1
+copy_rsync $pictures_src_dir $pictures_dst_dir 1
+copy_rsync $powersaves_src_dir $powersaves_dst_dir 1
+
+# Optionally copy over Luma screenshots if the SD card has those.
+# Don't error out if they don't exist.
+if test -d $screenshots_src_dir
+  copy_rsync $screenshots_src_dir $screenshots_dst_dir 1
+end
 
 print_backup_finish $name
 set_last_backup $name
