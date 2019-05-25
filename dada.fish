@@ -17,6 +17,7 @@ source $DADA"prompt.fish"
 
 source $DADA"lib/backup.fish"
 source $DADA"lib/columns.fish"
+source $DADA"lib/cron.fish"
 source $DADA"lib/datetime.fish"
 source $DADA"lib/fs.fish"
 source $DADA"lib/git.fish"

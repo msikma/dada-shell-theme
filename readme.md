@@ -23,6 +23,7 @@ Make sure to install:
 * [vgmpfdl](https://github.com/msikma/vgmpfdl)
 * [bfg](https://rtyley.github.io/bfg-repo-cleaner/)
 * [MacDown](https://macdown.uranusjr.com/)
+* [ekizo-dl](https://github.com/msikma/ekizo-dl) (symlink in `~/.bin/`)
 
 `ps2pdf` should be installed by default, but just in case it isn't it can be found [here](https://www.ghostscript.com/doc/current/Ps2pdf.htm).
 
@@ -42,6 +43,37 @@ Add a file in `~/.config/fish` called `config.fish`:
 ```
 echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
 ```
+
+### Cron job
+
+To set up the Cron job, add a LaunchAgent plist to `~/Library/LaunchAgents`. It should be named `com.dada.crontab.plist` and have the following contents:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.dada.crontab</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/msikma/.config/dada/bin/run-cron.fish</string>
+  </array>
+
+  <key>Nice</key>
+  <integer>1</integer>
+
+  <key>StartInterval</key>
+  <integer>600</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+</dict>
+</plist>
+```
+
+Note that the `run-cron.fish` file doesn't use `env` to invoke Fish - it doesn't seem to be supported when running a Cron job.
 
 ### Copyright
 

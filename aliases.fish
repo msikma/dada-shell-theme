@@ -19,6 +19,9 @@ alias bfg="java -jar ~/.bin/bfg.jar"
 alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
 alias md="open -a MacDown"
 
+# Used in scripts
+alias stripcolor="gsed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
+
 # ls replacement exa
 alias ls="exa"
 alias l='exa -la --git -I Icon\r"|.DS_Store"' # remove pesky .DS_Store and Icon
