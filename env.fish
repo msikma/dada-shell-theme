@@ -34,6 +34,12 @@ if test -d ~/Projects/fishtetris
   set PATH ~/Projects/fishtetris $PATH
 end
 
+# DevkitPro
+set -gx DEVKITPRO /opt/devkitpro
+set -gx DEVKITARM "$DEVKITPRO/devkitARM"
+set -gx CTRULIB "$DEVKITPRO/libctru"
+set -gx CTRBANNERTOOL "/Users/msikma/.bin/misc-bin/bannertool"
+
 set -gx FLOPPY_IMAGING_PATH ~/"Files/Floppy disk images/"
 
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
