@@ -49,6 +49,11 @@ function _cron_path \
   echo $_c_file_full
 end
 
+function _cron_file \
+  --description "Prints the Cron short filename"
+  echo $_c_file_short
+end
+
 function _cron_print \
   --description "Prints command and saves it to file"
   echo $argv

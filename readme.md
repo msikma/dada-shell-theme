@@ -48,32 +48,10 @@ echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
 
 ### Cron job
 
-To set up the Cron job, add a LaunchAgent plist to `~/Library/LaunchAgents`. It should be named `com.dada.crontab.plist` and have the following contents:
+To set up the Cron job, simply run `cron-install`. If this somehow doesn't work, it can be manually installed as follows:
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.dada.crontab</string>
-
-  <key>ProgramArguments</key>
-  <array>
-    <string>/Users/msikma/.config/dada/bin/run-cron.fish</string>
-  </array>
-
-  <key>Nice</key>
-  <integer>1</integer>
-
-  <key>StartInterval</key>
-  <integer>600</integer>
-
-  <key>RunAtLoad</key>
-  <true/>
-</dict>
-</plist>
-```
+# Copy the LaunchAgent plist file `etc/com.dada.crontab.plist` to `~/Library/LaunchAgents`
+# Activate it: `launchctl load ~/Library/LaunchAgents/com.dada.crontab.plist`.
 
 Note that the `run-cron.fish` file doesn't use `env` to invoke Fish - it doesn't seem to be supported when running a Cron job.
 
