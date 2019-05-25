@@ -71,7 +71,8 @@ set cmd_network \
 
 set cmd_dada \
   "update"            "Updates Dada shell theme and bins" \
-  "dada-cron"         "Runs the theme hourly cron script" \
+  "dada-cron"         "Runs the Cron script" \
+  "cron-log"          "Views the Cron log for this month" \
 
 function help \
   --description "Prints all available commands"
