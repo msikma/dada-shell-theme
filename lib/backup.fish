@@ -185,10 +185,12 @@ function backup_dir_to_file \
   # Check whether the backup is needed.
   if [ $age_diff -le 0 ]
     # Target is identical in age, or even newer, than the source.
-    echo (set_color cyan)"No backup needed for "(set_color yellow)"$src_short"(set_color cyan)" - skipping"(set_color normal)
+    set skip_str (set_color cyan)"Skip"
+    set src_str (set_color yellow)"$src_short"
+    set no_str (set_color cyan)"- no backup needed"(set_color normal)
+    printf "%-13s%-52s%s\n" $skip_str $src_str $no_str
     return
   end
-
   # Create the zip file *without node_modules directory*, which is unnecessary and slow to pack.
   set exclude ""
   if test -d "$src_dir/node_modules"
@@ -214,10 +216,10 @@ function backup_dir_to_file \
     set diff_xtra " - initial backup"
   end
   if [ $age_diff -gt 1 ]
-    set diff "(was "(_time_unit $age_diff)" older)"
+    set diff "- was "(_time_unit $age_diff)" older"
   end
   # Report the result.
-  printf "%s%-42s%s%-42s%s%s\n" (set_color green) "$size" (set_color yellow) "$diff" "$diff_xtra" (set_color normal)
+  printf "%s%-52s%s%-39s%s%s\n" (set_color green) "$size" (set_color yellow) "$diff" "$diff_xtra" (set_color normal)
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
