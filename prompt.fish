@@ -26,6 +26,20 @@ set -g __fish_prompt_normal (set_color normal)
 # This is modified to the correct value when fish_greeting is run.
 set -gx dada_ua "Dada Shell Theme/unknown"
 
+# On what column the weather should be shown.
+set -g _weather_col 68
+
+function _greeting_weather --description "Shows the weather in the greeting message"
+  set weather (_get_weather)
+  for n in (seq (count $weather))
+    set -l m (math $n + 1)
+    echo -ne "\033[$m;""$_weather_col""H"
+    echo $weather[$n]
+  end
+  # Move the cursor back to the start position.
+  echo -ne "\033[2;0H"
+end
+
 # Returns colors for use in the Fish greeting.
 function _theme_greeting_color \
   --argument-names color \
@@ -51,6 +65,8 @@ end
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
 function fish_greeting --description 'Display the login greeting'
+  # Prints the current weather
+  _greeting_weather
   # Sets the current Dada Shell Theme version, e.g. master-12-abcdef
   # Make sure we return to where we were.
   pushd $DADA

@@ -16,6 +16,8 @@ function dada-cron \
 
   _cron_print_cmd "ekizo-dl"
   _cron_run_cmd "ekizo-dl.py"
+  _cron_print_cmd "weather" "Caching"
+  _cache_weather
 end
 
 function cron-log \

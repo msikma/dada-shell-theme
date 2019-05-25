@@ -7,6 +7,23 @@ set -g _c_file_full $_c_dir'/cron_DATE.log'
 # Filename of the Cron log.
 set -g _c_file_short 'cron_DATE.log'
 
+# Weather cache location.
+set -g _weather_cache '/Users/'(whoami)'/.cache/dada/weather.txt'
+
+# Prints out the cached weather data.
+function _get_weather
+  if not test -e $_weather_cache
+    _cache_weather
+  end
+  cat ~/.cache/dada/weather.txt
+end
+
+# Caches the weather output, but only the first item.
+function _cache_weather
+  weather | sed -n 3,7p > $_weather_cache
+end
+
+
 function _cron_run_cmd \
   --description "Runs a command and prints its output to the screen and log" \
   --argument-names cmd
@@ -17,8 +34,14 @@ end
 
 function _cron_print_cmd \
   --description "Prints a command we're running" \
-  --argument-names cmd
-  _cron_print (set_color yellow)"Running "(set_color normal)"$cmd"(set_color yellow)"..."(set_color normal)
+  --argument-names cmd str dots
+  if [ ! -n "$str" ]
+    set str 'Running'
+  end
+  if [ ! -n "$dots" ]
+    set dots '...'
+  end
+  _cron_print (set_color yellow)$str" "(set_color normal)"$cmd"(set_color yellow)$dots(set_color normal)
 end
 
 function _cron_path \

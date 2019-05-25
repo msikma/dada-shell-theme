@@ -1,12 +1,21 @@
 # Dada Shell Theme © 2019
 
+# Location used to retrieve the weather.
+set -g _weather_loc "~Rotterdam+2e+Stampioendwarsstraat"
+
 function doc
   mdv $argv | less -r
 end
 
 function weather --description "Queries wttr.in for the weather"
+  #       .-.      Drizzle
+  #      (   ).    13 °C
+  #     (___(__)   ↗ 7 km/h
+  #      ‘ ‘ ‘ ‘   10 km
+  #     ‘ ‘ ‘ ‘    0.0 mm
+  # Note: for help, run "curl wttr.in/:help" - or visit <https://github.com/chubin/wttr.in>.
   # Note: uses negative head value to erase the author name at the bottom.
-  curl -s "wttr.in" \
+  curl -s "wttr.in/$_weather_loc" \
     -H "Accept-Language: $dada_acceptlang" \
     | \
     ghead -n -2
