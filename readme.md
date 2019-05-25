@@ -32,6 +32,7 @@ Make sure to install:
 Other utilities (unlisted):
 
 * [MultiPatch](http://www.romhacking.net/utilities/746/)
+* For the `ekizo-dl` command running in the Cron job: `git clone git@github.com:msikma/ekizo-dl.git` ~/Projects/ekizo-dl
 
 For icons:
 
