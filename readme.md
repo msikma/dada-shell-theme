@@ -50,8 +50,8 @@ echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
 
 To set up the Cron job, simply run `cron-install`. If this somehow doesn't work, it can be manually installed as follows:
 
-# Copy the LaunchAgent plist file `etc/com.dada.crontab.plist` to `~/Library/LaunchAgents`
-# Activate it: `launchctl load ~/Library/LaunchAgents/com.dada.crontab.plist`.
+1. Copy the LaunchAgent plist file `etc/com.dada.crontab.plist` to `~/Library/LaunchAgents`
+2. Activate it: `launchctl load ~/Library/LaunchAgents/com.dada.crontab.plist`.
 
 Note that the `run-cron.fish` file doesn't use `env` to invoke Fish - it doesn't seem to be supported when running a Cron job.
 
