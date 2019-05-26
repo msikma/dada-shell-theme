@@ -1,55 +1,28 @@
 #!/usr/bin/env fish
 
-timer_start
+set name "backup-files"
+set purpose "misc. files"
 
-set err "backup-files: Error:"
-set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-files")
+set src_files "$home/Files/"
+set src_desktop "$home/Desktop/"
+set src_documents "$home/Documents/"
 
-if not set -q dada_hostname
-  echo "$err \$dada_hostname is not set"
-  exit 1
-end
+set dst_files "/Volumes/Files/Backups/$dada_hostname/Files"
+set dst_desktop "/Volumes/Files/Backups/$dada_hostname/Desktop"
+set dst_documents "/Volumes/Files/Backups/$dada_hostname/Documents"
 
-set src \
-~/"Files/" \
-~/"Desktop/" \
-~/"Documents/"
+check_rsync_version $name
+check_hostname $name
+check_needed_dirs $name 'source' $src_files $src_desktop $src_documents
+check_needed_dirs $name 'target' $dst_files $dst_desktop $dst_documents
 
-set dst \
-"/Volumes/Files/Backups/$dada_hostname/Files" \
-"/Volumes/Files/Backups/$dada_hostname/Desktop" \
-"/Volumes/Files/Backups/$dada_hostname/Documents"
+print_backup_start $purpose $name $dada_hostname
+print_last_backup_time $name
+print_backup_dirs $src_files $dst_files $src_desktop $dst_desktop $src_documents $dst_documents
 
-for n in (seq (count $src))
-  set s $src[$n]
-  set d $dst[$n]
-  if not test -d $s
-    echo "$err Can't access source directory: "$s
-    exit 1
-  end
-  if not test -d $d
-    echo "$err Can't access target directory: "$d
-    exit 1
-  end
-end
+copy_rsync_delete $src_files $dst_files
+copy_rsync_delete $src_desktop $dst_desktop
+copy_rsync_delete $src_documents $dst_documents
 
-echo (set_color cyan)"Backup script for "(set_color blue)"~/Files/ "(set_color cyan)"and"(set_color blue)" ~/Documents/"(set_color normal)
-echo (set_color yellow)"Last backup was "$last_backup"."(set_color normal)
-
-for n in (seq (count $src))
-  set s $src[$n]
-  set d $dst[$n]
-  echo "backup-files: Syncing: "$s" -> "$d
-
-  # Note: excluding the following:
-  # - OpenTTD, Games (use the backup-games script)
-  # - Music (use the backup-music script)
-  rsync -ahvrESH8 --delete --progress --stats --exclude="Music" --exclude="Games" --exclude="OpenTTD" --exclude=".*/" --exclude=".*" $s $d
-end
-
-set result (timer_end)
-echo (set_color cyan)"Done in $result s."(set_color normal)
-echo
-
-mkdir -p ~/.cache/dada
-echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-files
+print_backup_finish $name
+set_last_backup $name

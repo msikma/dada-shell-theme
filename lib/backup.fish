@@ -265,7 +265,7 @@ function print_backup_start \
   --description "Prints the purpose of this backup script and starts the timer; to be done right before a backup starts"
   echo
   echo -n (set_color yellow)"Backup script for "(set_color cyan)"$purpose"(set_color yellow)
-  if set -q hn
+  if [ (count $hn) -ne 0 ]
     echo " on "(set_color cyan)"$hn"(set_color yellow)":"(set_color normal)
   else
     echo ":"(set_color normal)
@@ -315,6 +315,7 @@ end
 function backup_error_exit \
   --argument-names script reason \
   --description "Prints an error message and exits"
+  echo
   echo $script": Error: "$reason
   exit 1
 end

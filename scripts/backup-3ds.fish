@@ -13,7 +13,7 @@ set pictures_dst_basedir "$dst_basedir/Nintendo 3DS pictures"
 # Check whether the 3DS SD card is mounted.
 set bootfile (find "/Volumes" -maxdepth 2 -type f -name "boot.3dsx")
 if set -q $bootfile
-  backup_error_exit $name "Could not find 3DS SD card"
+  backup_error_exit $name "Could not find 3DS SD card."
 end
 
 # Determine the base dir for backing up 3DS files.
@@ -44,7 +44,7 @@ check_hostname $name
 check_needed_dirs $name 'source' $sd_backups_src_dir $saves_src_dir $extdata_src_dir $pictures_src_dir $powersaves_src_dir
 check_needed_dirs $name 'target' $sd_backups_dst_dir $saves_dst_dir $extdata_dst_dir $pictures_dst_dir $powersaves_dst_dir
 
-print_backup_start $purpose $name
+print_backup_start $purpose $name $dada_hostname
 print_last_backup_time $name
 echo (set_color blue)"Backing up the following 3DS: "(set_color purple)"$id_str"(set_color normal)
 echo
