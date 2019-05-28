@@ -11,7 +11,7 @@ check_hostname $name
 check_needed_dirs $name 'source' $src
 check_needed_dirs $name 'target' $dst
 
-print_backup_start $purpose $name
+print_backup_start $purpose $name $dada_hostname
 print_last_backup_time $name
 print_backup_dirs $src $dst
 

@@ -8,7 +8,7 @@ set dst "/Volumes/Files/Backups/$dada_hostname/Databases"
 check_hostname $name
 check_needed_dirs $name 'target' $dst
 
-print_backup_start $purpose $name
+print_backup_start $purpose $name $dada_hostname
 print_last_backup_time $name
 print_backup_dir 'MySQL databases' $dst
 
@@ -30,8 +30,8 @@ else
 end
 
 # Check if we have access with the standard credentials.
-if not eval $sqlcmd -u$user -p$pass -e "help;" > /dev/null
-  backup_error_exit $name "Could not login using given credentials"
+if not eval $sqlcmd -u$user -p$pass -e "help 2>/dev/null;" > /dev/null
+  backup_error_exit $name "Could not login using given credentials."
 end
 
 # Generate a list of databases we'll back up.

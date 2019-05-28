@@ -6,7 +6,7 @@
 
 set cron_name com.dada.crontab
 set cron_plist $cron_name.plist
-set cron_plist_path ~/Library/LaunchAgents/$cron_name
+set cron_plist_path ~/Library/LaunchAgents/$cron_plist
 
 function dada-cron \
   --description "Runs Cron job commands"
@@ -26,6 +26,18 @@ function dada-cron \
   _cache_weather
 
   _cron_print (set_color green)"Done."(set_color normal)
+end
+
+function cron-info \
+  --description "Displays info about the active Cron job"
+  set interval (cat $cron_plist_path | sed -e '/key>StartInterval/,/integer/!d' | grep -o "\([0-9]\+\)")
+  set active (launchctl list | grep $cron_name)
+  if [ (count $active) -eq 0 ]
+    echo "cron-info: error: Cron script is not installed."
+    return 1
+  else
+    echo "cron-info: Cron script is installed and runs every $interval seconds."
+  end
 end
 
 function cron-log \
