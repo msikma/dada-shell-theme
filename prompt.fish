@@ -109,7 +109,7 @@ function fish_greeting --description 'Display the login greeting'
   set main_cols \
     "User:"             "$dada_uhostname_local ("(get_curr_ip)")" \
     "Disk usage:"       (get_disk_usage_perc)"% ("(get_disk_usage_gb)"/"(get_disk_total_gb)" GB available)" \
-  
+
   set theme_cols \
     "Theme version:"    "$theme_version" \
     "Last commit:"      "$last_commit ($last_commit_rel)" \
@@ -121,7 +121,7 @@ function fish_greeting --description 'Display the login greeting'
     "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
     "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
-  
+
   # Print all columns.
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color yellow) $main_cols)
@@ -151,14 +151,18 @@ function fish_right_prompt --description 'Write out the right prompt'
 end
 
 # Displays project info on directory change.
-function check_node_project \
-  --description 'Display project info if we changed to a Node project directory' \
+function display_project_info \
+  --description 'Display project info if we changed to a project directory' \
   --on-variable dirprev
+
+  if begin test -f ./package.json; or test -f ./requirements.txt; or test -f ./composer.json; or test -f ./setup.py; end
+    set is_project 1
+  end
 
   # Don't display project info if:
   status --is-command-substitution; # this is command substitution \
   	or test "$NO_DIRPREV_HOOK" = 1;
-    or not test -f ./package.json; # there's no package.json \
+    or not [ -n "$is_project" ]; # there's no relevant project files \
     or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \
     # On second thought, whether we came from a lower directory isn't very important.
     # Note: this has to be -eq 2, since we change directories in the fish_greeting that runs before this.
@@ -166,5 +170,5 @@ function check_node_project \
     and return
 
   # Displays project name, version, and a list of bin files, npm scripts and docs.
-  node-project.js
+  projinfo
 end
