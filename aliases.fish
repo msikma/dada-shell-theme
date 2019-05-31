@@ -33,7 +33,7 @@ alias latest="ls -lah --git -s old --color=always | head -11" # shows 10 latest 
 # Bin
 alias encflac="enc-flac.bash"
 alias jira="git-jira.bash"
-alias proj="node-project.js"
+alias proj="projinfo"
 alias projects="view-projects.fish"
 alias updrepos="update-projects.fish"
 alias imgfloppy="image-floppy.fish"
