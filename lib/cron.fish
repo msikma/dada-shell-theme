@@ -34,14 +34,21 @@ end
 
 function _cron_print_cmd \
   --description "Prints a command we're running" \
-  --argument-names cmd str dots
+  --argument-names cmd str dots use_color
   if [ ! -n "$str" ]
     set str 'Running'
   end
   if [ ! -n "$dots" ]
     set dots '...'
   end
-  _cron_print (set_color yellow)$str" "(set_color normal)"$cmd"(set_color yellow)$dots(set_color normal)
+  if [ ! -n "$use_color" ]
+    set use_color 0
+  end
+  if [ "$use_color" -eq 1 ]
+    _cron_print (set_color yellow)$str" "(set_color normal)"$cmd"(set_color yellow)$dots(set_color normal)
+  else
+    _cron_print "$str $cmd$dots"
+  end
 end
 
 function _cron_path \

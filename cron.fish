@@ -8,15 +8,19 @@ set cron_name com.dada.crontab
 set cron_plist $cron_name.plist
 set cron_plist_path ~/Library/LaunchAgents/$cron_plist
 
+# Note: somehow set_color commands causes lines not to be logged properly,
+# even when the colors are stripped out before saving them to the file.
+# This only occurs when the script is being run by launchd.
+# Presumably there's a problem with set_color when Fish Shell doesn't have a tty.
 function dada-cron \
   --description "Runs Cron job commands"
   _cron_ensure_file
   _cron_add_start_log
 
-  _cron_print (set_color green)"Dada Shell Theme: "(set_color yellow)"Cron job running"(set_color normal)
+  _cron_print "Dada Shell Theme: Cron job running"
 
-  _cron_print (set_color yellow)"Time: "(set_color normal)(date +"%a, %b %d %Y %X")
-  _cron_print (set_color yellow)"File: "(set_color normal)(_cron_file)
+  _cron_print "Time: "(date +"%a, %b %d %Y %X")
+  _cron_print "File: "(_cron_file)
 
   if test -d ~/.config/ekizo-dl
     _cron_print_cmd "ekizo-dl"
@@ -25,7 +29,7 @@ function dada-cron \
   _cron_print_cmd "weather" "Caching"
   _cache_weather
 
-  _cron_print (set_color green)"Done."(set_color normal)
+  _cron_print "Done."
 end
 
 function cron-info \
