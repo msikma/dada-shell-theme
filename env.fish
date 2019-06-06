@@ -34,11 +34,21 @@ if test -d ~/Projects/fishtetris
   set PATH ~/Projects/fishtetris $PATH
 end
 
-# DevkitPro
+# 3DS development - DevkitPro and Citra
 set -gx DEVKITPRO /opt/devkitpro
 set -gx DEVKITARM "$DEVKITPRO/devkitARM"
 set -gx CTRULIB "$DEVKITPRO/libctru"
 set -gx CTRBANNERTOOL "/Users/msikma/.bin/misc-bin/bannertool"
+if test -d $DEVKITPRO
+  set PATH $DEVKITPRO/tools/bin/ $PATH
+  set PATH $DEVKITPRO/pacman/bin/ $PATH
+end
+set -l CITRADIR /Applications/Citra
+if test -e $CITRADIR/nightly/citra
+  set PATH $CITRADIR/nightly/ $PATH
+else if test -e $CITRADIR/canary/citra
+  set PATH $CITRADIR/canary/ $PATH
+end
 
 set -gx FLOPPY_IMAGING_PATH ~/"Files/Floppy disk images/"
 
