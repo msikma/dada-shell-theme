@@ -43,6 +43,9 @@ if test -d $DEVKITPRO
   set PATH $DEVKITPRO/tools/bin/ $PATH
   set PATH $DEVKITPRO/pacman/bin/ $PATH
 end
+if test -d $DEVKITARM/bin
+  set PATH $DEVKITARM/bin $PATH
+end
 set -l CITRADIR /Applications/Citra
 if test -e $CITRADIR/nightly/citra
   set PATH $CITRADIR/nightly/ $PATH
