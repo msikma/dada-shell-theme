@@ -1,5 +1,21 @@
 # Dada Shell Theme © 2019
 
+function get_dot_underbars \
+  --argument-names dir \
+  --description "Returns the amount of dot-underbar files in a given base dir"
+  set files (string trim -- (find $dir | grep -i "\._" | grep -v "\._Icon" | wc -l))
+  echo $files
+end
+
+function clean_dot_underbars \
+  --argument-names dir \
+  --description "Cleans up the dot-underbar files in a given base dir"
+  set files (find $dir | grep -i "\._" | grep -v "\._Icon")
+  for file in $files
+    rm $file
+  end
+end
+
 # Prints disk usage as percentage.
 function get_disk_usage_perc --description "Prints disk usage in %"
   df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1
