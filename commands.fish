@@ -31,6 +31,15 @@ function code
   code-insiders $argv
 end
 
+# Runs Citra via citra-qt. For some reason this only works when in the bin's directory.
+# This runs nightly version 1144, as newer versions are broken on OSX 10.13.
+function citra-qt
+  set target $PWD/$argv[1]
+  pushd "/Applications/Citra/nightly/citra-qt.app/Contents/MacOS/"
+  ./citra-qt-bin $target
+  popd
+end
+
 function jv --description "Quick display of JSON files"
   set -x jv_json_file (pwd)/$argv[1]
   node -e "console.log(JSON.parse(require('fs').readFileSync(process.env.jv_json_file, 'utf8')));"
