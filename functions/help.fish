@@ -43,6 +43,7 @@ set cmd_scripts \
   "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
   "pinger"            "Continuously if we are online" \
   "unecm"             "Converts ECM files to BIN" \
+  "convert"           "Converts images other formats" \
 
 set cmd_project \
   "proj"              "Displays current project info" \

@@ -17,7 +17,7 @@ Make sure to install:
 * GNU coreutils and other tools: `brew install coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt grep`
 * [misc-bin](https://bitbucket.org/msikma/misc-bin)
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
-* `npm install --global trash-cli empty-trash-cli fileicon ascr cheerio request feedparser-promised dist-exiftool node-exiftool sanitize-filename`
+* `npm install --global trash-cli empty-trash-cli fileicon ascr cheerio request feedparser-promised dist-exiftool node-exiftool sanitize-filename imagemagick`
 * `pip3 install glances mdv`
 * `brew install exa tldr git-extras youtube-dl bat fd ncdu coreutils flac ecm findutils`
 * `brew install diff-so-fancy` ([configure](https://github.com/so-fancy/diff-so-fancy))
