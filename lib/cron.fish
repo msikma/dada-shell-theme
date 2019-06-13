@@ -12,10 +12,19 @@ set -g _weather_cache '/Users/'(whoami)'/.cache/dada/weather.txt'
 
 # Prints out the cached weather data.
 function _get_weather
+  cat $_weather_cache
+end
+
+# Deletes the weather file if it's empty and then caches the weather file.
+function _cache_weather_safe
   if not test -e $_weather_cache
     _cache_weather
   end
-  cat ~/.cache/dada/weather.txt
+  set size (du -k $_weather_cache | cut -f1)
+  if [ $size -eq 0 ]
+    rm $_weather_cache
+    _cache_weather
+  end
 end
 
 # Caches the weather output, but only the first item.

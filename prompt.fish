@@ -31,6 +31,16 @@ set -g _weather_col 68
 
 function _greeting_weather --description "Shows the weather in the greeting message"
   set weather (_get_weather)
+  # Don't do anything if the weather file is empty.
+  # This happens if the server is down.
+  if test -z "$weather"
+    return
+  end
+  # It can also contain an HTML error.
+  if string match -q -- "*nginx*" $weather
+    return
+  end
+  # Display the weather at the right place.
   for n in (seq (count $weather))
     set -l m (math $n + 1)
     echo -ne "\033[$m;""$_weather_col""H"

@@ -27,7 +27,7 @@ function dada-cron \
     _cron_run_cmd "ekizo-dl.py"
   end
   _cron_print_cmd "weather" "Caching"
-  _cache_weather
+  _cache_weather_safe
 
   _cron_print "Done."
 end
