@@ -15,6 +15,7 @@ set backup_cmd \
   "backup-music"      "Backs up music" \
   "backup-src"        "Backs up source code directories" \
   "backup-zoo"        "Backs up music to the Happy Zoo" \
+  "backup-vms"        "Backs up VMs" \
 
 function backup --description "Displays backup commands and info"
   echo
@@ -32,6 +33,7 @@ function backup --description "Displays backup commands and info"
     "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
     "Zoo backup:"       (backup_time_str "$backup_prefix/backup-zoo") \
+    "VMs backup:"       (backup_time_str "$backup_prefix/backup-vms") \
 
   # Merge together with the backup commands.
   set cols_all
@@ -75,7 +77,11 @@ end
 # -S, --sparse           turn sequences of nulls into sparse blocks
 # -8, --8-bit-output     leave high-bit chars unescaped in output
 #
-# This DOES NOT delete files that already exist in the destination directory.
+# If 'delete' is passed as 1, this will delete files that are in the destination
+# but not in the source.
+#
+# To exclude directories, pass any number of paths (relative to the source path)
+# as the last arguments, after 'delete'.
 #
 # Note: this doesn't copy extended attributes (-X) which won't work on btrfs.
 # Change if we're upgrading to a better fs.
@@ -83,6 +89,7 @@ end
 function copy_rsync \
   --argument-names src dst quiet delete \
   --description "Copies files from source to destination using rsync"
+  set excl $argv[5..-1]
   if [ -n "$quiet" -a "$quiet" -eq 1 ]
     set q 'q'
   end
@@ -93,14 +100,15 @@ function copy_rsync \
   rsync -ahEANS8"$q" $d --progress --exclude=".*" --exclude="Icon*" --stats "$src" "$dst"
 end
 
-# As copy_rsync, but with --delete.
+# As copy_rsync, but with --delete. Pass exclude directories (local paths) at the end.
 function copy_rsync_delete \
   --argument-names src dst quiet \
   --description "Copies files from source to destination using rsync"
   if [ -z "$quiet" ]
     set quiet '0'
   end
-  copy_rsync $src $dst $quiet 1
+  set excl $argv[4..-1]
+  copy_rsync $src $dst $quiet 1 $excl
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
