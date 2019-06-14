@@ -14,7 +14,7 @@ Start with:
 Make sure to install:
 
 * This repository (in `~/.config/dada`)
-* GNU coreutils and other tools: `brew install coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt grep`
+* GNU coreutils and other tools: `brew install xdelta coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt grep`
 * [misc-bin](https://bitbucket.org/msikma/misc-bin)
 * [misc-scripts](https://github.com/msikma/misc-scripts) (both of these in `~/.bin/`)
 * `npm install --global trash-cli empty-trash-cli fileicon ascr cheerio request feedparser-promised dist-exiftool node-exiftool sanitize-filename imagemagick`
@@ -31,6 +31,7 @@ Make sure to install:
 
 Other utilities (unlisted):
 
+* [ips.py](https://github.com/fbeaudet/ips.py)
 * [MultiPatch](http://www.romhacking.net/utilities/746/)
 * For the `ekizo-dl` command running in the Cron job: `git clone git@github.com:msikma/ekizo-dl.git` ~/Projects/ekizo-dl
 
