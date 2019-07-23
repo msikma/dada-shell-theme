@@ -17,14 +17,8 @@ end
 
 # Deletes the weather file if it's empty and then caches the weather file.
 function _cache_weather_safe
-  if not test -e $_weather_cache
-    _cache_weather
-  end
-  set size (du -k $_weather_cache | cut -f1)
-  if [ $size -eq 0 ]
-    rm $_weather_cache
-    _cache_weather
-  end
+  # TODO
+  _cache_weather
 end
 
 # Caches the weather output, but only the first item.
