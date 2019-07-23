@@ -52,7 +52,7 @@ end
 
 function cron-install \
   --description "Ensures that the Cron script is installed"
-  set installed (launchctl list | grep com.dada.crontaab | wc -l | bc)
+  set installed (launchctl list | grep com.dada.crontab | wc -l | bc)
   if not test -e $cron_plist_path
     cp "$DADA"etc/$cron_plist $cron_plist_path
     launchctl load $cron_plist_path
