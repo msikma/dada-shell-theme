@@ -9,12 +9,14 @@ set -gx dada_hostname_local (hostname)
 set -gx dada_uhostname (whoami)"@$dada_hostname"
 set -gx dada_uhostname_local (whoami)"@$dada_hostname_local"
 
+source $DADA"alerts.fish"
 source $DADA"aliases.fish"
 source $DADA"commands.fish"
 source $DADA"cron.fish"
 source $DADA"env.fish"
 source $DADA"prompt.fish"
 
+source $DADA"lib/alerts.fish"
 source $DADA"lib/backup.fish"
 source $DADA"lib/columns.fish"
 source $DADA"lib/cron.fish"
@@ -32,6 +34,3 @@ source $DADA"functions/newx.fish"
 source $DADA"functions/update.fish"
 
 source $DADA"secrets/keys.fish"
-
-
-

@@ -214,7 +214,6 @@ function backup_time_str --description 'Prints the time a backup was last perfor
   if test -e $bfile
     set bu (cat $bfile)
     set bu_unix (backup_date_unix $bu)
-    set bu_abs (date -r $bu_unix +%Y-%m-%d)
     set bu_rel (time_ago $now $bu_unix)
     set bu_diff (math "$now - $bu_unix")
     set color (set_color normal)
@@ -227,6 +226,7 @@ function backup_time_str --description 'Prints the time a backup was last perfor
       set color (set_color red)
       set warn " ⚠️"
     end
+    set bu_abs (date -r $bu_unix +%Y-%m-%d)
     echo "$color$bu_abs ($bu_rel)$warn"(set_color normal)
   else
     echo 'unknown'
