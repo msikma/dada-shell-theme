@@ -22,7 +22,7 @@ check_needed_dirs $name 'source' $src_c $src_p $src_s
 check_needed_dirs $name 'target' $dst_c $dst_p $dst_s
 
 print_backup_start $purpose $name $dada_hostname
-print_last_backup_time $name 1
+print_last_backup_time_abs $name
 print_backup_dirs $src_p $dst_p $src_c $dst_c $src_s $dst_s
 
 set types $type_p $type_c $type_s
