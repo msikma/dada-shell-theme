@@ -45,7 +45,7 @@ check_needed_dirs $name 'source' $sd_backups_src_dir $saves_src_dir $extdata_src
 check_needed_dirs $name 'target' $sd_backups_dst_dir $saves_dst_dir $extdata_dst_dir $pictures_dst_dir $powersaves_dst_dir
 
 print_backup_start $purpose $name $dada_hostname
-print_last_backup_time $name
+print_last_backup_time "."$name $sd_backups_dst_dir
 echo (set_color blue)"Backing up the following 3DS: "(set_color purple)"$id_str"(set_color normal)
 source "$DADA/scripts/clean-3ds.fish"
 echo
@@ -64,4 +64,4 @@ if test -d $screenshots_src_dir
 end
 
 print_backup_finish $name
-set_last_backup $name
+set_last_backup "."$name $sd_backups_dst_dir

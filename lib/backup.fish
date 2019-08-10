@@ -24,7 +24,7 @@ function backup --description "Displays backup commands and info"
   # Make a list of all last backup times.
   set backup_prefix "$home/.cache/dada"
   set backup_times \
-    "3DS SD backup:"    (backup_time_str "$backup_prefix/backup-3ds") \
+    "3DS SD backup:"    (last_3ds_backup) \
     "Config backup:"    (backup_time_str "$backup_prefix/backup-config") \
     "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
     "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
@@ -44,16 +44,35 @@ function backup --description "Displays backup commands and info"
 end
 
 function get_last_backup \
-  --argument-names script abs \
-  --description "Returns last backup time for a script"
-  backup_time_rel $home"/.cache/dada/"$script $abs
+  --argument-names script dirn \
+  --description "Returns the last backup time for a script (relative time)"
+  set dirn (_ensure_trailing_slash $dirn)
+  set check (_check_backup_vars $script $dirn)
+  if test "$check" != "0"; echo $check; return 1; end
+  backup_time_rel "$dirn""$script"
+end
+
+function get_last_backup_abs \
+  --argument-names script dirn \
+  --description "Returns the last backup time for a script (relative and absolute time)"
+  set dirn (_ensure_trailing_slash $dirn)
+  set check (_check_backup_vars $script $dirn)
+  if test "$check" != "0"; echo $check; return 1; end
+  backup_time_rel "$dirn""$script" 1
 end
 
 function set_last_backup \
-  --argument-names script \
-  --description "Saves the current timestamp as the latest backup time"
-  mkdir -p $home"/.cache/dada"
-  echo (date +"%a, %b %d %Y %X %z") > $home"/.cache/dada/"$script
+  --argument-names script dirn abs \
+  --description "Saves the current timestamp as the latest backup time (defaulting to ~/.cache/dada/ as the base dir)"
+  # Add a trailing slash to the path if needed.
+  set dirn (_ensure_trailing_slash $dirn)
+
+  # Check if the arguments are valid and the directory exists.
+  set check (_check_backup_vars $script $dirn)
+  if test "$check" != "0"; echo $check; return 1; end
+
+  # Print timestamp to the file, e.g. "Sat, Aug 10 2019 18:41:08 +0200"
+  echo (date +"%a, %b %d %Y %X %z") > "$dirn""$script"
 end
 
 # Runs rsync on a source and destination directory.
@@ -109,6 +128,22 @@ function copy_rsync_delete \
   end
   set excl $argv[4..-1]
   copy_rsync $src $dst $quiet 1 $excl
+end
+
+# Searches for the primary 3DS and prints its last backup time; used in e.g. the 'backup' command.
+function last_3ds_backup \
+  --description "Prints the last backup time for the primary 3DS"
+  for n in (ls $sd_backups_dst_basedir)
+    set prfile "$sd_backups_dst_basedir/$n/.primary"
+    set backfile "$sd_backups_dst_basedir/$n/.$name"
+    if ! test -d $sd_backups_dst_basedir/$n; continue; end
+    if ! test -e $prfile; continue; end
+
+    backup_time_str $backfile
+    return
+  end
+  # If none were found.
+  echo "unknown"
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.
@@ -292,9 +327,16 @@ function print_backup_finish \
 end
 
 function print_last_backup_time \
-  --argument-names script abs \
-  --description "Prints out when the last backup was done"
-  echo (set_color green)"Last backup was "(get_last_backup $script $abs)"."(set_color normal)
+  --argument-names script dirn \
+  --description "Prints out when the last backup was done (relative time)"
+  echo (set_color green)"Last backup was "(get_last_backup $script $dirn)"."(set_color normal)
+  echo
+end
+
+function print_last_backup_time_abs \
+  --argument-names script dirn \
+  --description "Prints out when the last backup was done (relative and absolute time)"
+  echo (set_color green)"Last backup was "(get_last_backup_abs $script $dirn)"."(set_color normal)
   echo
 end
 
@@ -344,4 +386,32 @@ end
 
 function _get_rsync_version --description "Returns rsync's protocol version"
   rsync --version | grep -oi "protocol version .*\$" | cut -d' ' -f3
+end
+
+function _check_backup_vars \
+  --argument-names script dirn \
+  --description "Check if \$script and \$dirn are both set, or errors out otherwise"
+  # Ensure the standard path is always there.
+  mkdir -p $home"/.cache/dada"
+  if test -z "$script"; or test -z "$dirn"; echo "set_last_backup: Error: must define \$script"; return 1; end
+  if not test -d "$dirn"; echo "set_last_backup: Error: given directory does not exist: $dirn"; return 1; end
+  echo 0
+end
+
+function _ensure_trailing_slash \
+  --argument-names dirn \
+  --description "Add a trailing slash to a directory if it doesn't have one"
+  # Use the standard cache path as the default.
+  if test -z "$dirn"
+    set dirn $home"/.cache/dada"
+  end
+
+  # Split the given directory to see if we need a trailing slash.
+  # If the last item of the split isn't an empty string, we do.
+  set spl (string split "/" "$dirn")
+  if test -n "$spl[-1]"
+    echo "$dirn"/
+  else
+    echo "$dirn"
+  end
 end
