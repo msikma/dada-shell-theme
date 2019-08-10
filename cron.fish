@@ -14,7 +14,7 @@ set cron_plist_path ~/Library/LaunchAgents/$cron_plist
 # Presumably there's a problem with set_color when Fish Shell doesn't have a tty.
 function dada-cron \
   --description "Runs Cron job commands"
-  _cron_ensure_file
+  _cron_ensure_dir
   _cron_add_start_log
 
   _cron_print "Dada Shell Theme: Cron job running"
@@ -46,7 +46,7 @@ end
 
 function cron-log \
   --description "Opens the latest Cron log"
-  _cron_ensure_file
+  _cron_ensure_dir
   tail -n 100 -f (_cron_path)
 end
 

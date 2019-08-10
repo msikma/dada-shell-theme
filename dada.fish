@@ -34,3 +34,5 @@ source $DADA"functions/newx.fish"
 source $DADA"functions/update.fish"
 
 source $DADA"secrets/keys.fish"
+
+source $DADA"init.fish"

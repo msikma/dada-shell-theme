@@ -77,3 +77,10 @@ function _get_alert_ts_rel \
   set ts_rel (time_ago "$now" "$ts")
   echo $ts_rel
 end
+
+function _alerts_ensure_dir \
+  --description "Ensures that the alerts dirs are available"
+  mkdir -p $alerts_dir
+  mkdir -p $alerts_read_dir
+  mkdir -p $alerts_archive_dir
+end

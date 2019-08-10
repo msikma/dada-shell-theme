@@ -2,6 +2,7 @@
 
 # Alerts directory and the archive.
 set -g alerts_dir $home"/.cache/dada/alerts"
+set -g alerts_read_dir $alerts_dir"/read"
 set -g alerts_archive_dir $alerts_dir"/archive"
 
 # Standard width to display alerts at.

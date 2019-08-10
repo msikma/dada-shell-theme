@@ -75,7 +75,7 @@ function _cron_log \
   echo $argv >> $_c_file_full
 end
 
-function _cron_ensure_file \
+function _cron_ensure_dir \
   --description "Ensures the cache directory and file exists"
   mkdir -p $_c_dir
   set -g _c_file_full $_c_dir'/cron_'(date +"%Y%m")'.log'
