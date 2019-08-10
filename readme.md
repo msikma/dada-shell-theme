@@ -48,6 +48,12 @@ Add a file in `~/.config/fish` called `config.fish`:
 echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
 ```
 
+### Backups
+
+To see the current backup status, use `backup`. This prints a list of the available commands and how long it has been since they were last used.
+
+Backup scripts listed under *"non device specific"* are global; they can be run on any device and store their data in the same place. The other scripts store their data in a directory named after the current hostname.
+
 ### Cron job
 
 To set up the Cron job, simply run `cron-install`. If this somehow doesn't work, it can be manually installed as follows:

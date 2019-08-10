@@ -4,18 +4,22 @@
 # Use rsync --help to see the version.
 set _rsync_min_prot_version 31
 
+set ncol (set_color normal)
+
 # List of backup commands.
 set backup_cmd \
-  "backup-3ds"        "Backs up 3DS SD card" \
   "backup-config"     "Backs up ~/.config/ dirs" \
   "backup-dbs"        "Backs up SQL databases" \
   "backup-files"      "Backs up various other things" \
-  "backup-ftp"        "Backs up FTP bookmarks" \
   "backup-games"      "Backs up game content" \
   "backup-music"      "Backs up music" \
   "backup-src"        "Backs up source code directories" \
-  "backup-zoo"        "Backs up music to the Happy Zoo" \
   "backup-vms"        "Backs up VMs" \
+  "" "" \
+  "$ncol""Non device specific:" "" \
+  "" "" \
+  "backup-3ds"        "Backs up 3DS SD card" \
+  "backup-ftp"        "Backs up FTP bookmarks" \
 
 function backup --description "Displays backup commands and info"
   echo
@@ -24,21 +28,26 @@ function backup --description "Displays backup commands and info"
   # Make a list of all last backup times.
   set backup_prefix "$home/.cache/dada"
   set backup_times \
-    "3DS SD backup:"    (last_3ds_backup) \
     "Config backup:"    (backup_time_str "$backup_prefix/backup-config") \
     "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
     "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
-    "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
     "Games backup:"     (backup_time_str "$backup_prefix/backup-games") \
     "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
-    "Zoo backup:"       (backup_time_str "$backup_prefix/backup-zoo") \
     "VMs backup:"       (backup_time_str "$backup_prefix/backup-vms") \
+    "" "" \
+    "" "" \
+    "" "" \
+
+  set backup_times_global \
+    "3DS SD backup:"    (last_3ds_backup) \
+    "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
 
   # Merge together with the backup commands.
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color red) $backup_cmd)
   set -a cols_all (_add_cmd_colors (set_color magenta) $backup_times)
+  set -a cols_all (_add_cmd_colors (set_color yellow) $backup_times_global)
   _iterate_help $cols_all
   echo
 end
