@@ -14,16 +14,55 @@ function find_new_alerts \
 end
 
 function make_alert \
-  --argument-names name content \
+  --argument-names slug name level content \
   --description "Creates a new alert"
-  _make_alert_in_dir $name $alerts_dir $content
+  _make_alert_in_dir $slug $name $level $content $alerts_dir
 end
 
 function print_alert \
   --argument-names filepath \
   --description "Prints the contents of an alert"
   set lines (cat $filepath)
-  set color (set_color red)
+  set name $lines[1]
+  set level $lines[2]
+  set content $lines[3..(count $lines)]
+
+  if [ "$level" = "warning" ];      set color (set_color yellow); set linetype "single"; end
+  if [ "$level" = "success" ];      set color (set_color green);  set linetype "single"; end
+  if [ "$level" = "error" ];        set color (set_color red);    set linetype "single"; end
+  if [ "$level" = "error_double" ]; set color (set_color red);    set linetype "double"; end
+
+  if [ "$linetype" = "single" ]
+    set _tl $_alerts_tl
+    set _t $_alerts_t
+    set _tr $_alerts_tr
+    set _l $_alerts_l
+    set _r $_alerts_r
+    set _bl $_alerts_bl
+    set _b $_alerts_b
+    set _br $_alerts_br
+  end
+  if [ "$linetype" = "double_h" ]
+    set _tl $_alerts_dh_tl
+    set _t $_alerts_dh_t
+    set _tr $_alerts_dh_tr
+    set _l $_alerts_dh_l
+    set _r $_alerts_dh_r
+    set _bl $_alerts_dh_bl
+    set _b $_alerts_dh_b
+    set _br $_alerts_dh_br
+  end
+  if [ "$linetype" = "double" ]
+    set _tl $_alerts_d_tl
+    set _t $_alerts_d_t
+    set _tr $_alerts_d_tr
+    set _l $_alerts_d_l
+    set _r $_alerts_d_r
+    set _bl $_alerts_d_bl
+    set _b $_alerts_d_b
+    set _br $_alerts_d_br
+  end
+
   set normal (set_color normal)
 
   set nowdate (_get_now_date)
@@ -44,30 +83,22 @@ function print_alert \
     set ts "at "$ttime_f
   end
 
-  # Title needs extra width to compensate for the escape sequences.
-  set title_w (math $alerts_width + 42)
+  # Time display needs extra width to compensate for the escape sequences.
+  set atime_w (math $alerts_width + 14)
   set top_w (math $alerts_width - 2)
   set line_w (math $alerts_width - 4)
 
-  set tl "+"
-  set t "="
-  set _tr "+"
-  set l "| "
-  set r " |"
-  set bl "+"
-  set b "="
-  set br "+"
+  set title (set_color blue)"Alert from "(set_color magenta)$name
+  set atime "$color""$rel"" ($ts)"(set_color normal)
 
-  set name "hello world"
-  set title (set_color yellow)"New alert from "(set_color green)$name(set_color yellow)", "(set_color green)"$rel"(set_color yellow)" ("(set_color green)"$ts"(set_color yellow)")"(set_color normal)
-
-  echo "$color""$tl"(seq -f '' -s$t $top_w)"$_tr""$normal"
-  printf "%s%s%-"$title_w"s%s%s%s" $color $l $title $color $r $normal
-  echo
-  for line in $lines
-    printf "%s%s%-"$line_w"s%s%s\n" $color $l $line $r $normal
+  echo "$color""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
+  printf "%"$atime_w"s%s%s%s\n" $atime $color $_r $normal
+  echo -en "\033[1A"
+  printf "%s%s%s\n" $color $_l $title
+  for line in $content
+    printf "%s%s%-"$line_w"s%s%s\n" $color $_l $line $_r $normal
   end
-  echo "$color""$bl"(seq -f '' -s$b $top_w)"$br""$normal"
+  echo "$color""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
 end
 
 function archive_alert \
