@@ -4,6 +4,10 @@
 # Use rsync --help to see the version.
 set _rsync_min_prot_version 31
 
+# Backup directory for 3DS units.
+set backup_dir_3ds "/Volumes/Files/Backups/Game data/Nintendo 3DS backups"
+
+# Helper color for the columns.
 set ncol (set_color normal)
 
 # List of backup commands.
@@ -40,7 +44,7 @@ function backup --description "Displays backup commands and info"
     "" "" \
 
   set backup_times_global \
-    "3DS SD backup:"    (last_3ds_backup) \
+    "3DS SD backup:"    (backup_time_str_3ds) \
     "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
 
   # Merge together with the backup commands.
@@ -140,19 +144,61 @@ function copy_rsync_delete \
 end
 
 # Searches for the primary 3DS and prints its last backup time; used in e.g. the 'backup' command.
-function last_3ds_backup \
+function backup_time_str_3ds \
   --description "Prints the last backup time for the primary 3DS"
-  for n in (ls $sd_backups_dst_basedir)
-    set prfile "$sd_backups_dst_basedir/$n/.primary"
-    set backfile "$sd_backups_dst_basedir/$n/.$name"
-    if ! test -d $sd_backups_dst_basedir/$n; continue; end
-    if ! test -e $prfile; continue; end
+  for n in (ls $backup_dir_3ds)
+    set prfile "$backup_dir_3ds/$n/.primary"
+    set backfile "$backup_dir_3ds/$n/.backup-3ds"
+    if ! test -d "$backup_dir_3ds/$n"; continue; end
+    if ! test -e "$prfile"; continue; end
 
     backup_time_str $backfile
     return
   end
   # If none were found.
   echo "unknown"
+end
+
+function find_new_3ds_screenshots \
+  --argument-names srcdir dstdir \
+  --description "Returns a list of new screenshots that are available in srcdir but not in dstdir"
+  # Enumerate the bmp files that need to be copied and converted.
+  set bmps $srcdir/*.bmp
+  for bmp in $bmps
+    set png $dstdir/(basename $bmp bmp)png
+    if test -e $png
+      continue
+    end
+    echo $bmp
+  end
+end
+
+function backup_new_3ds_screenshots \
+  --argument-names srcdir dstdir \
+  --description "Copies .bmp screenshots over from the source dir that don't have a .png equivalent in the destination dir, then converts them"
+  # List the screenshots that we haven't copied over and converted yet.
+  set -a copy_bmps (find_new_3ds_screenshots $srcdir $dstdir)
+
+  # Now copy them and convert them. The original bmp files are then deleted.
+  set bmp_count (count $copy_bmps)
+  set n 0
+  for bmp in $copy_bmps
+    set dst_png $dstdir/(basename $bmp bmp)png
+    set dst_bmp $dstdir/(basename $bmp)
+
+    # Copy
+    cp $bmp $dst_bmp
+    # Convert
+    convert $dst_bmp $dst_png
+    # Set file creation/modification dates
+    touch -r $bmp $dst_png
+    # Remove bmp copy
+    rm $dst_bmp
+
+    set n (math $n + 1)
+    echo -en (set_color green)"\e[0K\rWorking: "(set_color normal)"$n"(set_color green)" images copied and converted."(set_color normal)
+  end
+  echo ""
 end
 
 # Prints out the latest backup time in YYYY-mm-dd and ('x days ago') format.

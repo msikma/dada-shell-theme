@@ -59,8 +59,12 @@ copy_rsync $powersaves_src_dir $powersaves_dst_dir 1
 
 # Optionally copy over Luma screenshots if the SD card has those.
 # Don't error out if they don't exist.
-if test -d $screenshots_src_dir
-  copy_rsync $screenshots_src_dir $screenshots_dst_dir 1
+# This copies all bmp files, then converts them to png.
+set scr (find_new_3ds_screenshots $screenshots_src_dir $screenshots_dst_dir)
+if test -d $screenshots_src_dir; and set -q scr[1]
+  echo ""
+  echo (set_color yellow)"Copying over new Luma screenshots and converting them to PNG."(set_color normal)
+  backup_new_3ds_screenshots $screenshots_src_dir $screenshots_dst_dir
 end
 
 print_backup_finish $name
