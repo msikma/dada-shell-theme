@@ -1,5 +1,7 @@
 # Dada Shell Theme © 2019
 
+# Note: some of these functions require GNU Date (via 'coreutils' on Brew).
+
 # Box drawing characters for displaying alert boxes.
 set -g _alerts_tl "╭"
 set -g _alerts_t "─"
@@ -57,56 +59,6 @@ function _make_alert_in_dir \
   echo "$name" >> "$fname"
   echo "$level" >> "$fname"
   echo "$content" >> "$fname"
-end
-
-function _get_alert_date \
-  --argument-names filepath \
-  --description "Prints only the date for when an alert was generated"
-  set ts (_get_alert_unix_time $filepath)
-  set y (date -r $ts +"%Y")
-  set m (date -r $ts +"%m")
-  set d (date -r $ts +"%d")
-  echo $y
-  echo $m
-  echo $d
-end
-
-function _get_alert_time \
-  --argument-names filepath \
-  --description "Prints only the time for when an alert was generated"
-  set ts (_get_alert_unix_time $filepath)
-  set h (date -r $ts +"%H")
-  set m (date -r $ts +"%M")
-  set s (date -r $ts +"%S")
-  echo $h
-  echo $m
-  echo $s
-end
-
-function _get_now_date \
-  --description "Prints the date for right now"
-  set y (date +"%Y")
-  set m (date +"%m")
-  set d (date +"%d")
-  echo $y
-  echo $m
-  echo $d
-end
-
-function _get_alert_ts_abs \
-  --argument-names filepath \
-  --description "Prints the absolute time for when an alert was generated"
-  set ts (_get_alert_unix_time $filepath)
-  echo (date -r $ts +"%Y-%m-%d %X %z")
-end
-
-function _get_alert_ts_rel \
-  --argument-names filepath \
-  --description "Prints the relative time for when an alert was generated"
-  set ts (_get_alert_unix_time $filepath)
-  set now (date +%s)
-  set ts_rel (time_ago "$now" "$ts")
-  echo $ts_rel
 end
 
 function _alerts_ensure_dir \

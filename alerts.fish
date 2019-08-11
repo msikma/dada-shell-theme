@@ -26,11 +26,12 @@ function print_alert \
   set name $lines[1]
   set level $lines[2]
   set content $lines[3..(count $lines)]
+  set skip_first 0
 
-  if [ "$level" = "warning" ];      set color (set_color yellow); set linetype "single"; end
-  if [ "$level" = "success" ];      set color (set_color green);  set linetype "single"; end
-  if [ "$level" = "error" ];        set color (set_color red);    set linetype "single"; end
-  if [ "$level" = "error_double" ]; set color (set_color red);    set linetype "double"; end
+  if [ "$level" = "warning" ];      set color1 (set_color yellow); set color2 (set_color bryellow); set linetype "single"; end
+  if [ "$level" = "success" ];      set color1 (set_color green);  set color2 (set_color brgreen);  set linetype "single"; end
+  if [ "$level" = "error" ];        set color1 (set_color red);    set color2 (set_color brred);    set linetype "single"; end
+  if [ "$level" = "error_double" ]; set color1 (set_color red);    set color2 (set_color brred);    set linetype "double"; end
 
   if [ "$linetype" = "single" ]
     set _tl $_alerts_tl
@@ -65,40 +66,39 @@ function print_alert \
 
   set normal (set_color normal)
 
-  set nowdate (_get_now_date)
-  set tdate (_get_alert_date $filepath)
-  set ttime (_get_alert_time $filepath)
-  set ttime_f "$ttime[1]":"$ttime[2]":"$ttime[3]"
-  set abs (_get_alert_ts_abs $filepath)
-  set rel (_get_alert_ts_rel $filepath)
-
-  # Determine what sort of timestamp to display.
-  # If the alert was made today, only the relative time is necessary.
-  # For alerts within seven days, we'll display the name of the day.
-  # Anything from further in the past than that gets a full timestamp.
-  # TODO
-  set ts ""
-  if [ $tdate[1] -eq $nowdate[1] -a $tdate[2] -eq $nowdate[2] -a $tdate[3] -eq $nowdate[3] ]
-    # Same date:
-    set ts "at "$ttime_f
-  end
+  # Determine the timestamp to display. The formatting depends on how recent the alert is.
+  set alert_x (_get_alert_unix_time $filepath)
+  set alert_ts (format_full_timestamp $alert_x)
 
   # Time display needs extra width to compensate for the escape sequences.
   set atime_w (math $alerts_width + 14)
   set top_w (math $alerts_width - 2)
   set line_w (math $alerts_width - 4)
 
-  set title (set_color blue)"Alert from "(set_color magenta)$name
-  set atime "$color""$rel"" ($ts)"(set_color normal)
-
-  echo "$color""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
-  printf "%"$atime_w"s%s%s%s\n" $atime $color $_r $normal
-  echo -en "\033[1A"
-  printf "%s%s%s\n" $color $_l $title
-  for line in $content
-    printf "%s%s%-"$line_w"s%s%s\n" $color $_l $line $_r $normal
+  # If the 'name' variable is '-' (just a dash), we won't print a title.
+  # Instead we'll print the first line of the message.
+  if [ $name = "-" ]
+    set title $content[1]
+    set content $content[2..(count $content)]
+    # If this leaves only a single line...
+    if [ $title = $content[1] ]
+      set skip_first 1
+    end
+  else
+    set title (set_color blue)"Alert from "(set_color magenta)$name
   end
-  echo "$color""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
+  set atime "$color1""$alert_ts"(set_color normal)
+
+  echo "$color1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
+  printf "%"$atime_w"s%s%s%s\n" $atime $color1 $_r $normal
+  echo -en "\033[1A"
+  printf "%s%s%s\n" $color1 $_l $title
+  if not [ $skip_first -eq 1 ]
+    for line in $content
+      printf "%s%s%s%-"$line_w"s%s%s%s\n" $color1 $_l $color2 $line $color1 $_r $normal
+    end
+  end
+  echo "$color1""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
 end
 
 function archive_alert \
