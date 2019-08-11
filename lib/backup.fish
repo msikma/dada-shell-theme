@@ -51,7 +51,7 @@ function backup --description "Displays backup commands and info"
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color red) $backup_cmd)
   set -a cols_all (_add_cmd_colors (set_color magenta) $backup_times)
-  set -a cols_all (_add_cmd_colors (set_color yellow) $backup_times_global)
+  set -a cols_all (_add_cmd_colors (set_color blue) $backup_times_global)
   _iterate_help $cols_all
   echo
 end

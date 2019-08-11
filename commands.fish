@@ -3,6 +3,11 @@
 # Location used to retrieve the weather.
 set -g _weather_loc "~Rotterdam+2e+Stampioendwarsstraat"
 
+# Reloads the theme; useful when developing.
+function dada-reload
+  source "$DADA""dada.fish"
+end
+
 function doc
   mdv $argv | less -r
 end
