@@ -22,6 +22,9 @@ function dada-cron \
   _cron_print "Time: "(date +"%a, %b %d %Y %X")
   _cron_print "File: "(_cron_file)
 
+  _cron_print_cmd "mail alerts" "Creating"
+  _make_new_alerts
+
   if test -d ~/.config/ekizo-dl
     _cron_print_cmd "ekizo-dl"
     _cron_run_cmd "ekizo-dl.py"
