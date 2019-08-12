@@ -30,20 +30,29 @@ set -g _alerts_d_bl "╚"
 set -g _alerts_d_b "═"
 set -g _alerts_d_br "╝"
 
+# Maximum length of the title and preview.
+set -g title_max (math $alerts_width - 14)
+set -g preview_max "50"
+
 # New mails are given as strings containing all relevant information.
 # The strings use '@%@' as separator, and they contain the following data (in order):
 # [id, unix_timestamp, sender, subject, preview, link]
 function _make_new_alerts \
   --description "Loads 'ms-gmail-cli' and creates alerts for every new mail"
+  _alerts_ensure_dir
+  timer_start
   set out (ms-gmail-cli --action list)
-  for mail in out
-    set id (echo mail | gawk -F@%@ '{print $1}')
-    set unix_timestamp (echo mail | gawk -F@%@ '{print $2}')
-    set sender (echo mail | gawk -F@%@ '{print $3}')
-    set subject (echo mail | gawk -F@%@ '{print $4}')
-    set preview (echo mail | gawk -F@%@ '{print $5}')
-    set link (echo mail | gawk -F@%@ '{print $6}')
-    make_alert 'gmail' '-' 'success' "$link" "New mail from $sender:"\n"$preview"
+  for mail in $out
+    set timer (timer_end | sed -e 's/\./-/')
+    set id (echo $mail | gawk -F@%@ '{print $1}')
+    set unix_timestamp (echo $mail | gawk -F@%@ '{print $2}')
+    set sender (echo $mail | gawk -F@%@ '{print $3}')
+    set subject (echo $mail | gawk -F@%@ '{print $4}')
+    set preview (echo $mail | gawk -F@%@ '{print $5}')
+    set link (echo $mail | gawk -F@%@ '{print $6}')
+    set mail_title (string sub -s 1 -l "$title_max" "New mail from $sender: $subject")
+    set mail_preview (string sub -s 1 -l "$preview_max" "$preview")
+    make_alert 'gmail' '-' 'success' "$link" "$timer" "$mail_title"\n"$mail_preview"
   end
 end
 
@@ -51,8 +60,8 @@ function _get_alert_unix_time \
   --argument-names filepath \
   --description "Prints the Unix time for when an alert was generated"
   if ! test -e $filepath; return; end
-  set ts (echo $filepath | grep -io "_[0-9]\+")
-  set ts (string sub -s 2 $ts)
+  set ts (echo $filepath | grep -io "_[0-9]\+_")
+  set ts (string sub -s 2 -l 10 $ts)
 
   echo $ts
 end
@@ -68,10 +77,10 @@ function _find_new_alerts_in_dir \
 end
 
 function _make_alert_in_dir \
-  --argument-names filename name level link content dstdir \
+  --argument-names filename name level link timer content dstdir \
   --description "Creates a new alert to be displayed on login"
   set unixts (date +"%s")
-  set fname "$dstdir""/alert_"$filename"_"$unixts
+  set fname "$dstdir""/alert_""$filename""_""$unixts""_""$timer"".txt"
   touch $fname
   echo "$name" >> "$fname"
   echo "$level" >> "$fname"

@@ -12,6 +12,12 @@ function doc
   mdv $argv | less -r
 end
 
+function print_error \
+  --argument-names fn expl \
+  --description "Prints an error with function name and explanation"
+  echo (set_color -u red)"$fn"(set_color normal)(set_color red)": $expl"(set_color normal)
+end
+
 function weather --description "Queries wttr.in for the weather"
   #       .-.      Drizzle
   #      (   ).    13 °C

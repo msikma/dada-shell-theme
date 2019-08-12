@@ -40,12 +40,21 @@ function format_full_timestamp \
   # If our date is within two days, we would like to specifically display
   # the amount of hours ago it was; rather than the regular time_ago function.
   # This is to avoid situations like "Yesterday (1 day ago)".
+  # The standard relative time function is called if it's within one hour from now.
+  set is_last_hour (_is_last_hour $ts)
   set is_today (_is_today $ts)
   set is_yday (_is_yesterday $ts)
+
+  if [ $is_last_hour -eq 1 ]
+    echo "$abs ("(time_ago $now $ts)")"
+    return
+  end
   if [ $is_today -eq 1 -o $is_yday -eq 1 ]
-    set rel (hours_ago $now $ts)
+    echo "$abs ("(hours_ago $now $ts)")"
+    return
   else
-    set rel (time_ago $now $ts)
+    echo "$abs ("(time_ago $now $ts)")"
+    return
   end
   echo "$abs ($rel)"
 end
@@ -152,6 +161,13 @@ function _is_today \
   if [ "$then" = "$now" ]; echo "1"; else; echo "0"; end
 end
 
+function _is_last_hour \
+  --argument-names ts \
+  --description "Prints 1 if a given timestamp is within the last hour, or 0 if it's earlier or later"
+  set diff (math (gdate +"%s") - "$ts")
+  if [ $diff -lt 3600 ]; echo "1"; else; echo "0"; end
+end
+
 function _is_yesterday \
   --argument-names ts \
   --description "Prints 1 if a given timestamp was yesterday, or 0 if it's earlier or later"
@@ -205,7 +221,7 @@ function _time_unit \
     end
     return
   end
-  
+
   _time_unit_echo $sec "second" "seconds"
 end
 

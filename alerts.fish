@@ -9,11 +9,12 @@ set -g alerts_archive_dir $alerts_dir"/archive"
 set -g alerts_width "92"
 
 # Each line needs a slightly different width due to the escape sequences.
-set atime_w (math $alerts_width + 14)
-set top_w (math $alerts_width - 2)
-set line_w (math $alerts_width - 4)
-set link_w (math $alerts_width + 7)
-set fold_w (math $alerts_width - 4)
+set -g atime_w (math $alerts_width + 14)
+set -g title_w (math $alerts_width - 4)
+set -g top_w (math $alerts_width - 2)
+set -g line_w (math $alerts_width - 4)
+set -g link_w (math $alerts_width + 7)
+set -g fold_w (math $alerts_width - 4)
 
 # Alert colors
 set warn_c1 (set_color yellow)
@@ -39,14 +40,18 @@ function find_new_alerts \
 end
 
 function make_alert \
-  --argument-names slug name level link content \
+  --argument-names slug name level link timer content \
   --description "Creates a new alert"
-  _make_alert_in_dir $slug $name $level $link $content $alerts_dir
+  _make_alert_in_dir $slug $name $level $link $timer $content $alerts_dir
 end
 
 function print_alert \
   --argument-names filepath \
   --description "Prints the contents of an alert"
+  if ! test -e $filepath
+    print_error 'print_alert' "could not find alert file: "(basename "$filepath")
+    return
+  end
   set lines (cat $filepath)
   set name $lines[1]
   set level $lines[2]
@@ -116,12 +121,14 @@ function print_alert \
   else
     set title (set_color blue)"Alert from "(set_color magenta)$name
   end
-  set atime "$c1""$alert_ts"(set_color normal)
+  set atime "   ""$alert_ts"
 
+  # Print the title and the timestamp next to each other.
+  set atime_w (string length "$atime")
+  set atitle_w (math "$title_w" - "$atime_w")
   echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
-  printf "%"$atime_w"s%s%s%s\n" $atime $c1 $_r $normal
-  echo -en "\033[1A"
-  printf "%s%s%s\n" $c1 $_l $title
+  set alert_title (string sub -s 1 -l "$atitle_w" (printf "%-""$atitle_w""s" $title))
+  echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
   if not [ $skip_first -eq 1 ]
     for line in $content
       printf "%s%s%s%-"$line_w"s%s%s%s\n" $c1 $_l $c2 $line $c1 $_r $normal
