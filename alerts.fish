@@ -10,6 +10,7 @@ set -g alerts_width "92"
 
 # Each line needs a slightly different width due to the escape sequences.
 set -g atime_w (math $alerts_width + 14)
+set -g fn_w (math $alerts_width + 15)
 set -g title_w (math $alerts_width - 4)
 set -g top_w (math $alerts_width - 2)
 set -g line_w (math $alerts_width - 4)
@@ -139,6 +140,10 @@ function print_alert \
     set alert_title (string sub -s 1 -l "$atitle_w" $title)
   end
 
+  # Removes the path and extension from the file name.
+  set alert_fn (basename $filepath | sed -e 's/\..*$//')
+
+  printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
   echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
   echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
   if not [ $skip_first -eq 1 ]
@@ -152,6 +157,7 @@ function print_alert \
     printf "%s%s%s%-"$link_w"s%s%s%s\n" $c1 $_l $c3 $link $c1 $_r $normal
   end
   echo "$c1""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
+  echo
 end
 
 function archive_alert \
