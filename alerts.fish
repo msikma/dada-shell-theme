@@ -47,8 +47,11 @@ function make_alert \
 end
 
 function print_alert \
-  --argument-names filepath \
+  --argument-names filepath show_fn \
   --description "Prints the contents of an alert"
+  if [ ! -n "$show_fn" ]
+    set show_fn '0'
+  end
   if ! test -e $filepath
     print_error 'print_alert' "could not find alert file: "(basename "$filepath")
     return
@@ -143,7 +146,9 @@ function print_alert \
   # Removes the path and extension from the file name.
   set alert_fn (basename $filepath | strip_ext)
 
-  printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
+  if [ $show_fn -eq 1 ]
+    printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
+  end
   echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
   echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
   if not [ $skip_first -eq 1 ]
@@ -157,7 +162,9 @@ function print_alert \
     printf "%s%s%s%-"$link_w"s%s%s%s\n" $c1 $_l $c3 $link $c1 $_r $normal
   end
   echo "$c1""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
-  echo
+  if [ $show_fn -eq 1 ]
+    echo
+  end
 end
 
 function archive_alert \
