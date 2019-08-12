@@ -124,10 +124,22 @@ function print_alert \
   set atime "   ""$alert_ts"
 
   # Print the title and the timestamp next to each other.
+  # We need to calculate exactly how long the title can be, subtracting the timestamp.
+  # If the title is longer than the max length, we add an ellipsis at the end.
   set atime_w (string length "$atime")
+  set atitle_full (string length "$title")
   set atitle_w (math "$title_w" - "$atime_w")
+  set atitle_w_culled (math "$atitle_w" - 1)
+
+  # Pad title to max length, then crop it to max length (possibly with ellipsis).
+  set title (printf "%-""$atitle_w""s" $title)
+  if [ $atitle_w -lt $atitle_full ]
+    set alert_title (string sub -s 1 -l "$atitle_w_culled" $title)"…"
+  else
+    set alert_title (string sub -s 1 -l "$atitle_w" $title)
+  end
+
   echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
-  set alert_title (string sub -s 1 -l "$atitle_w" (printf "%-""$atitle_w""s" $title))
   echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
   if not [ $skip_first -eq 1 ]
     for line in $content

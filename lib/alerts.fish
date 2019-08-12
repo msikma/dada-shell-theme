@@ -32,7 +32,7 @@ set -g _alerts_d_br "╝"
 
 # Maximum length of the title and preview.
 set -g title_max (math $alerts_width - 14)
-set -g preview_max "50"
+set -g preview_max "280"
 
 # New mails are given as strings containing all relevant information.
 # The strings use '@%@' as separator, and they contain the following data (in order):
@@ -50,8 +50,15 @@ function _make_new_alerts \
     set subject (echo $mail | gawk -F@%@ '{print $4}')
     set preview (echo $mail | gawk -F@%@ '{print $5}')
     set link (echo $mail | gawk -F@%@ '{print $6}')
+
+    set preview_length (string length $preview)
+    if [ "$preview_length" -gt "$preview_max" ]
+      set mail_preview (string sub -s 1 -l "$preview_max" "$preview")"…"
+    else
+      set mail_preview "$preview"
+    end
     set mail_title (string sub -s 1 -l "$title_max" "New mail from $sender: $subject")
-    set mail_preview (string sub -s 1 -l "$preview_max" "$preview")
+
     make_alert 'gmail' '-' 'success' "$link" "$timer" "$mail_title"\n"$mail_preview"
   end
 end
