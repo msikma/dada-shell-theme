@@ -20,7 +20,8 @@ alias colortest="terminal-colors --rgb; terminal-colors --ansicodes"
 alias md="open -a MacDown"
 
 # Used in scripts
-alias stripcolor="gsed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
+alias strip_color="gsed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
+alias strip_ext="sed -e 's/\..*\$//'"
 
 # ls replacement exa
 alias ls="exa"

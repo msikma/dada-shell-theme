@@ -67,7 +67,7 @@ end
 function _cron_print \
   --description "Prints command and saves it to file"
   echo $argv
-  echo "["(date -u +"%Y-%m-%dT%H:%M:%SZ")"]" $argv | stripcolor >> $_c_file_full
+  echo "["(date -u +"%Y-%m-%dT%H:%M:%SZ")"]" $argv | strip_color >> $_c_file_full
 end
 
 function _cron_log \

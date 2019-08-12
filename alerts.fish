@@ -141,7 +141,7 @@ function print_alert \
   end
 
   # Removes the path and extension from the file name.
-  set alert_fn (basename $filepath | sed -e 's/\..*$//')
+  set alert_fn (basename $filepath | strip_ext)
 
   printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
   echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
