@@ -43,7 +43,7 @@ function _make_new_alerts \
   timer_start
   set out (ms-gmail-cli --action list)
   for mail in $out
-    set timer (timer_end | sed -e 's/\./-/')
+    set timer (timer_end | sed -e 's/\./_/')
     set id (echo $mail | gawk -F@%@ '{print $1}')
     set unix_timestamp (echo $mail | gawk -F@%@ '{print $2}')
     set sender (echo $mail | gawk -F@%@ '{print $3}')
