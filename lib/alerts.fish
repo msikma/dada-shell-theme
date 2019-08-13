@@ -1,6 +1,10 @@
 # Dada Shell Theme © 2019
 
-# Note: some of these functions require GNU Date (via 'coreutils' on Brew).
+# Alerts directory and the archive.
+set -g alerts_dir $home"/.cache/dada/alerts"
+set -g alerts_read_dir $alerts_dir"/read"
+set -g alerts_archive_dir $alerts_dir"/archive"
+set -g alerts_log_dir $alerts_dir"/log"
 
 # Box drawing characters for displaying alert boxes.
 set -g _alerts_tl "╭"
@@ -95,9 +99,130 @@ function _make_alert_in_dir \
   echo "$content" >> "$fname"
 end
 
+function alerts_log_file \
+  --description "Prints out the name of the current log file"
+  echo "alerts_log_"(date +"%Y%m")".log"
+end
+
+function alerts_log_path \
+  --description "Prints out the path of the current log file"
+  echo $alerts_log_dir"/"(alerts_log_file)
+end
+
+function archive_alert \
+  --argument-names filepath \
+  --description "Moves an alert into the archive directory"
+  mv $filepath $alerts_archive_dir
+end
+
+function _alerts_ensure_log \
+  --description "Ensures that the log files are available"
+  mkdir -p $alerts_log_dir
+  touch (alerts_log_path)
+end
+
 function _alerts_ensure_dir \
   --description "Ensures that the alerts dirs are available"
   mkdir -p $alerts_dir
   mkdir -p $alerts_read_dir
   mkdir -p $alerts_archive_dir
+  mkdir -p $alerts_log_dir
+  _alerts_ensure_log
+end
+
+# Following are the functions used to print log entries.
+# Each line in a log entry runs through one of the non-underscored functions,
+# which then prints it to stdout and, if needed, pipes it into the logfile.
+
+# Printing function: every one of the wrapper functions below goes through this.
+function _print_alert_line \
+  --argument-names str logfile
+  echo $str
+  _print_alert_line_log $str $logfile
+end
+
+# Logging function: prints the alert line to the log.
+function _print_alert_line_log \
+  --argument-names str logfile
+  if [ -z "$logfile" ]; return; end
+  echo $str >> $logfile
+end
+
+# Wrapper functions that print a line to the screen, and optionally print it to the log:
+
+function print_alert_top_section \
+  --argument-names c1 _tl _t top_w _tr normal _l alert_title atime _r logfile
+  set line (_print_alert_top_section $c1 $_tl $_t $top_w $_tr $normal $_l $alert_title $atime $_r)
+  _print_alert_line $line[1] $logfile
+  _print_alert_line $line[2] $logfile
+end
+
+function print_alert_fn \
+  --argument-names show_fn fn_w c1 alert_fn normal logfile
+  if [ $show_fn -ne 1 ]; return; end
+  _print_alert_line (_print_alert_fn $fn_w $c1 $alert_fn $normal) $logfile
+end
+
+function print_alert_body \
+  --argument-names line_w c1 _l c2 line _r normal logfile
+  _print_alert_line (_print_alert_body $line_w $c1 $_l $c2 $line $_r $normal) $logfile
+end
+
+function print_alert_link \
+  --argument-names link_w c1 _l c3 link _r normal logfile
+  _print_alert_line (_print_alert_link $link_w $c1 $_l $c3 $link $_r $normal) $logfile
+end
+
+function print_alert_bottom_section \
+  --argument-names c1 _bl _b top_w _br normal logfile
+  _print_alert_line (_print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal) $logfile
+end
+
+function print_alert_padding \
+  --argument-names show_fn logfile
+  if [ $show_fn -ne 1 ]; return; end
+  _print_alert_line (_print_alert_padding) $logfile
+end
+
+function print_alert_log_header \
+  --argument-names alert_fn logfile
+  # Print only to the log, not to the screen.
+  _print_alert_line_log (_print_alert_log_header $alert_fn) $logfile
+end
+
+# Render functions that output lines to the screen:
+
+function _print_alert_body \
+  --argument-names line_w c1 _l c2 line _r normal
+  printf "%s%s%s%-"$line_w"s%s%s%s\n" $c1 $_l $c2 $line $c1 $_r $normal
+end
+
+function _print_alert_fn \
+  --argument-names fn_w c1 alert_fn normal
+  printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
+end
+
+function _print_alert_top_section \
+  --argument-names c1 _tl _t top_w _tr normal _l alert_title atime _r
+  echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
+  echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
+end
+
+function _print_alert_link \
+  --argument-names link_w c1 _l c3 link _r normal
+  printf "%s%s%s%-"$link_w"s%s%s%s\n" $c1 $_l $c3 $link $c1 $_r $normal
+end
+
+function _print_alert_bottom_section \
+  --argument-names c1 _bl _b top_w _br normal
+  echo "$c1""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
+end
+
+function _print_alert_padding
+  echo
+end
+
+function _print_alert_log_header \
+  --argument-names alert_fn
+  echo "["(date -u +"%Y-%m-%dT%H:%M:%SZ")"]" $alert_fn
 end

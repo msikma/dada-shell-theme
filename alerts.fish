@@ -1,10 +1,5 @@
 # Dada Shell Theme © 2019
 
-# Alerts directory and the archive.
-set -g alerts_dir $home"/.cache/dada/alerts"
-set -g alerts_read_dir $alerts_dir"/read"
-set -g alerts_archive_dir $alerts_dir"/archive"
-
 # Standard width to display alerts at.
 set -g alerts_width "92"
 
@@ -46,12 +41,18 @@ function make_alert \
   _make_alert_in_dir $slug $name $level $link $timer $content $alerts_dir
 end
 
-function print_alert \
+function print_and_log_alert \
   --argument-names filepath show_fn \
+  --description "Prints an alert and saves it to the log"
+  if [ ! -n "$show_fn" ]; set show_fn '0'; end
+  print_alert $filepath $show_fn '1'
+end
+
+function print_alert \
+  --argument-names filepath show_fn add_to_log \
   --description "Prints the contents of an alert"
-  if [ ! -n "$show_fn" ]
-    set show_fn '0'
-  end
+  if [ ! -n "$show_fn" ]; set show_fn '0'; end
+  if [ ! -n "$add_to_log" ]; set add_to_log '0'; end
   if ! test -e $filepath
     print_error 'print_alert' "could not find alert file: "(basename "$filepath")
     return
@@ -111,6 +112,9 @@ function print_alert \
   set alert_x (_get_alert_unix_time $filepath)
   set alert_ts (format_full_timestamp $alert_x)
 
+  # Path to the current log file.
+  set logfile (alerts_log_path)
+
   # If the 'name' variable is '-' (just a dash), we won't print a title.
   # Instead we'll print the first line of the message.
   if [ $name = "-" ]
@@ -146,29 +150,24 @@ function print_alert \
   # Removes the path and extension from the file name.
   set alert_fn (basename $filepath | strip_ext)
 
-  if [ $show_fn -eq 1 ]
-    printf "%"$fn_w"s" "$c1$alert_fn$normal"\n
-  end
-  echo "$c1""$_tl"(seq -f '' -s$_t $top_w)"$_tr""$normal"
-  echo "$c1""$_l""$alert_title""$atime""$_r""$normal"
+  print_alert_log_header $alert_fn $logfile
+  print_alert_fn $show_fn $fn_w $c1 $alert_fn $normal $logfile
+  print_alert_top_section $c1 $_tl $_t $top_w $_tr $normal $_l $alert_title $atime $_r $logfile
   if not [ $skip_first -eq 1 ]
     for line in $content
-      printf "%s%s%s%-"$line_w"s%s%s%s\n" $c1 $_l $c2 $line $c1 $_r $normal
+      print_alert_body $line_w $c1 $_l $c2 $line $_r $normal $logfile
     end
   end
   # Print the link, unless we don't have one.
   if [ $link != "-" ]
-    set link "$link"(set_color normal)
-    printf "%s%s%s%-"$link_w"s%s%s%s\n" $c1 $_l $c3 $link $c1 $_r $normal
+    print_alert_link $link_w $c1 $_l $c3 "$link"(set_color normal) $_r $normal $logfile
   end
-  echo "$c1""$_bl"(seq -f '' -s$_b $top_w)"$_br""$normal"
-  if [ $show_fn -eq 1 ]
-    echo
-  end
+  print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal $logfile
+  print_alert_padding $show_fn $logfile
 end
 
-function archive_alert \
-  --argument-names filepath \
-  --description "Moves an alert into the archive directory"
-  mv $filepath $alerts_archive_dir
+function alerts-log \
+  --description "Opens the latest alerts log"
+  _alerts_ensure_dir
+  tail -n 100 -f (alerts_log_path)
 end
