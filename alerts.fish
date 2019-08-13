@@ -51,10 +51,15 @@ end
 function print_alert \
   --argument-names filepath show_fn add_to_log \
   --description "Prints the contents of an alert"
+  set orig_filepath $filepath
   if [ ! -n "$show_fn" ]; set show_fn '0'; end
   if [ ! -n "$add_to_log" ]; set add_to_log '0'; end
   if ! test -e $filepath
-    print_error 'print_alert' "could not find alert file: "(basename "$filepath")
+    # If we can't find the file, try searching for /alerts_dir/<file>.txt first.
+    set filepath "$alerts_dir""/""$filepath"".txt"
+  end
+  if ! test -e $filepath
+    print_error 'print_alert' "could not find alert file: "(basename "$orig_filepath")
     return
   end
   set lines (cat $filepath)
@@ -164,6 +169,11 @@ function print_alert \
   end
   print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal $logfile
   print_alert_padding $show_fn $logfile
+end
+
+function list-alerts \
+  --description "Prints the last alerts we've read"
+  _find_read_alerts_in_dir $alerts_read_dir
 end
 
 function alert-log \

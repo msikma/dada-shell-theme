@@ -87,6 +87,29 @@ function _find_new_alerts_in_dir \
   end
 end
 
+function _find_read_alerts_in_dir \
+  --argument-names srcdir \
+  --description "Returns a short list of read alerts"
+  set files (ls --time-style full-iso -lars modified $srcdir/*.txt)
+
+  echo "These are the last seen alerts for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
+
+  for n in (seq (count $files))
+    set file $files[$n]
+    
+    # Timestamp is full ISO: "2019-08-13 11:50:45.834898001 +0200"
+    set ts (echo $file | cut -f4-6 -d' ')
+    set tsx (gdate -d "$ts" +"%s")
+    set ts_formatted (format_full_timestamp $tsx)
+
+    # Filename is the base without extension: "alert_gmail_1565689845_8_99865"
+    set fn (basename (echo $file | cut -f7- -d' ') | strip_ext)
+
+    printf '%4s. %-20s - %s\n' $n $fn $ts_formatted
+  end
+
+end
+
 function _make_alert_in_dir \
   --argument-names filename name level link timer content dstdir \
   --description "Creates a new alert to be displayed on login"
