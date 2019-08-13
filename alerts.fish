@@ -166,7 +166,7 @@ function print_alert \
   print_alert_padding $show_fn $logfile
 end
 
-function alerts-log \
+function alert-log \
   --description "Opens the latest alerts log"
   _alerts_ensure_dir
   tail -n 100 -f (alerts_log_path)

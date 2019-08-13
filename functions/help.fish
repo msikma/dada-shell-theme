@@ -72,6 +72,7 @@ set cmd_network \
 
 set cmd_dada \
   "update"            "Updates Dada shell theme and bins" \
+  "alert-log"         "Views the alert log for this month" \
   "dada-reload"       "Reloads the theme code" \
   "dada-cron"         "Runs the Cron script manually" \
   #"cron-install"      "Installs the Cron script" \ # removed for brevity since it's only needed once; mentioned in the install.
