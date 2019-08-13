@@ -32,18 +32,29 @@ end
 
 # Prints out a nice, human-readable time for a given timestamp.
 function format_full_timestamp \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Returns a complete timestamp that can be displayed verbatim"
-  set now (gdate +"%s")
-  set abs (format_full_timestamp_abs $ts)
+  # Calculate the current date to be able to get relative times.
+  # For testing we can pass 'comp' (comparison) that will override this.
+  if [ -n "$comp" ]
+    set now "$comp"
+  else
+    set now (gdate +"%s")
+  end
+  # The formatting doesn't work well with future dates.
+  if [ "$now" -lt "$ts" ]
+    print_error "format_full_timestamp" "Given \$now ($now) time is earlier than the \$then ($ts) time"
+    return
+  end
+  set abs (format_full_timestamp_abs $ts $now)
 
   # If our date is within two days, we would like to specifically display
   # the amount of hours ago it was; rather than the regular time_ago function.
   # This is to avoid situations like "Yesterday (1 day ago)".
   # The standard relative time function is called if it's within one hour from now.
-  set is_last_hour (_is_last_hour $ts)
-  set is_today (_is_today $ts)
-  set is_yday (_is_yesterday $ts)
+  set is_last_hour (_is_last_hour $ts $now)
+  set is_today (_is_today $ts $now)
+  set is_yday (_is_yesterday $ts $now)
 
   if [ $is_last_hour -eq 1 ]
     echo "$abs ("(time_ago $now $ts)")"
@@ -56,17 +67,16 @@ function format_full_timestamp \
     echo "$abs ("(time_ago $now $ts)")"
     return
   end
-  echo "$abs ($rel)"
 end
 
 # Formats the absolute part of the abs+rel timestamp.
 function format_full_timestamp_abs \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Returns the absolute part of a full human-readable date"
-  set is_today (_is_today $ts)
-  set is_yday (_is_yesterday $ts)
-  set is_tw (_is_this_week $ts)
-  set is_lw (_is_last_week $ts)
+  set is_today (_is_today $ts $comp)
+  set is_yday (_is_yesterday $ts $comp)
+  set is_tw (_is_this_week $ts $comp)
+  set is_lw (_is_last_week $ts $comp)
   _format_date_abs $ts $is_today $is_yday $is_tw $is_lw
 end
 
@@ -118,61 +128,64 @@ function _format_date_abs \
 end
 
 function _get_week_start_unix_time \
-  --argument-names offset \
+  --argument-names offset comp \
   --description "Prints the Unix time of the start of a week"
   # We'll calculate last week's first day by first getting the first Monday of the year,
   # and then adding (current week number - 1) to that.
+  set curr_year (gdate -d "@$comp" +"%Y")
+  set curr_week (gdate -d "@$comp" +"%W")
 
   # First we need to know what date was the first Monday of the year,
   # or the last Monday of last year if week 1 overlaps with it.
   # 'first_day' is set to the weekday of Jan 1 as 1..7.
   # E.g. if it Jan 1 was on a Tuesday, it will be 2.
-  set first_day (gdate -d (date +%Y)"-01-01" +"%u")
+  set first_day (gdate -d "$curr_year""-01-01" +"%u")
 
   # Now get the first Monday's date by subtracting days from Jan 1.
-  set first_monday (gdate -d (date +%Y)"-01-01 -"(math $first_day - 1)" days" +"%Y-%m-%d")
+  set first_monday (gdate -d "$curr_year""-01-01 -"(math $first_day - 1)" days" +"%Y-%m-%d")
 
   # Get current week number; it's 0-indexed, meaning week 32 will be 31.
-  set week (math (gdate +"%W") - $offset)
+  set week (math $curr_week - $offset)
 
   # Finally, add the appropriate amount of weeks.
   gdate -d "$first_monday +$week weeks" +"%s"
 end
 
 function _is_this_week \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Prints 1 if a given timestamp is within this week, 0 otherwise"
-  set start (_get_week_start_unix_time "0")
+  set start (_get_week_start_unix_time "0" $comp)
   if [ $ts -lt $start ]; echo "0"; else; echo "1"; end
 end
 
 function _is_last_week \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Prints 1 if a given timestamp is within last week, 0 otherwise"
-  set start (_get_week_start_unix_time "1")
+  set start (_get_week_start_unix_time "1" $comp)
   if [ $ts -lt $start ]; echo "0"; else; echo "1"; end
 end
 
 function _is_today \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Prints 1 if a given timestamp is today, or 0 if it's earlier or later"
   set then (gdate -d "@$ts" +"%Y-%m-%d")
-  set now (gdate +"%Y-%m-%d")
+  set now (gdate -d "@$comp" +"%Y-%m-%d")
   if [ "$then" = "$now" ]; echo "1"; else; echo "0"; end
 end
 
 function _is_last_hour \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Prints 1 if a given timestamp is within the last hour, or 0 if it's earlier or later"
-  set diff (math (gdate +"%s") - "$ts")
+  set diff (math "$comp" - "$ts")
   if [ $diff -lt 3600 ]; echo "1"; else; echo "0"; end
 end
 
 function _is_yesterday \
-  --argument-names ts \
+  --argument-names ts comp \
   --description "Prints 1 if a given timestamp was yesterday, or 0 if it's earlier or later"
   set then (gdate -d "@$ts" +"%Y-%m-%d")
-  set yday (gdate -d "-1 day" +"%Y-%m-%d")
+  set tday (gdate -d "@$comp" +"%Y-%m-%d")
+  set yday (gdate -d "$tday -1 day" +"%Y-%m-%d")
   if [ "$then" = "$yday" ]; echo "1"; else; echo "0"; end
 end
 

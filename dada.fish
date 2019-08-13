@@ -26,12 +26,15 @@ source $DADA"lib/git.fish"
 source $DADA"lib/help.fish"
 source $DADA"lib/request.fish"
 source $DADA"lib/sys.fish"
+source $DADA"lib/test.fish"
 
 source $DADA"functions/eatsql.fish"
 source $DADA"functions/git.fish"
 source $DADA"functions/help.fish"
 source $DADA"functions/newx.fish"
 source $DADA"functions/update.fish"
+
+source $DADA"test/datetime.fish"
 
 source $DADA"secrets/keys.fish"
 

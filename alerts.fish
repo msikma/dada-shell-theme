@@ -171,7 +171,7 @@ function print_alert \
   print_alert_padding $show_fn $logfile
 end
 
-function list-alerts \
+function alerts \
   --description "Prints the last alerts we've read"
   _find_read_alerts_in_dir $alerts_read_dir
 end
