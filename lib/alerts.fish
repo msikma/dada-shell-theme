@@ -96,7 +96,7 @@ function _find_read_alerts_in_dir \
 
   for n in (seq (count $files))
     set file $files[$n]
-    
+
     # Timestamp is full ISO: "2019-08-13 11:50:45.834898001 +0200"
     set ts (echo $file | cut -f4-6 -d' ')
     set tsx (gdate -d "$ts" +"%s")
@@ -159,8 +159,8 @@ end
 
 # Printing function: every one of the wrapper functions below goes through this.
 function _print_alert_line \
-  --argument-names str logfile
-  echo $str
+  --argument-names str logfile padding
+  echo $padding$str
   _print_alert_line_log $str $logfile
 end
 
@@ -174,43 +174,43 @@ end
 # Wrapper functions that print a line to the screen, and optionally print it to the log:
 
 function print_alert_top_section \
-  --argument-names c1 _tl _t top_w _tr normal _l alert_title atime _r logfile
+  --argument-names c1 _tl _t top_w _tr normal _l alert_title atime _r padding logfile
   set line (_print_alert_top_section $c1 $_tl $_t $top_w $_tr $normal $_l $alert_title $atime $_r)
-  _print_alert_line $line[1] $logfile
-  _print_alert_line $line[2] $logfile
+  _print_alert_line $line[1] $logfile $padding
+  _print_alert_line $line[2] $logfile $padding
 end
 
 function print_alert_fn \
-  --argument-names show_fn fn_w c1 alert_fn normal logfile
+  --argument-names show_fn fn_w c1 alert_fn normal padding logfile
   if [ $show_fn -ne 1 ]; return; end
-  _print_alert_line (_print_alert_fn $fn_w $c1 $alert_fn $normal) $logfile
+  _print_alert_line (_print_alert_fn $fn_w $c1 $alert_fn $normal) $logfile $padding
 end
 
 function print_alert_body \
-  --argument-names line_w c1 _l c2 line _r normal logfile
-  _print_alert_line (_print_alert_body $line_w $c1 $_l $c2 $line $_r $normal) $logfile
+  --argument-names line_w c1 _l c2 line _r normal padding logfile
+  _print_alert_line (_print_alert_body $line_w $c1 $_l $c2 $line $_r $normal) $logfile $padding
 end
 
 function print_alert_link \
-  --argument-names link_w c1 _l c3 link _r normal logfile
-  _print_alert_line (_print_alert_link $link_w $c1 $_l $c3 $link $_r $normal) $logfile
+  --argument-names link_w c1 _l c3 link _r normal padding logfile
+  _print_alert_line (_print_alert_link $link_w $c1 $_l $c3 $link $_r $normal) $logfile $padding
 end
 
 function print_alert_bottom_section \
-  --argument-names c1 _bl _b top_w _br normal logfile
-  _print_alert_line (_print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal) $logfile
+  --argument-names c1 _bl _b top_w _br normal padding logfile
+  _print_alert_line (_print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal) $logfile $padding
 end
 
 function print_alert_padding \
-  --argument-names show_fn logfile
+  --argument-names show_fn padding logfile
   if [ $show_fn -ne 1 ]; return; end
-  _print_alert_line (_print_alert_padding) $logfile
+  _print_alert_line (_print_alert_padding) $logfile $padding
 end
 
 function print_alert_log_header \
-  --argument-names alert_fn logfile
+  --argument-names alert_fn padding logfile
   # Print only to the log, not to the screen.
-  _print_alert_line_log (_print_alert_log_header $alert_fn) $logfile
+  _print_alert_line_log (_print_alert_log_header $alert_fn) $logfile $padding
 end
 
 # Render functions that output lines to the screen:

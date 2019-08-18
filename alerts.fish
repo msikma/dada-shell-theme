@@ -1,7 +1,8 @@
 # Dada Shell Theme © 2019
 
-# Standard width to display alerts at.
-set -g alerts_width "92"
+# Standard width to display alerts at: screen width minus some padding.
+set -g alerts_width (math (tput cols) " - 18")
+set -g alerts_padding (string repeat -n 9 " ")
 
 # Each line needs a slightly different width due to the escape sequences.
 set -g atime_w (math $alerts_width + 14)
@@ -49,10 +50,11 @@ function print_and_log_alert \
 end
 
 function print_alert \
-  --argument-names filepath show_fn add_to_log \
+  --argument-names filepath show_fn add_to_log centered \
   --description "Prints the contents of an alert"
   set orig_filepath $filepath
   if [ ! -n "$show_fn" ]; set show_fn '0'; end
+  if [ ! -n "$centered" ]; set centered '0'; end
   if [ ! -n "$add_to_log" ]; set add_to_log '0'; end
   if ! test -e $filepath
     # If we can't find the file, try searching for /alerts_dir/<file>.txt first.
@@ -68,6 +70,12 @@ function print_alert \
   set link $lines[3]
   set content $lines[4..(count $lines)]
   set skip_first 0
+
+  # If 'centered' is 1, set the padding needed to center the alert.
+  set padding ""
+  if [ "$centered" -eq "1" ]
+    set padding $alerts_padding
+  end
 
   # Fallback values for the color.
   set c1 (set_color white)
@@ -156,19 +164,19 @@ function print_alert \
   set alert_fn (basename $filepath | strip_ext)
 
   print_alert_log_header $alert_fn $logfile
-  print_alert_fn $show_fn $fn_w $c1 $alert_fn $normal $logfile
-  print_alert_top_section $c1 $_tl $_t $top_w $_tr $normal $_l $alert_title $atime $_r $logfile
+  print_alert_fn $show_fn $fn_w $c1 $alert_fn $normal $padding $logfile
+  print_alert_top_section $c1 $_tl $_t $top_w $_tr $normal $_l $alert_title $atime $_r $padding $logfile
   if not [ $skip_first -eq 1 ]
     for line in $content
-      print_alert_body $line_w $c1 $_l $c2 $line $_r $normal $logfile
+      print_alert_body $line_w $c1 $_l $c2 $line $_r $normal $padding $logfile
     end
   end
   # Print the link, unless we don't have one.
   if [ $link != "-" ]
-    print_alert_link $link_w $c1 $_l $c3 "$link"(set_color normal) $_r $normal $logfile
+    print_alert_link $link_w $c1 $_l $c3 "$link"(set_color normal) $_r $normal $padding $logfile
   end
-  print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal $logfile
-  print_alert_padding $show_fn $logfile
+  print_alert_bottom_section $c1 $_bl $_b $top_w $_br $normal $padding $logfile
+  print_alert_padding $show_fn $padding $logfile
 end
 
 function alerts \
