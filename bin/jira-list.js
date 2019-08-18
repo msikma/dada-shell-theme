@@ -55,7 +55,7 @@ const error = reason => {
 /** Returns Jira info in JSON format using the ms-jira-cli program. */
 const getJiraData = () => {
   try {
-    const stdout = execSync('ms-jira-cli --action list --output json')
+    const stdout = execSync('ms-jira-cli --action data --output json')
     const data = JSON.parse(stdout.toString('utf8'))
     return data
   }
@@ -141,7 +141,7 @@ const main = () => {
   // Tasks will be listed by status, priority and key - but subtasks will always appear
   // underneath their parent task. In order to do this, we'll split the issues list
   // into regular tasks and subtasks, sort both, and then reintegrate them.
-  
+
   // Sorting function that takes Jira data into account.
   const jiraSorter = sortGen(['statusWeight', 'priorityWeight', 'key'])
 
