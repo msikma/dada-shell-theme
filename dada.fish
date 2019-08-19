@@ -15,6 +15,7 @@ source $DADA"commands.fish"
 source $DADA"cron.fish"
 source $DADA"env.fish"
 source $DADA"prompt.fish"
+source $DADA"tasks.fish"
 
 source $DADA"lib/alerts.fish"
 source $DADA"lib/backup.fish"

@@ -7,6 +7,15 @@
 
 const process = require('process')
 const { execSync } = require('child_process')
+const { existsSync, readFileSync } = require('fs')
+const { homedir } = require('os')
+
+// Set the path to the user's Jira tasks cache.
+const home = homedir()
+const cachePath = `${home}/.cache/dada/jira.json`
+
+// Used for strings that don't fit.
+const ellipsis = '…'
 
 // Terminal width
 const cols = process.stdout.columns
@@ -36,6 +45,7 @@ const color = {
 // List of icons and arrows to use for task and priority.
 const icons = {
   arrUp: '\u2191',
+  arrMiddle: '•',
   arrDown: '\u2193',
 
   task: '✓',
@@ -54,6 +64,9 @@ const error = reason => {
 
 /** Returns Jira info in JSON format using the ms-jira-cli program. */
 const getJiraData = () => {
+  if (existsSync(cachePath)) {
+    return JSON.parse(readFileSync(cachePath))
+  }
   try {
     const stdout = execSync('ms-jira-cli --action data --output json')
     const data = JSON.parse(stdout.toString('utf8'))
@@ -75,6 +88,7 @@ const preprocessJiraData = (data) => data.map(item => ({
 
 /** Makes the status display slightly nicer. Keeps the original string if we don't recognize it. */
 const niceStatus = (status) => ({ to_do: 'To do', in_progress: 'In prog.', done: 'Done' }[status] || status)
+const niceStatusHeader = (status) => ({ to_do: 'To do', in_progress: 'In progress', done: 'Done' }[status] || status)
 
 /** Returns a Unicode icon for the task type. */
 const taskIcon = (task) => ({
@@ -87,12 +101,21 @@ const taskIcon = (task) => ({
 
 /** Returns a Unicode icon for the priority. */
 const priorityIcon = (prio) => ({
-  highest: color.dim + color.fgRed + icons.arrUp + color.reset,
+  highest: color.bright + color.fgRed + icons.arrUp + color.reset,
   high: color.fgRed + icons.arrUp + color.reset,
-  medium: color.fgYellow + icons.arrUp + color.reset,
+  medium: color.fgYellow + icons.arrMiddle + color.reset,
   low: color.fgGreen + icons.arrDown + color.reset,
   lowest: color.dim + color.fgGreen + icons.arrDown + color.reset
 }[prio] || '?')
+
+/** Returns text colors for the priority. */
+const textColor = (prio) => ({
+  highest: [color.bright + color.fgRed, color.fgRed],
+  high: [color.fgRed, color.dim + color.fgRed],
+  medium: [color.fgYellow, color.dim + color.fgYellow],
+  low: [color.fgGreen, color.dim + color.fgGreen],
+  lowest: [color.dim + color.fgGreen, color.dim + color.fgGreen]
+}[prio] || '')
 
 /** Find the largest item 'key' in an array of objects. */
 const findLargest = (key, data) => data.reduce(((l, item) => item[key].length > l ? item[key].length : l), 0)
@@ -104,7 +127,7 @@ const weightStatus = (status) => ({ to_do: 20, in_progress: 10, done: 30 }[statu
 const weightPriority = (prio) => ({ highest: 10, high: 20, medium: 30, low: 40, lowest: 50 }[prio] || prio)
 
 /** Crops and pads a string to a specific length. */
-const crop = (str, len) => (str + ' '.repeat(len)).slice(0, len)
+const crop = (str, len, padder = ' ') => (str + padder.repeat(len)).slice(0, len)
 
 /** Generates a simple sorting function that uses multiple keys. */
 const sortGen = keys => data => data.sort((a, b) => {
@@ -157,31 +180,60 @@ const main = () => {
     key: findLargest('key', allTasks),
     priority: findLargest('priority', allTasks),
     statusNice: findLargest('statusNice', allTasks),
+    link: findLargest('link', allTasks),
     assignee: findLargest('assignee', allTasks) // Currently unused.
   }
 
   // Iterate over the data to print it line by line.
+  let currStatus
   allTasks.forEach(item => {
+    const printHeader = item.status !== currStatus
+    const activeColors = textColor(item.priority)
     const isChild = item.parent
-    const summaryLength = cols - 2 - 2 - largest.key - 2 - largest.statusNice - 2
+    const itemLink = item.link
     const priorityArrow = priorityIcon(item.priority) // priorityIcon(['highest', 'high', 'medium', 'low', 'lowest'][Math.round(Math.random() * 4)])
     const taskItem = taskIcon(item.type) // taskIcon(['Sub-task', 'Task', 'Bug', 'Epic', 'Story'][Math.round(Math.random() * 4)])
 
+    // Add an ellipsis at the end of the summary if we can't display it all.
+    const summaryLength = cols - 2 - 2 - largest.key - 2 - largest.statusNice - 2 - largest.link - 2
+    const summaryLengthPadded = isChild ? summaryLength - 2 : summaryLength
+    const summary = item.summary.length > summaryLengthPadded
+      ? item.summary.slice(0, summaryLengthPadded - 1).trim() + ellipsis
+      : item.summary
+
+    currStatus = item.status
+
+    if (printHeader) {
+      const header = niceStatusHeader(item.status)
+      const leftPad = 3 + largest.key + 3 - 1
+      const rightPad = cols - leftPad - header.length - 2
+      console.log(`${crop('─', leftPad, '─')} ${header} ${crop('─', rightPad, '─')}`)
+    }
     console.log([
-      // Task icon
+      // Indent, in case this is a child task
       isChild ? '   ' : ' ',
+      // Task icon
       taskItem,
-      // Key, e.g. 'KMK-5'
       ' ',
+      // Key, e.g. 'KMK-5'
+      activeColors[1],
       item.key,
+      color.reset,
       ' '.repeat(largest.key - item.key.length + 1),
       // Priority icon
       priorityArrow,
+      ' ',
       // Summary (cropped/padded to max. length)
+      activeColors[0],
+      crop(summary, summaryLengthPadded),
+      color.reset,
       ' ',
-      crop(item.summary, isChild ? summaryLength - 2 : summaryLength),
+      // Link
+      activeColors[1],
+      itemLink.padEnd(largest.link),
+      color.reset,
+      ' ',
       // Status
-      ' ',
       item.statusNice,
       color.reset,
     ].join(''))

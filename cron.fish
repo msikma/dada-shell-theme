@@ -25,6 +25,9 @@ function dada-cron \
   _cron_print_cmd "mail alerts" "Creating"
   _make_new_alerts
 
+  _cron_print_cmd "Jira tasks" "Caching"
+  _cache_jira_tasks
+
   if test -d ~/.config/ekizo-dl
     _cron_print_cmd "ekizo-dl"
     _cron_run_cmd "ekizo-dl.py"
