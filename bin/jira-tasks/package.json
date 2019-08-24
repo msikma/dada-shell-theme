@@ -1,0 +1,14 @@
+{
+  "name": "dada-jira-tasks",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Displays a list of Jira tasks",
+  "main": "jira-tasks.js",
+  "homepage": "https://github.com/msikma/dada-shell-theme",
+  "repository": "https://github.com/msikma/dada-shell-theme",
+  "author": "Michiel Sikma <michiel@sikma.org>",
+  "dependencies": {
+    "cjk-length": "^1.0.0"
+  },
+  "license": "MIT"
+}
