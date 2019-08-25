@@ -10,13 +10,17 @@ const { execSync } = require('child_process')
 const { existsSync, readFileSync } = require('fs')
 const { homedir } = require('os')
 
-const { error, getJiraData } = require('./helpers')
+const { makeTable } = require('./table')
+const { error } = require('./helpers')
+const { getJiraData } = require('./data')
 
 // Set the path to the user's Jira tasks cache.
 const cachePath = `${homedir()}/.cache/dada/jira.json`
 
 /** Main script entry point. */
-const main = () => {
-  const jiraData = getJiraData(cachePath)
+const main = (cache) => {
+  const jiraData = getJiraData(cache)
   
 }
+
+main(cachePath)
