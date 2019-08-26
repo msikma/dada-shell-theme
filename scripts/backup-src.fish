@@ -34,14 +34,14 @@ for n in (seq 1 (count $src))
   set dst_dir $types[$n]
   set dirs (backup_list_dirs $src_item)
   for project in $dirs
-    set name (basename $project)
-    set project_src "$src_item/$name"
-    set project_dst "$dst_item/$name.zip"
-    set project_fn "$name.zip"
+    set projname (basename $project)
+    set project_src "$src_item/$projname"
+    set project_dst "$dst_item/$projname.zip"
+    set project_fn "$projname.zip"
 
     set needs_update (backup_dir_to_file_needed $project_src $project_dst)
     # Run the backup if the target file is older than the source.
-    backup_dir_to_file $src_item $dst_item $dst_base $dst_dir $name $project_dst $project_fn $needs_update
+    backup_dir_to_file $src_item $dst_item $dst_base $dst_dir $projname $project_dst $project_fn $needs_update
   end
 end
 
