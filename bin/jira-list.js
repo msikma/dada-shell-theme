@@ -26,13 +26,24 @@ const color = {
   reset: '\x1b[0m',
   bright: '\x1b[1m',
   dim: '\x1b[2m',
+  underline: '\x1b[4m',
 
   fgRed: '\x1b[31m',
+  fgBrRed: '\x1b[91m',
   fgGreen: '\x1b[32m',
+  fgBrGreen: '\x1b[92m',
   fgYellow: '\x1b[33m',
+  fgBrYellow: '\x1b[93m',
   fgBlue: '\x1b[34m',
+  fgBrBlue: '\x1b[94m',
   fgMagenta: '\x1b[35m',
+  fgBrMagenta: '\x1b[95m',
   fgCyan: '\x1b[36m',
+  fgBrCyan: '\x1b[96m',
+  fgBlack: '\x1b[30m',
+  fgBrBlack: '\x1b[90m',
+
+  fgOrange: '\x1b[38;5;208m',
 
   bgRed: '\x1b[41m',
   bgGreen: '\x1b[42m',
@@ -53,6 +64,28 @@ const icons = {
   story: '*',
   epic: 'e',
   subtask: '└'
+}
+
+// Box drawing characters for displaying alert boxes.
+const box = {
+  tl: '╭',
+  t: '─',
+  tr: '╮',
+  l: '│ ',
+  r: ' │',
+  bl: '╰',
+  b: '─',
+  br: '╯',
+
+  hdown: '┬',
+  hup: '┴'
+}
+
+/** Helper function for accurately calculating string length when Japanese is present. */
+const JPN = /[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff5f\u4e00-\u9faf\u3400-\u4dbf]/g
+const lengthUCS2 = (str) => {
+  const strCopy = str.replace(JPN, 'xx')
+  return strCopy.length
 }
 
 /** Helper function used to exit the script quickly. Does not exit immediately,
@@ -88,7 +121,7 @@ const preprocessJiraData = (data) => data.map(item => ({
 
 /** Makes the status display slightly nicer. Keeps the original string if we don't recognize it. */
 const niceStatus = (status) => ({ to_do: 'To do', in_progress: 'In prog.', done: 'Done' }[status] || status)
-const niceStatusHeader = (status) => ({ to_do: 'To do', in_progress: 'In progress', done: 'Done' }[status] || status)
+const niceStatusHeader = (status) => ({ to_do: 'To do', in_progress: 'In progress', done: 'Done (recently)' }[status] || status)
 
 /** Returns a Unicode icon for the task type. */
 const taskIcon = (task) => ({
@@ -101,8 +134,8 @@ const taskIcon = (task) => ({
 
 /** Returns a Unicode icon for the priority. */
 const priorityIcon = (prio) => ({
-  highest: color.bright + color.fgRed + icons.arrUp + color.reset,
-  high: color.fgRed + icons.arrUp + color.reset,
+  highest: color.fgRed + icons.arrUp + color.reset,
+  high: color.fgOrange + icons.arrUp + color.reset,
   medium: color.fgYellow + icons.arrMiddle + color.reset,
   low: color.fgGreen + icons.arrDown + color.reset,
   lowest: color.dim + color.fgGreen + icons.arrDown + color.reset
@@ -110,11 +143,12 @@ const priorityIcon = (prio) => ({
 
 /** Returns text colors for the priority. */
 const textColor = (prio) => ({
-  highest: [color.bright + color.fgRed, color.fgRed],
-  high: [color.fgRed, color.dim + color.fgRed],
-  medium: [color.fgYellow, color.dim + color.fgYellow],
-  low: [color.fgGreen, color.dim + color.fgGreen],
-  lowest: [color.dim + color.fgGreen, color.dim + color.fgGreen]
+  highest: [color.fgRed, color.fgBlack],
+  //high: [color.fgRed, color.fgBlack],
+  high: [color.fgOrange, color.fgBlack],
+  medium: [color.fgYellow, color.fgBlack],
+  low: [color.fgBrGreen, color.fgBlack],
+  lowest: [color.fgGreen, color.fgBlack]
 }[prio] || '')
 
 /** Find the largest item 'key' in an array of objects. */
@@ -138,6 +172,30 @@ const sortGen = keys => data => data.sort((a, b) => {
   }
   return 0
 })
+
+/** Repeats a character. */
+const repeat = (char, length) => (
+  char.repeat(length)
+)
+
+/** Prints the top of the table. */
+const printTableTop = (largest) => {
+  console.log([
+    box.tl,
+    box.t,
+    box.hdown,
+    repeat(box.t, largest.key),
+    box.hdown,
+    box.t,
+    box.hdown,
+    repeat(box.t, cols - 2 - 2 - largest.key - 2 - largest.statusNice - 2 - largest.link - 2),
+    box.hdown,
+    repeat(box.t, largest.link),
+    box.hdown,
+    repeat(box.t, largest.statusNice),
+    box.tr
+  ].join(''))
+}
 
 // Runs the main program.
 //
@@ -184,6 +242,8 @@ const main = () => {
     assignee: findLargest('assignee', allTasks) // Currently unused.
   }
 
+  printTableTop(largest)
+
   // Iterate over the data to print it line by line.
   let currStatus
   allTasks.forEach(item => {
@@ -225,6 +285,7 @@ const main = () => {
       ' ',
       // Summary (cropped/padded to max. length)
       activeColors[0],
+      color.underline,
       crop(summary, summaryLengthPadded),
       color.reset,
       ' ',
