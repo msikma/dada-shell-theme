@@ -1,9 +1,10 @@
 #!/usr/bin/env fish
 
 # Icon file directory.
-set osxdir "/Users/"(whoami)"/Projects/osx-folders/icns"
+set osxdir "/Users/"(whoami)"/Projects/dada-folder-icons/icns"
 set dadadir "/Users/"(whoami)"/Projects/dada-icons/icns"
-set files (eval ls "$osxdir/*.icns" "$dadadir/*.icns")
+set configdir "/Users/"(whoami)"/.config/icons"
+set files (eval ls "$osxdir/*.icns" "$dadadir/*.icns" "$configdir/*.icns")
 set colors
 
 # Reduce to the basename without extension.
