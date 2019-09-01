@@ -28,6 +28,7 @@ source $DADA"lib/help.fish"
 source $DADA"lib/request.fish"
 source $DADA"lib/sys.fish"
 source $DADA"lib/test.fish"
+source $DADA"lib/utils.fish"
 
 source $DADA"functions/eatsql.fish"
 source $DADA"functions/git.fish"
