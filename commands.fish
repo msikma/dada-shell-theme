@@ -12,6 +12,16 @@ function doc
   mdv $argv | less -r
 end
 
+# Converts a dmg file to iso.
+function dmg2iso \
+  --argument-names infile
+  if [ -z "$infile" ]
+    return
+  end
+  set outfile (echo $infile | strip_ext)".iso"
+  hdiutil makehybrid -iso -joliet -o "$outfile" "$infile"
+end
+
 function print_error \
   --argument-names fn expl \
   --description "Prints an error with function name and explanation"

@@ -21,6 +21,7 @@ set cmd_regular \
   "setssh"            "Turns remote SSH access on/off" \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "bat"               "Improved version of cat" \
+  "dmg2iso <file>"    "Converts a .dmg file to .iso" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
