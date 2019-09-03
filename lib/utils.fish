@@ -4,7 +4,7 @@
 alias strip_color="gsed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
 
 # Strips the extension from a filename
-alias strip_ext="sed -e 's/\..*\$//'"
+alias strip_ext="sed -e 's/\.[^/]*\$//'"
 
 # lfext ./dir/ ".ext"
 # Lists all files of a certain extension inside a directory.
