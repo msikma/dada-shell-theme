@@ -23,7 +23,7 @@ const tableAssets = {
   // Colors used for different priorities.
   colors: {
     highest: chalk.red,
-    high: chalk.hex('#ff9700'), // orange
+    high: chalk.hex('#ff5a00'), // orange
     medium: chalk.yellow,
     low: chalk.greenBright,
     lowest: chalk.green,
@@ -62,6 +62,7 @@ const preprocessData = (data, assets) => data.map(item => ({
   ...item,
   taskIcon: taskIcon(item.type, assets),
   priorityIcon: priorityIcon(item.priority, assets),
+  priorityColor: assets.colors[item.priority],
   statusNice: niceStatus(item.status),
   // Add weights to easily sort items later on.
   statusWeight: weightStatus(item.status),
@@ -128,9 +129,9 @@ const _tableTaskRow = ({ rowData, cols, colDynamic, colMappings, colSizes, scree
     colData['taskIcon'],
     chalk.dim.gray(colData['key']),
     colData['priorityIcon'],
-    colData['summary'],
+    rowData.priorityColor(colData['summary']),
     colData['statusNice'],
-    colData['link']
+    chalk.dim.gray(colData['link'])
   ].join(' ')
 }
 

@@ -43,7 +43,7 @@ alias imgfloppy="image-floppy.fish"
 alias jira="git-jira.bash"
 alias proj="projinfo"
 alias projects="view-projects.fish"
-alias tasks="jira-list.js"
+alias tasks="$DADA/bin/jira-tasks/index.js"
 alias updrepos="update-projects.fish"
 alias wikipotd="wiki-potd.js"
 
