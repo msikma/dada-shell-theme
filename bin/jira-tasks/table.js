@@ -161,7 +161,9 @@ const _tableTaskHeader = ({ cols, colHead, colDynamic, colMappings, colSizes, sc
 }
 
 /** Creates a table from a provided layout and data object. */
-const makeTable = (rawData, screenWidth, layout, assets = tableAssets) => {
+const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets) => {
+  // The data contains two items: 'projects' and 'tasks'.
+  const rawData = rawJiraData.tasks
   if (!rawData || !Object.keys(rawData).length) {
     throw new Error('No Jira data found')
   }
