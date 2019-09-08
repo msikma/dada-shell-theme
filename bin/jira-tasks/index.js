@@ -23,11 +23,11 @@ const main = (cacheFile) => {
     const tableLayout = getLayout()
 
     const tableRows = makeTable(jiraData, termData.cols, tableLayout, undefined, false)
-    //const projectRows = makeProjectInfo(Object.values(jiraData.projects), termData.cols)
+    const projectRows = makeProjectInfo(Object.values(jiraData.projects), termData.cols)
 
     console.log()
     console.log(tableRows.join('\n'))
-    //console.log(projectRows.join('\n'))
+    console.log(projectRows.join('\n'))
     console.log()
   }
   catch (err) {

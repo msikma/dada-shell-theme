@@ -36,10 +36,9 @@ const makeProjectInfo = (rawProjectData, screenWidth, assets = projectAssets) =>
   const issueWidth = 15
   for (projectGroup of rawProjectData) {
     for (project of projectGroup.projects) {
-      console.log(project)
-      const issueLine = makeIssueLine(project.issueOverview, issueWidth, assets)
+      const issueLine = makeIssueLine(project.issuePriorities, issueWidth, assets)
       lines.push(`${chalk.gray(hardPad(project.key, 5))}${hardPad(project.name, 40)}`)
-      lines.push(`Open issues: ${issueLine ? issueLine : hardPad('None', issueWidth)}`)
+      lines.push(`Open issues: ${issueLine ? issueLine : hardPad('None', issueWidth)} ${hardPad(String(project.issueAmount), 3)}`)
       if (project.description) {
         lines.push(`Description: ${project.description}`)
       }
