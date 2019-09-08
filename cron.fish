@@ -26,7 +26,7 @@ function dada-cron \
   _make_new_alerts
 
   _cron_print_cmd "Jira tasks" "Caching"
-  _cache_jira_tasks
+  _cache_tasks
 
   if test -d ~/.config/ekizo-dl
     _cron_print_cmd "ekizo-dl"

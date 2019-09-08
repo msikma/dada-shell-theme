@@ -1,17 +1,17 @@
 # Dada Shell Theme © 2019
 
 # Alerts directory and the archive.
-set -g jira_list_cache $home"/.cache/dada/jira.txt"
 set -g jira_data_cache $home"/.cache/dada/jira.json"
+set -g github_contribs_cache $home"/.cache/dada/contribs.json"
 
 function _get_jira_list
   cat "$jira_cache"
 end
 
-function _cache_jira_tasks
-  # Cache the list of Jira tasks.
-  ms-jira-cli --action list > "$jira_list_cache"
+function _cache_tasks
+  # Cache the list of Jira tasks and various other things.
   ms-jira-cli --action data --output json > "$jira_data_cache"
+  github-contribs-cli --username msikma --action data --output json > "$github_contribs_cache"
 end
 
 function get_tasks
