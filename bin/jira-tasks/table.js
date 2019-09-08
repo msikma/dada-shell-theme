@@ -1,53 +1,8 @@
 // MIT license © 2018-2019, Michiel Sikma <michiel@sikma.org>
 
 const chalk = require('chalk').default
-const { sortGen, hardPad, isArray, niceStatus, findLargest, weightStatus, weightPriority } = require('./helpers')
-
-const tableAssets = {
-  // For strings that have to be shortened.
-  ellipsis: '…',
-
-  // List of icons and arrows to use for the task and priority cols.
-  icons: {
-    arrUp: '\u2191',
-    arrMiddle: '•',
-    arrDown: '\u2193',
-
-    ticketTask: '✓',
-    ticketBug: '✗',
-    ticketStory: '*',
-    ticketEpic: 'e',
-    ticketSubtask: '└'
-  },
-
-  // Colors used for different priorities.
-  colors: {
-    highest: chalk.red,
-    high: chalk.hex('#ff5a00'), // orange
-    medium: chalk.yellow,
-    low: chalk.greenBright,
-    lowest: chalk.green,
-
-    borders: chalk.white,
-    otherInfo: chalk.gray
-  },
-
-  // Box drawing characters for displaying tables.
-  box: {
-    topLeft: '╭',
-    top: '─',
-    topRight: '╮',
-    left: '│',
-    right: '│',
-    bottomLeft: '╰',
-    bottom: '─',
-    bottomRight: '╯',
-
-    vertical: '│',
-    horizontalDown: '┬',
-    horizontalUp: '┴'
-  }
-}
+const { sortGen, hardPad, isArray, niceStatus, findLargest, weightStatus, weightPriority, keyMap } = require('./helpers')
+const { tableAssets } = require('./assets')
 
 /** Some columns are mapped to a different column
  * (e.g. 'priority' strings get mapped to priority icons instead). */
@@ -87,16 +42,15 @@ const priorityIcon = (prio, assets) => ({
   lowest: [assets.icons.arrDown, assets.colors.lowest]
 }[prio] || '?')
 
-/** Returns a key from the colMappings if it's in there, or returns the input. */
-const keyMap = (key, mappings) => (
-  mappings[key] ? mappings[key] : key
-)
+/** How many spaces to put before sub-tasks. */
+const subTaskIndent = 2
 
 /** Generates a single table row containing the information of one task. */
 const _tableTaskRow = ({ rowData, cols, colDynamic, colMappings, colSizes, screenWidth }) => {
   // We'll calculate the size of the dynamic column while rendering the other columns.
   // The width is the screen width minus all the other columns.
   let colDynamicSize = screenWidth
+  const isSubTask = rowData['type'] === 'Sub-task'
 
   const colData = {}
   for (const col of cols) {
@@ -118,15 +72,15 @@ const _tableTaskRow = ({ rowData, cols, colDynamic, colMappings, colSizes, scree
     colData[key] = dataWrapper(data)
   }
 
-  // Also account for the padding.
-  colDynamicSize -= cols.length - 1
+  // Also account for the padding, and the sub-task indent.
+  colDynamicSize -= cols.length - 1 + (isSubTask ? subTaskIndent : 0)
 
   // Now set the dynamic column using the size we calculated.
   // The 'summary' column is never mapped to another and is never an array.
   colData['summary'] = hardPad(rowData[colDynamic], colDynamicSize)
 
   return [
-    colData['taskIcon'],
+    isSubTask ? `${' '.repeat(subTaskIndent)}${colData['taskIcon']}` : colData['taskIcon'],
     chalk.dim.gray(colData['key']),
     colData['priorityIcon'],
     rowData.priorityColor(colData['summary']),
@@ -161,7 +115,7 @@ const _tableTaskHeader = ({ cols, colHead, colDynamic, colMappings, colSizes, sc
 }
 
 /** Creates a table from a provided layout and data object. */
-const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets) => {
+const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets, displayDone = false) => {
   // The data contains two items: 'projects' and 'tasks'.
   const rawData = rawJiraData.tasks
   if (!rawData || !Object.keys(rawData).length) {
@@ -197,6 +151,10 @@ const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets) => {
   let lastHeader = null
   for (const row of allTasks) {
     const colHead = row[colHeaderKey]
+    const colStatus = row['status']
+    if (!displayDone && colStatus === 'done') {
+      continue
+    }
     if (lastHeader !== colHead) {
       lastHeader = colHead
       taskRows.push(_tableTaskHeader({ ...layoutArgs, colHead }))

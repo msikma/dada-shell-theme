@@ -8,6 +8,11 @@ const error = reason => {
   process.exit(1)
 }
 
+/** Returns a key from the colMappings if it's in there, or returns the input. */
+const keyMap = (key, mappings) => (
+  mappings[key] ? mappings[key] : key
+)
+
 /** Checks whether something is an array. */
 const isArray = obj => obj instanceof Array
 
@@ -47,6 +52,7 @@ const sortGen = keys => data => data.sort((a, b) => {
 
 module.exports = {
   error,
+  keyMap,
   findLargest,
   hardPad,
   isArray,
