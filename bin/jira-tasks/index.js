@@ -27,6 +27,7 @@ const main = (cacheFile) => {
 
     console.log()
     console.log(tableRows.join('\n'))
+    console.log()
     console.log(projectRows.join('\n'))
     console.log()
   }

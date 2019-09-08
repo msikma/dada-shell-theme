@@ -8,7 +8,9 @@ const projectAssets = {
     shadeDark: '▓',
     shadeMedium: '▒',
     shadeLight: '░'
-  }
+  },
+
+  projectBullet: '•'
 }
 
 const tableAssets = {

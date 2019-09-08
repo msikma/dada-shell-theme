@@ -114,7 +114,16 @@ const _tableTaskHeader = ({ cols, colHead, colDynamic, colMappings, colSizes, sc
   return buffer
 }
 
-/** Creates a table from a provided layout and data object. */
+/**
+ * Creates a table displaying issues from a provided layout and data object.
+ *
+ * @param   {array}   rawJiraData Array of Jira issues, i.e. { tasks: {array} }
+ * @param   {string}  screenWidth Width in characters of the table to generate
+ * @param   {string}  layout      Object with column type and size information
+ * @param   {string}  assets      Object containing special characters for drawing purposes
+ * @param   {boolean} displayDone Whether to show the issues that are done
+ * @returns {array}               Array of lines comprising the table
+ */
 const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets, displayDone = false) => {
   // The data contains two items: 'projects' and 'tasks'.
   const rawData = rawJiraData.tasks
