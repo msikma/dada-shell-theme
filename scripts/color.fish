@@ -67,8 +67,8 @@ end
 if not set -q argv[1]
   usage
 end
-if not test -d $argv[1]
-  echo "color: error: could not find directory ($argv[1])"
+if not test -d $argv[1]; and not test -f $argv[1]
+  echo "color: error: could not find target file or directory ($argv[1])"
   exit
 end
 if not set -q argv[2]
