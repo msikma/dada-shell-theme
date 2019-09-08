@@ -20,7 +20,7 @@ print_backup_start $purpose $name $dada_hostname
 print_last_backup_time $name
 print_backup_dirs $src_files $dst_files $src_desktop $dst_desktop $src_documents $dst_documents
 
-copy_rsync_delete $src_files $dst_files 0 'VMs'
+copy_rsync_delete $src_files $dst_files 0 "VMs"
 copy_rsync_delete $src_desktop $dst_desktop 0
 copy_rsync_delete $src_documents $dst_documents 0
 

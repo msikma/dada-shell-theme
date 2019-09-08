@@ -122,6 +122,10 @@ function copy_rsync \
   --argument-names src dst quiet delete \
   --description "Copies files from source to destination using rsync"
   set excl $argv[5..-1]
+  set excl_arg
+  for n in $excl
+    set excl_arg $excl_arg "--exclude=$n"
+  end
   if [ -n "$quiet" -a "$quiet" -eq 1 ]
     set q 'q'
   end
@@ -129,7 +133,7 @@ function copy_rsync \
     set d '--delete'
   end
 
-  rsync -ahEANS8"$q" $d --progress --exclude=".*" --exclude="Icon*" --stats "$src" "$dst"
+  rsync -ahEANS8"$q" $d --progress $excl_arg --exclude=".*" --exclude="Icon*" --stats "$src" "$dst"
 end
 
 # As copy_rsync, but with --delete. Pass exclude directories (local paths) at the end.
