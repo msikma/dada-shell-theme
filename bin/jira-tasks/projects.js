@@ -35,11 +35,11 @@ const makeIssueLine = (issues, width, assets) => {
   for (issue of issues) {
     widthSegment = Math.floor(width * (issue.width / 100))
     widthCurrent += widthSegment
-    issueLine.push(chalk.hex(issue.color)(assets.blocks.full.repeat(widthSegment)))
+    issueLine.push(assets.colors[issue.priority - 1](assets.blocks.full.repeat(widthSegment)))
   }
 
   // If there's some leftover space, fill it out with the last issue.
-  width - widthCurrent && issueLine.push(chalk.hex(issueLast.color)(assets.blocks.full.repeat(width - widthCurrent)))
+  width - widthCurrent && issueLine.push(assets.colors[issueLast.priority - 1](assets.blocks.full.repeat(width - widthCurrent)))
   return issueLine.join('')
 }
 

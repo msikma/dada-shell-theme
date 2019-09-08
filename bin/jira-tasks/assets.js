@@ -10,6 +10,15 @@ const projectAssets = {
     shadeLight: '░'
   },
 
+  colors: [
+    // From lowest priority (0) to highest (4).
+    chalk.green,
+    chalk.greenBright,
+    chalk.yellow,
+    chalk.hex('#ff5a00'), // orange
+    chalk.red
+  ],
+
   projectBullet: '•'
 }
 
