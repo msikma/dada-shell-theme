@@ -1,7 +1,7 @@
 // MIT license © 2018-2019, Michiel Sikma <michiel@sikma.org>
 
 const chalk = require('chalk').default
-const { sortGen, hardPad, isArray, niceStatus, findLargest, weightStatus, weightPriority, keyMap } = require('./helpers')
+const { sortGen, hardPad, isArray, findLargest, weightStatus, weightPriority, keyMap } = require('./helpers')
 const { projectAssets } = require('./assets')
 
 // To account for the distance issues are from the edge (due to the task type icon).

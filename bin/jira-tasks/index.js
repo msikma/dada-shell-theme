@@ -9,26 +9,32 @@ const { homedir } = require('os')
 
 const { makeTable } = require('./table')
 const { makeProjectInfo } = require('./projects')
+const { makeContribsInfo } = require('./contribs')
 const { error } = require('./helpers')
-const { getJiraData, getLayout, getTermData } = require('./data')
+const { getJiraData, getLayout, getContribsData, getTermData } = require('./data')
 
-// Set the path to the user's Jira tasks cache.
-const cachePath = `${homedir()}/.cache/dada/jira.json`
+// Extra cache files (on top of the cache built into the cli apps).
+const cachePathJira = `${homedir()}/.cache/dada/jira.json`
+const cachePathGithub = `${homedir()}/.cache/dada/github.json`
 
 /** Main script entry point. */
-const main = (cacheFile) => {
+const main = (cacheFileJira, cacheFileGithub) => {
   try {
-    const jiraData = getJiraData(cacheFile)
+    const jiraData = getJiraData(cacheFileJira)
     const termData = getTermData()
+    const contribsData = getContribsData(cacheFileGithub)
     const tableLayout = getLayout()
 
     const tableRows = makeTable(jiraData, termData.cols, tableLayout, undefined, false)
     const projectRows = makeProjectInfo(Object.values(jiraData.projects), termData.cols)
+    const contribsRows = makeContribsInfo(contribsData.contributions, termData.cols)
 
     console.log()
     console.log(tableRows.join('\n'))
     console.log()
     console.log(projectRows.join('\n'))
+    console.log()
+    console.log(contribsRows.join('\n'))
     console.log()
   }
   catch (err) {
@@ -36,4 +42,4 @@ const main = (cacheFile) => {
   }
 }
 
-main(cachePath)
+main(cachePathJira, cachePathGithub)

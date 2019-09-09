@@ -1,7 +1,7 @@
 // MIT license © 2018-2019, Michiel Sikma <michiel@sikma.org>
 
 const chalk = require('chalk').default
-const { sortGen, hardPad, isArray, niceStatus, findLargest, weightStatus, weightPriority, keyMap } = require('./helpers')
+const { sortGen, hardPad, isArray, findLargest, weightStatus, weightPriority, keyMap } = require('./helpers')
 const { tableAssets } = require('./assets')
 
 /** Some columns are mapped to a different column
@@ -19,6 +19,7 @@ const preprocessData = (data, assets) => data.map(item => ({
   priorityIcon: priorityIcon(item.priority, assets),
   priorityColor: assets.colors[item.priority],
   statusNice: niceStatus(item.status),
+  statusNiceHeader: niceStatus(item.status, true),
   // Add weights to easily sort items later on.
   statusWeight: weightStatus(item.status),
   priorityWeight: weightPriority(item.priority)
@@ -41,6 +42,9 @@ const priorityIcon = (prio, assets) => ({
   low: [assets.icons.arrDown, assets.colors.low],
   lowest: [assets.icons.arrDown, assets.colors.lowest]
 }[prio] || '?')
+
+/** Makes the status display slightly nicer. Keeps the original string if we don't recognize it. */
+const niceStatus = (status, isHeader = false) => ({ to_do: 'To do', in_progress: isHeader ? 'In progress' : 'In prog.', done: 'Done' }[status] || status)
 
 /** How many spaces to put before sub-tasks. */
 const subTaskIndent = 2
@@ -144,7 +148,7 @@ const makeTable = (rawJiraData, screenWidth, layout, assets = tableAssets, displ
   }, [])
 
   // The key used to display headers above groups of tasks.
-  const colHeaderKey = 'statusNice'
+  const colHeaderKey = 'statusNiceHeader'
 
   // List the largest items for each key to determine their column sizes.
   // Some items are arrays: in that case the first item is the column content,

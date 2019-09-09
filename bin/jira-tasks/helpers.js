@@ -16,9 +16,6 @@ const keyMap = (key, mappings) => (
 /** Checks whether something is an array. */
 const isArray = obj => obj instanceof Array
 
-/** Makes the status display slightly nicer. Keeps the original string if we don't recognize it. */
-const niceStatus = (status) => ({ to_do: 'To do', in_progress: 'In prog.', done: 'Done' }[status] || status)
-
 /** Find the largest item 'key' in an array of objects. */
 const findLargest = (key, data) => data.reduce(((l, item) => {
   // Some items are an array of two items, of which only the first should be counted.
@@ -56,7 +53,6 @@ module.exports = {
   findLargest,
   hardPad,
   isArray,
-  niceStatus,
   sortGen,
   weightPriority,
   weightStatus

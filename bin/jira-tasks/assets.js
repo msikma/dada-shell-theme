@@ -2,6 +2,24 @@
 
 const chalk = require('chalk').default
 
+const contribsAssets = {
+  blocks: {
+    // U+2586: Lower Three Quarters Block
+    full: '▆'
+  },
+
+  colors: [
+    chalk.red,
+    chalk.hex('#ff5a00'),
+    chalk.yellow,
+    chalk.greenBright,
+    chalk.green,
+    chalk.dim.gray
+  ],
+
+  headlineBullet: '•'
+}
+
 const projectAssets = {
   blocks: {
     full: '█',
@@ -11,12 +29,12 @@ const projectAssets = {
   },
 
   colors: [
-    // From lowest priority (0) to highest (4).
-    chalk.green,
-    chalk.greenBright,
-    chalk.yellow,
+    // From highest priority (0) to lowest (4).
+    chalk.red,
     chalk.hex('#ff5a00'), // orange
-    chalk.red
+    chalk.yellow,
+    chalk.greenBright,
+    chalk.green
   ],
 
   projectBullet: '•'
@@ -70,5 +88,6 @@ const tableAssets = {
 
 module.exports = {
   projectAssets,
+  contribsAssets,
   tableAssets
 }
