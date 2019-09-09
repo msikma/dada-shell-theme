@@ -2,7 +2,7 @@
 
 # Alerts directory and the archive.
 set -g jira_data_cache $home"/.cache/dada/jira.json"
-set -g github_contribs_cache $home"/.cache/dada/contribs.json"
+set -g github_github_cache $home"/.cache/dada/github.json"
 
 function _get_jira_list
   cat "$jira_cache"
@@ -11,7 +11,7 @@ end
 function _cache_tasks
   # Cache the list of Jira tasks and various other things.
   ms-jira-cli --action data --output json > "$jira_data_cache"
-  github-contribs-cli --username msikma --action data --output json > "$github_contribs_cache"
+  github-contribs-cli --username msikma --action data --output json > "$github_github_cache"
 end
 
 function get_tasks
