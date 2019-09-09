@@ -10,8 +10,8 @@ end
 
 function _cache_tasks
   # Cache the list of Jira tasks and various other things.
-  ms-jira-cli --action data --output json > "$jira_data_cache"
-  github-contribs-cli --username msikma --action data --output json > "$github_github_cache"
+  ms-jira-cli --action data --no-cache --output json > "$jira_data_cache"
+  github-contribs-cli --username msikma --no-cache --action data --output json > "$github_github_cache"
 end
 
 function get_tasks
