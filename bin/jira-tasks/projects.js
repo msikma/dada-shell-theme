@@ -6,6 +6,8 @@ const { projectAssets } = require('./assets')
 
 // To account for the distance issues are from the edge (due to the task type icon).
 const projectIndent = 2
+// Minimum width for issue priorities seen in the project issue lines.
+const issuePrioMinWidth = 2
 
 /**
  * Returns a colorized line indicating the relative number of issues of each priority.
@@ -31,9 +33,22 @@ const makeIssueLine = (issues, width, assets) => {
   let widthCurrent = 0
   let widthSegment = 0
 
-  // For each issue, add block characters to the buffer.
+  // First, we need to see if there are any segments that are smaller than the minimum width.
+  // We'll set these to the minimum and then let the rest take a percentage of the remainder.
+  let issueSmall = 0
+  let issueSize = []
   for (issue of issues) {
-    widthSegment = Math.floor(width * (issue.width / 100))
+    widthSegment = Math.max(Math.floor(width * (issue.width / 100)), issuePrioMinWidth)
+    issueSmall += widthSegment === issuePrioMinWidth ? issuePrioMinWidth : 0
+    issueSize.push(widthSegment === issuePrioMinWidth ? issuePrioMinWidth : null)
+  }
+  // This is the leftover width, minus the smallest segments.
+  const issueDynWidth = width - issueSmall
+
+  // For each issue, add block characters to the buffer.
+  for (let a = 0; a < issues.length; ++a) {
+    const issue = issues[a]
+    widthSegment = issueSize[a] ? issueSize[a] : Math.floor(issueDynWidth * (issue.width / 100))
     widthCurrent += widthSegment
     issueLine.push(assets.colors[issue.priority - 1](assets.blocks.full.repeat(widthSegment)))
   }

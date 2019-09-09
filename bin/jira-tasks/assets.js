@@ -9,12 +9,12 @@ const contribsAssets = {
   },
 
   colors: [
-    chalk.red,
-    chalk.hex('#ff5a00'),
-    chalk.yellow,
+    chalk.hex('#d3e000'),
     chalk.greenBright,
-    chalk.green,
-    chalk.dim.gray
+    chalk.hex('#35e000'),
+    chalk.hex('#00ecb2'),
+    chalk.hex('#0036af'),
+    chalk.hex('#000')
   ],
 
   headlineBullet: '•'
