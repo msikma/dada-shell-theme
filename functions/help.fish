@@ -22,6 +22,8 @@ set cmd_regular \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "bat"               "Improved version of cat" \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
+  "img_isakura <i>"   "Processes iSakura TV screenshot" \
+  "img_trim <img>"    "Trims the border off an image" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
