@@ -7,6 +7,9 @@ set _rsync_min_prot_version 31
 # Backup directory for 3DS units.
 set backup_dir_3ds "/Volumes/Files/Backups/Game data/Nintendo 3DS backups"
 
+# Backup timestring files for global backup dirs.
+set backup_dir_music "/Volumes/Files/Music/.backup-music"
+
 # Helper color for the columns.
 set ncol (set_color normal)
 
@@ -16,13 +19,13 @@ set backup_cmd \
   "backup-dbs"        "Backs up SQL databases" \
   "backup-files"      "Backs up various other things" \
   "backup-games"      "Backs up game content" \
-  "backup-music"      "Backs up music" \
   "backup-src"        "Backs up source code directories" \
   "backup-vms"        "Backs up VMs" \
   "" "" \
   "$ncol""Non device specific:" "" \
   "" "" \
   "backup-3ds"        "Backs up 3DS SD card" \
+  "backup-music"      "Backs up music" \
   "backup-ftp"        "Backs up FTP bookmarks" \
 
 function backup --description "Displays backup commands and info"
@@ -36,7 +39,6 @@ function backup --description "Displays backup commands and info"
     "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
     "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
     "Games backup:"     (backup_time_str "$backup_prefix/backup-games") \
-    "Music backup:"     (backup_time_str "$backup_prefix/backup-music") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
     "VMs backup:"       (backup_time_str "$backup_prefix/backup-vms") \
     "" "" \
@@ -45,6 +47,7 @@ function backup --description "Displays backup commands and info"
 
   set backup_times_global \
     "3DS SD backup:"    (backup_time_str_3ds) \
+    "Music backup:"     (backup_time_str "$backup_dir_music") \
     "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
 
   # Merge together with the backup commands.
