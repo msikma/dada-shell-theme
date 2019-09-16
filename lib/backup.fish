@@ -366,10 +366,13 @@ function print_backup_dirs \
 end
 
 function print_backup_start \
-  --argument-names purpose script hn \
+  --argument-names purpose script hn script_type \
   --description "Prints the purpose of this backup script and starts the timer; to be done right before a backup starts"
+  if test -z "$script_type"
+    set script_type "Backup script"
+  end
   echo
-  echo -n (set_color yellow)"Backup script for "(set_color cyan)"$purpose"(set_color yellow)
+  echo -n (set_color yellow)"$script_type for "(set_color cyan)"$purpose"(set_color yellow)
   if [ (count $hn) -ne 0 ]
     echo " on "(set_color cyan)"$hn"(set_color yellow)":"(set_color normal)
   else
@@ -419,6 +422,19 @@ function check_needed_dirs \
     set s $needdirs[$n]
     if not test -d $s
       echo $script": Error: Can't access $dtype directory: "$s
+      exit 1
+    end
+  end
+end
+
+function check_needed_files \
+  --argument-names script error_text \
+  --description "Checks if an array of files exists and is accessible"
+  set need_files $argv[3..-1]
+  for n in (seq (count $need_files))
+    set s $need_files[$n]
+    if not test -e $s
+      echo $script": Error: $error_text: "$s
       exit 1
     end
   end
