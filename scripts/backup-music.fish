@@ -19,4 +19,3 @@ print_backup_dirs $src $dst
 copy_rsync_delete $src $dst
 set_last_backup "."$name $archive
 print_backup_finish $name
-set_last_backup $name
