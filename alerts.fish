@@ -7,29 +7,33 @@ set -g alerts_padding (string repeat -n 9 " ")
 # Each line needs a slightly different width due to the escape sequences.
 set -g atime_w (math $alerts_width + 14)
 set -g fn_w (math $alerts_width + 15)
-set -g title_w (math $alerts_width - 4)
+set -g title_w (math $alerts_width + 27)
 set -g top_w (math $alerts_width - 2)
 set -g line_w (math $alerts_width - 4)
 set -g link_w (math $alerts_width + 7)
 set -g fold_w (math $alerts_width - 4)
 
 # Alert colors
-set warn_c1 (set_color yellow)
-set warn_c2 (set_color bryellow)
-set warn_c3 (set_color -u yellow)
-set warn_lt "single"
-set scss_c1 (set_color green)
-set scss_c2 (set_color brgreen)
-set scss_c3 (set_color -u green)
-set scss_lt "single"
-set erro_c1 (set_color red)
-set erro_c2 (set_color brred)
-set erro_c3 (set_color -u red)
-set erro_lt "single"
-set errd_c1 (set_color red)
-set errd_c2 (set_color brred)
-set errd_c3 (set_color -u red)
-set errd_lt "double"
+set -g warn_c1 (set_color yellow)
+set -g warn_c2 (set_color bryellow)
+set -g warn_c3 (set_color -u yellow)
+set -g warn_c4 (set_color -o f7f065)
+set -g warn_lt "single"
+set -g scss_c1 (set_color green)
+set -g scss_c2 (set_color brgreen)
+set -g scss_c3 (set_color -u green)
+set -g scss_c4 (set_color -o 91e129)
+set -g scss_lt "single"
+set -g erro_c1 (set_color red)
+set -g erro_c2 (set_color brred)
+set -g erro_c3 (set_color -u red)
+set -g erro_c4 (set_color -o c4215a)
+set -g erro_lt "single"
+set -g errd_c1 (set_color red)
+set -g errd_c2 (set_color brred)
+set -g errd_c3 (set_color -u red)
+set -g errd_c4 (set_color -o c4215a)
+set -g errd_lt "double"
 
 function find_new_alerts \
   --description "Returns a list of new alert files to display"
@@ -49,6 +53,14 @@ function print_and_log_alert \
   print_alert $filepath $show_fn '1'
 end
 
+# The following priority types are available:
+#
+#   * success
+#   * warning
+#   * error
+#   * error_double
+#
+# The alert will be colored green, yellow or red based on the priority.
 function print_alert \
   --argument-names filepath show_fn add_to_log centered \
   --description "Prints the contents of an alert"
@@ -81,12 +93,13 @@ function print_alert \
   set c1 (set_color white)
   set c2 (set_color brwhite)
   set c3 (set_color -u brwhite)
+  set c4 (set_color brwhite)
   set lt "single"
 
-  if [ "$level" = "warning" ];      set c1 $warn_c1; set c2 $warn_c2; set c3 $warn_c3; set lt $warn_lt; end
-  if [ "$level" = "success" ];      set c1 $scss_c1; set c2 $scss_c2; set c3 $scss_c3; set lt $scss_lt; end
-  if [ "$level" = "error" ];        set c1 $erro_c1; set c2 $erro_c2; set c3 $erro_c3; set lt $erro_lt; end
-  if [ "$level" = "error_double" ]; set c1 $errd_c1; set c2 $errd_c2; set c3 $errd_c3; set lt $errd_lt; end
+  if [ "$level" = "warning" ];      set c1 $warn_c1; set c2 $warn_c2; set c3 $warn_c3; set c4 $warn_c4; set lt $warn_lt; end
+  if [ "$level" = "success" ];      set c1 $scss_c1; set c2 $scss_c2; set c3 $scss_c3; set c4 $scss_c4; set lt $scss_lt; end
+  if [ "$level" = "error" ];        set c1 $erro_c1; set c2 $erro_c2; set c3 $erro_c3; set c4 $erro_c4; set lt $erro_lt; end
+  if [ "$level" = "error_double" ]; set c1 $errd_c1; set c2 $errd_c2; set c3 $errd_c3; set c4 $errd_c4; set lt $errd_lt; end
 
   if [ "$lt" = "single" ]
     set _tl $_alerts_tl
@@ -131,17 +144,21 @@ function print_alert \
   # If the 'name' variable is '-' (just a dash), we won't print a title.
   # Instead we'll print the first line of the message.
   if [ $name = "-" ]
-    set title $content[1]
-    set content $content[2..(count $content)]
-    # If this leaves only a single line...
-    if [ $title = $content[1] ]
-      set skip_first 1
-    end
-    # Now fold the content to the appropriate line width.
-    set content (echo "$content" | fold -sw $fold_w)
+    set title "$content[1]$c4$normal$c1"
   else
-    set title (set_color blue)"Alert from "(set_color magenta)$name
+    set title "$c4$name$normal$c1 - $content[1]"
   end
+
+  # Set the content to the remaining lines.
+  set content $content[2..(count $content)]
+  # If this leaves only a single line...
+  if [ $title = $content[1] ]
+    set skip_first 1
+  end
+
+  # Fold the content to the appropriate line width.
+  set content (echo "$content" | fold -sw $fold_w)
+
   set atime "   ""$alert_ts"
 
   # Print the title and the timestamp next to each other.

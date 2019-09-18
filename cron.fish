@@ -22,8 +22,13 @@ function dada-cron \
   _cron_print "Time: "(date +"%a, %b %d %Y %X")
   _cron_print "File: "(_cron_file)
 
+  # It's possible that creating mail alerts could fail, in case
+  # the cookie we're using for Gmail is outdated.
+  # In that case, create an alert notifying this.
   _cron_print_cmd "mail alerts" "Creating"
-  _make_new_alerts
+  if not _make_new_alerts
+    make_alert 'gmail' 'Gmail' 'warning' "-" "0" "Unable to log in with provided cookie file"\n"No alerts will be generated until this is resolved. See the cookie file in ~/.config/ms-gmail-js/cookies.txt and update it so that 'ms-gmail-cli --action list --no-cache --output json' can run successfully again."
+  end
 
   _cron_print_cmd "Jira tasks" "Caching"
   _cache_tasks
