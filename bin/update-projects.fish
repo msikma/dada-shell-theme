@@ -28,15 +28,15 @@ for proj in $projs
   cd $proj
   
   # Determine current state of the repo.
-  set old_count (git rev-list head --count)
-  set old_hash (git rev-parse --short head)
+  set old_count (git rev-list HEAD --count)
+  set old_hash (git rev-parse --short HEAD)
   set branch (git describe --all | sed s@heads/@@)
   
   # Pull and capture all output.
   set output (git pull ^&1)
   
   # How many commits did we add since pulling?
-  set new_count (git rev-list head --count)
+  set new_count (git rev-list HEAD --count)
   
   set msg ""
   switch "$output"
@@ -47,7 +47,7 @@ for proj in $projs
   case "fatal:*"
     set msg (set_color cyan)" - "(set_color red)"$output"
   case "*->*"
-    set new_hash (git rev-parse --short head)
+    set new_hash (git rev-parse --short HEAD)
     set commits (math $new_count - $old_count)
     set commits_sfx "commits"
     if [ "$commits" -eq 1 ]

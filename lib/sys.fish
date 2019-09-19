@@ -25,6 +25,6 @@ function get_curr_ip --description "Prints current local IP"
   if [ (command -v ifconfig) ]
     ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1
   else
-    hostname -I
+    hostname -I | xargs
   end
 end

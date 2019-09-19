@@ -3,21 +3,21 @@
 # Returns Git version (e.g. master-23 [a4fd3c]).
 function get_version --description 'Returns version identifier string'
   set branch (git describe --all | sed s@heads/@@)
-  set hash (git rev-parse --short head)
-  set commits (git rev-list head --count)
+  set hash (git rev-parse --short HEAD)
+  set commits (git rev-list HEAD --count)
   echo $branch-$commits [$hash]
 end
 
 # Returns Git version, without hash.
 function get_version_short --description 'Returns version identifier string'
   set branch (git describe --all | sed s@heads/@@)
-  set commits (git rev-list head --count)
+  set commits (git rev-list HEAD --count)
   echo $branch-$commits
 end
 
 # Returns only the Git hash.
 function get_version_hash --description 'Returns version identifier string'
-  set hash (git rev-parse --short head)
+  set hash (git rev-parse --short HEAD)
   echo $hash
 end
 

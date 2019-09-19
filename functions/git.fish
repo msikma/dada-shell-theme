@@ -36,7 +36,7 @@ end
 
 function gitfirst \
   --description 'Returns the Git log for the first ever commit'
-  set hash (git rev-list --max-parents=0 head)
+  set hash (git rev-list --max-parents=0 HEAD)
   git log $hash
 end
 
@@ -55,4 +55,3 @@ alias gr="git remote -v"
 alias gru="git remote get-url --all origin"
 alias gsl="git log --oneline --decorate --color | head"
 alias glog='git log --graph --abbrev-commit --decorate --all --format=format:"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(red) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)"'
-
