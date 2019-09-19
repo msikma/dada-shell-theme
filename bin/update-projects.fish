@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 set orig (pwd)
-set home "/Users/"(whoami)
+set home "/$UDIR/"(whoami)
 
 # See view-projects.fish.
 function __get_project_names --description 'Retrieve all project directory names'

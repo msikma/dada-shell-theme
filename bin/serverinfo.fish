@@ -2,7 +2,7 @@
 
 # e.g. fuji (used for: https://fuji.local/)
 set address (echo "$dada_hostname" | tr '[:upper:]' '[:lower:]')
-set filepath (echo "/Users/"(whoami)"/Files/Sites")
+set filepath (echo "/$UDIR/"(whoami)"/Files/Sites")
 
 # Retrieve version numbers for Apache, PHP and MySQL.
 

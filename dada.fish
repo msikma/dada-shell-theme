@@ -1,7 +1,9 @@
 # Dada Shell Theme © 2019
 
-set -g DADA "/Users/"(whoami)"/.config/dada/"
-set -g home "/Users/"(whoami)
+if [ -d "/Users" ]; set -gx UDIR 'Users'; else; set -gx UDIR 'home'; end;
+
+set -g DADA "/$UDIR/"(whoami)"/.config/dada/"
+set -g home "/$UDIR/"(whoami)
 
 # Save short and full hostnames, e.g. "Vesuvius" and "Vesuvius.local".
 set -gx dada_hostname (hostname -s)

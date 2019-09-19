@@ -3,9 +3,9 @@
 timer_start
 
 set err "backup-ftp: Error:"
-set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-ftp")
+set last_backup (backup_time_rel "/$UDIR/"(whoami)"/.cache/dada/backup-ftp")
 
-set src "/Users/"(whoami)"/Library/Group Containers/G69SCX94XU.duck/Library/Application Support/duck/Bookmarks"
+set src "/$UDIR/"(whoami)"/Library/Group Containers/G69SCX94XU.duck/Library/Application Support/duck/Bookmarks"
 set dst "/Volumes/Files/Backups/FTP"
 
 set c1 (set_color blue)

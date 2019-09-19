@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set home "/Users/"(whoami)
+set home "/$UDIR/"(whoami)
 set orig (pwd)
 set cols (tput cols)
 # Subtract the width for the day, the author name, and the rel. time.
@@ -94,4 +94,3 @@ end
 echo
 cd $orig
 set -x NO_DIRPREV_HOOK 0
-

@@ -4,7 +4,7 @@ set name "backup-3ds"
 set purpose "3DS files"
 
 set dst_basedir "/Volumes/Files/Backups/Game data"
-set powersaves_src_dir "/Users/"(whoami)"/Documents/Powersaves3DS/"
+set powersaves_src_dir "/$UDIR/"(whoami)"/Documents/Powersaves3DS/"
 set powersaves_dst_dir "$dst_basedir/Nintendo 3DS Powersaves"
 set sd_backups_dst_basedir "$dst_basedir/Nintendo 3DS backups"
 set saves_dst_basedir "$dst_basedir/Nintendo 3DS save files"

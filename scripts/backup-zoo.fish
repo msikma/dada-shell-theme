@@ -1,10 +1,10 @@
 #!/usr/bin/env fish
 
 timer_start
-set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-zoo")
+set last_backup (backup_time_rel "/$UDIR/"(whoami)"/.cache/dada/backup-zoo")
 
 set err "backup-zoo: Error:"
-set src "/Users/"(whoami)"/Files/Music/Music"
+set src "/$UDIR/"(whoami)"/Files/Music/Music"
 set dst "/Volumes/happy zoo/dada/Music"
 
 if not set -q dada_hostname

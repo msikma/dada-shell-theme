@@ -2,7 +2,7 @@
 
 # Updates the shell theme
 function update
-  pushd "/Users/"(whoami)"/.config/dada/"
+  pushd "/$UDIR/"(whoami)"/.config/dada/"
   set old (get_version_short)
   set nvm (git pull)
   set new (get_version_short)

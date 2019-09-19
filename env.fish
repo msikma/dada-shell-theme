@@ -38,7 +38,7 @@ end
 set -gx DEVKITPRO /opt/devkitpro
 set -gx DEVKITARM "$DEVKITPRO/devkitARM"
 set -gx CTRULIB "$DEVKITPRO/libctru"
-set -gx CTRBANNERTOOL "/Users/msikma/.bin/misc-bin/bannertool"
+set -gx CTRBANNERTOOL "/$UDIR/msikma/.bin/misc-bin/bannertool"
 if test -d $DEVKITPRO
   set PATH $DEVKITPRO/tools/bin/ $PATH
   set PATH $DEVKITPRO/pacman/bin/ $PATH
@@ -65,8 +65,8 @@ set -gx LESS_TERMCAP_us (printf "\e[01;32m")
 # For CeeGee
 set -gx DEBUG 1;
 
-set -gx CEEGEE_ROOT_DIR "/Users/"(whoami)"/Personal projects/ceegee";
-set -gx CEEGEE_BUILD_DEST_DIR "/Users/"(whoami)"/Personal projects/ceegee_nightly";
+set -gx CEEGEE_ROOT_DIR "/$UDIR/"(whoami)"/Personal projects/ceegee";
+set -gx CEEGEE_BUILD_DEST_DIR "/$UDIR/"(whoami)"/Personal projects/ceegee_nightly";
 
 set -x SCSCRAPE_DIR ~/Music/scscrape
 set -x VAGRANT_DEFAULT_PROVIDER virtualbox
@@ -92,5 +92,5 @@ set -gx MSIKMA_USE_SRC 1
 set -gx DADA_CATAWIKI_TLD NL
 
 # For compiling DOSBox
-set -gx DOSBOX_SRC_DIR "/Users/msikma/Source/dosbox-code-0"
-set -gx DOSBOX_APP_DIR "/Users/msikma/Files/Games/DOSBox"
+set -gx DOSBOX_SRC_DIR "/$UDIR/msikma/Source/dosbox-code-0"
+set -gx DOSBOX_APP_DIR "/$UDIR/msikma/Files/Games/DOSBox"

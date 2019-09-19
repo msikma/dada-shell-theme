@@ -1,14 +1,14 @@
 # Dada Shell Theme © 2019
 
 # Base directory for Cron job cache.
-set -g _c_dir '/Users/'(whoami)'/.cache/dada/cron'
+set -g _c_dir "/$UDIR/"(whoami)'/.cache/dada/cron'
 # Placeholder for the full path to the Cron log (has a date added to it).
 set -g _c_file_full $_c_dir'/cron_DATE.log'
 # Filename of the Cron log.
 set -g _c_file_short 'cron_DATE.log'
 
 # Weather cache location.
-set -g _weather_cache '/Users/'(whoami)'/.cache/dada/weather.txt'
+set -g _weather_cache "/$UDIR/"(whoami)'/.cache/dada/weather.txt'
 
 # Prints out the cached weather data.
 function _get_weather

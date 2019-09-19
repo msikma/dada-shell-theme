@@ -4,10 +4,10 @@ timer_start
 
 set err "backup-config: Error:"
 
-set last_backup (backup_time_rel "/Users/"(whoami)"/.cache/dada/backup-config")
-set src "/Users/"(whoami)"/.config/"
+set last_backup (backup_time_rel "/$UDIR/"(whoami)"/.cache/dada/backup-config")
+set src "/$UDIR/"(whoami)"/.config/"
 set dst "/Volumes/Files/Backups/$dada_hostname/Config"
-set srcssh "/Users/"(whoami)"/.ssh/"
+set srcssh "/$UDIR/"(whoami)"/.ssh/"
 set dstssh "/Volumes/Files/Backups/$dada_hostname/SSH"
 
 set do_not_backup "yarn"
