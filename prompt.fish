@@ -92,7 +92,7 @@ function fish_greeting --description 'Display the login greeting'
 
   # Display the gray uname section.
   set_color brblack
-  echo (get_darwin_version)
+  echo (get_short_uname)
   echo (uptime)
   echo
 
@@ -106,7 +106,7 @@ function fish_greeting --description 'Display the login greeting'
   echo -n $colors[3]
   echo -n " on "
   echo -n $colors[2]
-  echo "OSX "(get_osx_version)
+  echo (get_system_version)
   echo -n $colors[3]
   echo -n "Type "
   echo -n $colors[2]
