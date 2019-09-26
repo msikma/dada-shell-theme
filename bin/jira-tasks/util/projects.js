@@ -78,7 +78,9 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
   const issueLineWidth = Math.max(Math.floor(projectWidth / 2), 15)
 
   // A list of all projects inside all project groups.
-  const projectsAll = projectGroups.reduce((all, group) => [...all, ...group.projects], [])
+  const projectsAllRaw = projectGroups.reduce((all, group) => [...all, ...group.projects], [])
+  // Take out the projects with zero issues.
+  const projectsAll = projectsAllRaw.filter(p => p.issueAmount > 0)
 
   // Determine the maximum string length of each key so we can align the project names next to them.
   const keyWidth = findLargest('key', projectsAll) + 1
@@ -98,9 +100,7 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
       issueLine ? ' ' + hardPad(String(issueAmount), 3) : hardPad('', 4),
       hardPad('', projectWidth - issueLineWidth - 4 - 13)
     ].join(''))
-    if (project.description) {
-      projectLines.push(`Description: ${hardPad(description, projectWidth - 13)}`)
-    }
+    projectLines.push(`Description: ${hardPad(description ? description : '–', projectWidth - 13)}`)
     projectLines.push(`URL: ${hardPad(issueLink, projectWidth - 5)}`)
     projectsRendered.push(projectLines)
   }
@@ -130,10 +130,8 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
 
     lines.push('')
   }
-
-  lines.push('')
-
-  return lines
+  // Remove that last extra linebreak.
+  return lines.slice(0, -1)
 }
 
 module.exports = {

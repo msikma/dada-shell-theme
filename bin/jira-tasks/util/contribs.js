@@ -49,6 +49,17 @@ const getMonth = monthNumber => ({
   9: 'Oct', 10: 'Nov', 11: 'Dec'
 })[monthNumber] || monthNumber
 
+/** Counts how many days we've sequentially made commits. */
+const getStreak = contribsData => {
+  const dates = Object.values(contribsData.dates).reverse()
+  let streak = 0
+  for (const date of dates) {
+    if (date.count === 0) break
+    streak += 1
+  }
+  return streak
+}
+
 /**
  * Creates a table displaying project information.
  *
@@ -79,14 +90,17 @@ const makeContribsInfo = (contribsData, screenWidth, assets = contribsAssets) =>
     allWeeks.push(week)
   }
 
+  // Count how many days we've sequentially posted to Github.
+  const streak = getStreak(contribsData)
+
   // Buffer for the actual lines printed to the screen.
   const lines = []
 
   // Slice the weeks we'll display to an amount that will fit on the screen.
   const space = (allWeeks.length * 2) + projectIndent + projectIndent + dayNameIndent
   const weeks = space < screenWidth ? allWeeks : allWeeks.slice(-Math.floor((screenWidth - projectIndent - projectIndent - dayNameIndent) / 2))
-  
-  lines.push(hardPad(assets.headlineBullet, projectIndent) + contribsData.info.headline)
+
+  lines.push(hardPad(assets.headlineBullet, projectIndent) + contribsData.info.headline + ` - current commit streak: ${streak} days`)
   lines.push(' '.repeat(projectIndent) + `@${contribsData.user.username} - ${contribsData.user.organization} (${contribsData.user.website})`)
   lines.push('')
 
