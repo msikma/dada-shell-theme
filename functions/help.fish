@@ -51,7 +51,7 @@ set cmd_scripts \
 set cmd_project \
   "proj"              "Displays current project info" \
   "jira"              "Lists Jira issue branches in repo" \
-  "projects"          "Prints recently edited projects" \
+  "recentprojs"        "Prints recently edited projects" \
   "updrepos"          "Updates all project repos" \
   "tasks"             "Displays Theorycraft Jira tasks" \
 
@@ -68,6 +68,10 @@ set cmd_backup \
   "backup-games"      "Backs up game content" \
   "backup-music"      "Backs up music" \
   "backup-src"        "Backs up source code dirs" \
+
+set cmd_jira \
+  'tasks'             "Lists tasks defined in Jira" \
+  'projs'             "Lists projects and Github stats" \
 
 set cmd_network \
   "devices"           "Displays local computers" \
@@ -92,6 +96,7 @@ function help \
   set -a _cmd_all (_add_cmd_colors (set_color red) $cmd_backup)
   set -a _cmd_all (_add_cmd_colors (set_color green) $cmd_project)
   set -a _cmd_all (_add_cmd_colors (set_color cyan) $cmd_network)
+  set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_jira)
   set -a _cmd_all (_add_cmd_colors (set_color brblack) $cmd_dada)
 
   echo
