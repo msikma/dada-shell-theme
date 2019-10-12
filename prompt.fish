@@ -162,23 +162,31 @@ end
 
 # Displays project info on directory change.
 function display_project_info \
-  --description 'Display project info if we changed to a project directory' \
+  --description 'Displays project info after changing to a project directory' \
   --on-variable dirprev
 
-  if begin test -f ./package.json; or test -f ./requirements.txt; or test -f ./composer.json; or test -f ./setup.py; end
-    set is_project 1
+  # Run a quick check to see if this is a project directory.
+  if begin
+    [ ! -f ./package.json ]; and \
+    [ ! -f ./requirements.txt ]; and \
+    [ ! -f ./setup.py ]; and \
+    [ ! -f ./setup.cfg ]; and \
+    [ ! -f ./composer.json ]; end
+    return
   end
 
-  # Don't display project info if:
-  status --is-command-substitution; # this is command substitution \
-  	or test "$NO_DIRPREV_HOOK" = 1;
-    or not [ -n "$is_project" ]; # there's no relevant project files \
-    or [ (count $dirprev) -lt 3 ]; # we've just opened a new Terminal session \
-    # On second thought, whether we came from a lower directory isn't very important.
-    # Note: this has to be -eq 2, since we change directories in the fish_greeting that runs before this.
-    # or [ (count (string split $PWD $dirprev[-1])) -eq 2 ]; # we came from a lower directory in the hierarchy \
-    and return
+  # Return if this is isn't a command directly run by the user themselves in the shell.
+  if status --is-command-substitution
+    return
+  end
 
-  # Displays project name, version, and a list of bin files, npm scripts and docs.
+  # Check if displaying project info has temporarily been turned off, e.g. for a script.
+  if begin
+    [ "$NO_DIRPREV_HOOK" = 1 ]; or \
+    [ (count $dirprev) -lt 3 ]; end
+    return
+  end
+
+  # Display project info.
   projinfo
 end
