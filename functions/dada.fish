@@ -1,7 +1,7 @@
 # Dada Shell Theme © 2019
 
 # Updates the shell theme
-function update
+function dada-update
   pushd "/$UDIR/"(whoami)"/.config/dada/"
   set old (get_version_short)
   set nvm (git pull)

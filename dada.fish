@@ -32,12 +32,12 @@ source $DADA"lib/sys.fish"
 source $DADA"lib/test.fish"
 source $DADA"lib/utils.fish"
 
+source $DADA"functions/dada.fish"
 source $DADA"functions/eatsql.fish"
 source $DADA"functions/git.fish"
 source $DADA"functions/help.fish"
-source $DADA"functions/newx.fish"
-source $DADA"functions/update.fish"
 source $DADA"functions/images.fish"
+source $DADA"functions/newx.fish"
 
 source $DADA"test/datetime.fish"
 
