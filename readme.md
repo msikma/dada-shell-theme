@@ -40,6 +40,11 @@ After this there are some applications and packages that require extra configura
 * [MacDown](https://macdown.uranusjr.com/)
 * [ips.py](https://github.com/fbeaudet/ips.py)
 * [MultiPatch](http://www.romhacking.net/utilities/746/)
+* Quick look plugins:
+
+    * [quick look JSON](http://www.sagtau.com/quicklookjson.html) (copy to `~/Library/QuickLook/` and restart the service with `qlmanage -r`)
+    * [Markdown Quick Look plugin](http://inkmarkapp.com/markdown-quick-look-plugin-mac-os-x/)
+
 * For the `ekizo-dl` command (used by the cron job; needs to be symlinked in `~/.bin/`):
 
     `git clone git@github.com:msikma/ekizo-dl.git ~/Projects/ekizo-dl`
