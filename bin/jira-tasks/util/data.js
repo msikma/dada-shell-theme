@@ -2,7 +2,7 @@
 
 const process = require('process')
 const { execSync } = require('child_process')
-const { existsSync, readFileSync } = require('fs')
+const { existsSync, readFileSync, writeFileSync, unlinkSync } = require('fs')
 const { error } = require('./helpers')
 
 /** Standard layout for tasks tables. */
@@ -14,30 +14,33 @@ const getLayout = (args) => {
   }
 }
 
-const getCacheOrExec = (path, cmd, name) => {
+const getCacheOrExec = (path, cmd, name, hardRefresh = false) => {
   try {
-    if (existsSync(path)) {
+    if (existsSync(path) && !hardRefresh) {
       return JSON.parse(readFileSync(path))
     }
     const stdout = execSync('ms-jira-cli --action data --output json')
     const data = JSON.parse(stdout.toString('utf8'))
+    // Delete and rewrite the cached data.
+    unlinkSync(path)
+    writeFileSync(path, JSON.stringify(data), 'utf8')
     return data
   }
   catch (err) {
-    error('could not retrieve Jira info')
+    error('could not retrieve Jira info (restore cookies and run with --refresh)')
   }
 }
 
 /**
  * Returns Github contributions data.
- * 
+ *
  * The data has the following structure:
- * 
+ *
  *   { contributions:
  *     { dates:
  *       '2018-09-09': { count: 6, color: '#c6e48b' },
  *       ... etc.
- * 
+ *
  * The dates are always sorted ascending.
  */
 const getContribsData = (path) => {
@@ -58,9 +61,10 @@ const getContribsData = (path) => {
  *   - parent   null
  *
  * The 'parent' value will be a string like 'key' if it's set, e.g. 'KMK-2'.
+ * If 'hardRefresh' is true, we will delete our own cache file and remake it.
 */
-const getJiraData = (path) => {
-  return getCacheOrExec(path, 'Jira', 'ms-jira-cli --action data --output json')
+const getJiraData = (path, hardRefresh = false) => {
+  return getCacheOrExec(path, 'Jira', 'ms-jira-cli --action data --output json', hardRefresh)
 }
 
 /** Returns data about our current terminal. Only returns the width for now. */
