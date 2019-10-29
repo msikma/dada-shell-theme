@@ -28,6 +28,10 @@ print_backup_dirs $src_p $dst_p $src_c $dst_c $src_s $dst_s
 set types $type_p $type_c $type_s
 set src $src_p $src_c $src_s
 set dst $dst_p $dst_c $dst_s
+
+# Turn off 'proj' hook temporarily, as we pushd/popd between project directories.
+set -x NO_DIRPREV_HOOK 1
+
 for n in (seq 1 (count $src))
   set src_item $src[$n]
   set dst_item $dst[$n]
@@ -44,6 +48,8 @@ for n in (seq 1 (count $src))
     backup_dir_to_file $src_item $dst_item $dst_base $dst_dir $projname $project_dst $project_fn $needs_update
   end
 end
+
+set -x NO_DIRPREV_HOOK 0
 
 print_backup_finish $name
 set_last_backup $name
