@@ -19,7 +19,7 @@ const getCacheOrExec = (path, cmd, name, hardRefresh = false) => {
     if (existsSync(path) && !hardRefresh) {
       return JSON.parse(readFileSync(path))
     }
-    const stdout = execSync('ms-jira-cli --action data --output json')
+    const stdout = execSync(`ms-jira-cli ${hardRefresh ? '--no-cache' : ''} --action data --output json`)
     const data = JSON.parse(stdout.toString('utf8'))
     // Delete and rewrite the cached data.
     unlinkSync(path)
