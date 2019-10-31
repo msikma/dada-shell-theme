@@ -56,7 +56,6 @@ set cmd_project \
   "jira"              "Lists Jira issue branches in repo" \
   "recentprojs"        "Prints recently edited projects" \
   "updrepos"          "Updates all project repos" \
-  "tasks"             "Displays Theorycraft Jira tasks" \
 
 set cmd_git_short \
   "g"                 "Git status" \
