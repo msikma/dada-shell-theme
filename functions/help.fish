@@ -47,7 +47,7 @@ set cmd_scripts \
   "rip-music <url>"   "Rips music files from a URL" \
   "eatsql <file>"     "Shortcut to import SQL dumps" \
   "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
-  "pinger"            "Continuously if we are online" \
+  "pinger"            "Checks if we are online" \
   "unecm"             "Converts ECM files to BIN" \
   "convert"           "Converts images other formats" \
 
