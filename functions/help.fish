@@ -22,7 +22,10 @@ set cmd_regular \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "bat"               "Improved version of cat" \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
+
+set cmd_images \
   "img_isakura <i>"   "Processes iSakura TV screenshot" \
+  "img_jpeg <img>"    "Converts images to jpeg" \
   "img_trim <img>"    "Trims the border off an image" \
 
 set cmd_scripts \
@@ -91,6 +94,7 @@ function help \
   # Merge all various command lists together and add colors.
   set _cmd_all
   set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_regular)
+  set -a _cmd_all (_add_cmd_colors (set_color ff7e00) $cmd_images)
   set -a _cmd_all (_add_cmd_colors (set_color yellow) $cmd_scripts)
   set -a _cmd_all (_add_cmd_colors (set_color purple) $cmd_git_short)
   set -a _cmd_all (_add_cmd_colors (set_color red) $cmd_backup)
