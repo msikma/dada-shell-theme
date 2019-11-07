@@ -52,8 +52,13 @@ const getMonth = monthNumber => ({
 /** Counts how many days we've sequentially made commits. */
 const getStreak = contribsData => {
   const dates = Object.values(contribsData.dates).reverse()
+  let emptyFirst = false
   let streak = 0
   for (const date of dates) {
+    if (date.count === 0 && streak === 0 && !emptyFirst) {
+      emptyFirst = true
+      continue
+    }
     if (date.count === 0) break
     streak += 1
   }
@@ -100,8 +105,8 @@ const makeContribsInfo = (contribsData, screenWidth, assets = contribsAssets) =>
   const space = (allWeeks.length * 2) + projectIndent + projectIndent + dayNameIndent
   const weeks = space < screenWidth ? allWeeks : allWeeks.slice(-Math.floor((screenWidth - projectIndent - projectIndent - dayNameIndent) / 2))
 
-  lines.push(hardPad(assets.headlineBullet, projectIndent) + contribsData.info.headline + ` - current commit streak: ${streak} days`)
-  lines.push(' '.repeat(projectIndent) + `@${contribsData.user.username} - ${contribsData.user.organization} (${contribsData.user.website})`)
+  lines.push(hardPad(assets.headlineBullet, projectIndent) + contribsData.info.headline + ` - current commit streak: ${chalk.yellow(streak)} day${streak === 1 ? '' : 's'}`)
+  lines.push(' '.repeat(projectIndent) + `${chalk.yellow(`@${contribsData.user.username}`)} - ${contribsData.user.organization} ${chalk.blue(`<${chalk.underline.blue(contribsData.user.website)}>`)}`)
   lines.push('')
 
   // First, render the top header.

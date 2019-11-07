@@ -75,7 +75,7 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
   // and minus the indent.
   const projectWidth = Math.floor((screenWidth - 1 - projectIndent - projectIndent) / 2)
   // Width of the issue line displaying the project's issue priorities.
-  const issueLineWidth = Math.max(Math.floor(projectWidth / 2), 15)
+  const issueLineWidth = Math.max(Math.floor(projectWidth / 1.75), 15)
 
   // A list of all projects inside all project groups.
   const projectsAllRaw = projectGroups.reduce((all, group) => [...all, ...group.projects], [])
@@ -83,7 +83,7 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
   const projectsAll = projectsAllRaw.filter(p => p.issueAmount > 0)
 
   // Determine the maximum string length of each key so we can align the project names next to them.
-  const keyWidth = findLargest('key', projectsAll) + 1
+  const keyWidth = Math.max(findLargest('key', projectsAll) + 1, 7)
   const nameWidth = projectWidth - keyWidth
 
   // For every project inside every project group, we'll print the key, name, issue line
@@ -93,15 +93,15 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
     const { key, name, description, issueAmount, issuePriorities, issueLink } = project
     const issueLine = makeIssueLine(issuePriorities, issueLineWidth, assets)
 
-    projectLines.push(`${chalk.gray(hardPad(key, keyWidth))}${hardPad(name, nameWidth)}`)
+    projectLines.push(`${chalk.yellow(hardPad(key, keyWidth))}${chalk.white(hardPad(name, nameWidth))}`)
     projectLines.push([
-      `Open issues: `,
+      chalk.black(`Tasks: `),
       issueLine ? issueLine : hardPad('None', issueLineWidth),
       issueLine ? ' ' + hardPad(String(issueAmount), 3) : hardPad('', 4),
-      hardPad('', projectWidth - issueLineWidth - 4 - 13)
+      hardPad('', projectWidth - issueLineWidth - 4 - 7)
     ].join(''))
-    projectLines.push(`Description: ${hardPad(description ? description : '–', projectWidth - 13)}`)
-    projectLines.push(`URL: ${hardPad(issueLink, projectWidth - 5)}`)
+    projectLines.push(`${chalk.black('Descr:')} ${chalk.gray(hardPad(description ? description : '–', projectWidth - 7))}`)
+    projectLines.push(`${chalk.black('URL:  ')} ${chalk.blue(hardPad(chalk.underline(issueLink), projectWidth + 2))}`)
     projectsRendered.push(projectLines)
   }
 
@@ -120,10 +120,10 @@ const makeProjectInfo = (projectGroups, screenWidth, assets = projectAssets) => 
     for (let b = 0; b < projectLines; ++b) {
       lines.push([
         ...(projectOne && projectOne[b]
-          ? [b === 0 ? indentBullet : indentEmpty, projectOne[b]]
+          ? [b === 0 ? chalk.yellow(indentBullet) : indentEmpty, projectOne[b]]
           : [indentEmpty, emptyLine]),
         ...(projectTwo && projectTwo[b]
-          ? [b === 0 ? indentBullet : indentEmpty, projectTwo[b]]
+          ? [b === 0 ? chalk.yellow(indentBullet) : indentEmpty, projectTwo[b]]
           : [indentEmpty, emptyLine])
       ].join(' '))
     }
