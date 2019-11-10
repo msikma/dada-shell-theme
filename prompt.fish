@@ -36,8 +36,11 @@ function _greeting_weather --description "Shows the weather in the greeting mess
   if test -z "$weather"
     return
   end
-  # It can also contain an HTML error.
+  # It can also contain an HTML error, or an error if the service ran out of API calls.
   if string match -q -- "*nginx*" $weather
+    return
+  end
+  if string match -q -- "*default city*" $weather
     return
   end
   # Display the weather at the right place.
