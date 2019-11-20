@@ -16,9 +16,9 @@ alias ncdu="ncdu --color dark -q -r"
 alias sha1sum="gsha1sum"
 alias streamlink="streamlink --default-stream best --player '/Applications/VLC3.app/Contents/MacOS/VLC --file-caching 10000 --network-caching 10000'"
 alias wget="wget --no-check-certificate"
-alias youtube-audio="youtube-dl -x --add-metadata --audio-format best -o \"%(playlist_index)s-%(title)s.%(ext)s\""
-alias youtube-mp3="youtube-dl -x --add-metadata --audio-format mp3 -o \"%(playlist_index)s-%(title)s.%(ext)s\""
-alias youtube-wav="youtube-dl -x --add-metadata --audio-format wav -o \"%(playlist_index)s-%(title)s.%(ext)s\""
+alias youtube-audio="youtube-audio-dl 'best'" # note: see 'youtube-audio-dl' function
+alias youtube-mp3="youtube-audio-dl 'mp3'"
+alias youtube-wav="youtube-audio-dl 'wav'"
 
 # Utilities in ~/.bin/
 alias bfg="java -jar ~/.bin/bfg.jar"

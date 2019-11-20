@@ -52,6 +52,31 @@ function code
   code-insiders $argv
 end
 
+# Alias for youtube-dl with some options specifically for getting MP3s.
+# Checks whether the given URL is a playlist or not and adjusts accordingly.
+function youtube-audio-dl \
+  --argument-names audiotype
+  # Default to 'best' audio (variable output extension).
+  if [ -z "$audiotype" ]
+    set audiotype 'best'
+  end
+  set urls $argv[2..-1]
+
+  # Check whether this is a playlist or not.
+  # If so, include the playlist_index variable in the filename.
+  set tpl_playlist "%(playlist_index)s - %(title)s [%(id)s].%(ext)s"
+  set tpl "%(title)s [%(id)s].%(ext)s"
+  for url in $urls
+    if begin string match -qr -- ".+?playlist\?list.+?" $url; \
+      or string match -qr -- ".+?&list=.+?" $url; end
+      set tpl $tpl_playlist
+      echo (set_color magenta)"Downloading in playlist mode"(set_color normal)
+    end
+
+    youtube-dl -x --add-metadata --audio-format $audiotype -o $tpl $url
+  end
+end
+
 # Runs Citra via citra-qt. For some reason this only works when in the bin's directory.
 # This runs nightly version 1144, as newer versions are broken on OSX 10.13.
 function citra-qt
