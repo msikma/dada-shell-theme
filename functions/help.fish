@@ -19,7 +19,7 @@ set cmd_regular \
   "fd <str>"          "Searches for files (alt. to find)" \
   "doc <file>"        "Reads Markdown file in terminal" \
   "setssh"            "Turns remote SSH access on/off" \
-  "zipdir{0-9} <d>"   "Zips a directory (compr. 0-9)" \
+  "zipdir{n} <dir>"   "Zips a directory (compr. 0-9)" \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "bat"               "Improved version of cat" \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
