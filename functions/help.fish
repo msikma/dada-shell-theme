@@ -67,6 +67,7 @@ set cmd_backup \
   "backup-config"     "Backs up ~/.config/ dirs" \
   "backup-dbs"        "Backs up MySQL databases" \
   "backup-files"      "Backs up ~/Files" \
+  "backup-efi"        "Backs up EFI partition" \
   "backup-games"      "Backs up game content" \
   "backup-music"      "Backs up music" \
   "backup-src"        "Backs up source code dirs" \

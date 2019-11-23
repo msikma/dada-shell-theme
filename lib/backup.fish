@@ -18,6 +18,7 @@ set backup_cmd \
   "backup-config"     "Backs up ~/.config/ dirs" \
   "backup-dbs"        "Backs up SQL databases" \
   "backup-files"      "Backs up various other things" \
+  "backup-efi"        "Backs up the EFI partition" \
   "backup-games"      "Backs up game content" \
   "backup-src"        "Backs up source code directories" \
   "backup-vms"        "Backs up VMs" \
@@ -38,6 +39,7 @@ function backup --description "Displays backup commands and info"
     "Config backup:"    (backup_time_str "$backup_prefix/backup-config") \
     "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
     "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
+    "EFI backup:"       (backup_time_str "$backup_prefix/backup-efi") \
     "Games backup:"     (backup_time_str "$backup_prefix/backup-games") \
     "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
     "VMs backup:"       (backup_time_str "$backup_prefix/backup-vms") \
