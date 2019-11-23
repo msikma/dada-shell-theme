@@ -38,6 +38,7 @@ source $DADA"functions/git.fish"
 source $DADA"functions/help.fish"
 source $DADA"functions/images.fish"
 source $DADA"functions/newx.fish"
+source $DADA"functions/zipdir.fish"
 
 source $DADA"test/datetime.fish"
 
