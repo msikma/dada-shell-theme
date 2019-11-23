@@ -24,11 +24,15 @@ function _zipdir_single \
     set ctype '9'
   end
   
-  # Check that we aren't zipping the current directory.
+  # Check for input restrictions.
   set curr (pwd)
   set target (realpath $dirn)
   if [ "$curr" = "$target" ]
     echo 'zipdir: cannot zip current working directory'
+    return 1
+  end
+  if [ ! -d "$target" ]
+    echo "zipdir: not a directory: $target"
     return 1
   end
 
