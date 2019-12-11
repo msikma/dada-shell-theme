@@ -20,5 +20,5 @@ function lfext \
   if not test -d $dir
     return
   end
-  find "$dir" -type f -name "$ext"
+  find "$dir" -maxdepth 1 -mindepth 1 -type f -name "$ext"
 end

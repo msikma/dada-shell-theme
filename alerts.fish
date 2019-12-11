@@ -53,6 +53,25 @@ function print_and_log_alert \
   print_alert $filepath $show_fn '1'
 end
 
+function announce_next_alert \
+  --description "Announces the next alert in the queue and archives it"
+  set items (find_new_alerts)
+  set itemn (count $items)
+  if [ $itemn -le 0 ]
+    # No new items.
+    return
+  end
+
+  announce_alert $items[1]
+end
+
+function announce_alert \
+  --argument-names filepath \
+  --description "Prints an alert for the user to see and archives it; intended to be used automatically, not manually"
+  print_and_log_alert $filepath
+  archive_alert $filepath
+end
+
 # The following priority types are available:
 #
 #   * success
@@ -68,10 +87,7 @@ function print_alert \
   if [ ! -n "$show_fn" ]; set show_fn '0'; end
   if [ ! -n "$centered" ]; set centered '0'; end
   if [ ! -n "$add_to_log" ]; set add_to_log '0'; end
-  if ! test -e $filepath
-    # If we can't find the file, try searching for /alerts_dir/<file>.txt first.
-    set filepath "$alerts_dir""/""$filepath"".txt"
-  end
+  set filepath (_expand_alert_path $filepath)
   if ! test -e $filepath
     print_error 'print_alert' "could not find alert file: "(basename "$orig_filepath")
     return

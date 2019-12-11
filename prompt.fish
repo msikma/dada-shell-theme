@@ -147,6 +147,7 @@ end
 # Copied from one of the default prompts and edited a bit.
 # Displays a shortened cwd and VCS information.
 function fish_prompt --description 'Write out the left prompt'
+  announce_next_alert
   echo -n -s "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
 end
 

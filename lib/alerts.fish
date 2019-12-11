@@ -80,6 +80,11 @@ end
 function _find_new_alerts_in_dir \
   --argument-names srcdir \
   --description "Returns a list of new alert files to display in a specific directory"
+  set items (lfext $srcdir "*.txt")
+  set itemn (count $items)
+  if [ $itemn -le 0 ]
+    return
+  end
   set afiles (ls $srcdir/alert_*)
   for afile in $afiles
     if ! test -e "$afile"; continue; end
@@ -90,6 +95,12 @@ end
 function _find_read_alerts_in_dir \
   --argument-names srcdir \
   --description "Returns a short list of read alerts"
+  # Check if there are any files at all.
+  set items (lfext $srcdir "*.txt")
+  if [ -z $items ]
+    return
+  end
+
   set files (ls --time-style full-iso -lars modified $srcdir/*.txt)
 
   echo "These are the last seen alerts for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
@@ -132,9 +143,20 @@ function alerts_log_path \
   echo $alerts_log_dir"/"(alerts_log_file)
 end
 
+function _expand_alert_path \
+  --argument-names filepath \
+  --description "Returns a full path for an alert filename if it isn't a full path already"
+  if [ ! -e $filepath ]
+    # If we can't find the file, try searching for /alerts_dir/<file>.txt first.
+    set filepath "$alerts_dir""/""$filepath"".txt"
+  end
+  echo $filepath
+end
+
 function archive_alert \
   --argument-names filepath \
   --description "Moves an alert into the archive directory"
+  set filepath (_expand_alert_path $filepath)
   mv $filepath $alerts_archive_dir
 end
 
