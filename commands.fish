@@ -14,11 +14,14 @@ end
 
 # Converts a dmg file to iso.
 function dmg2iso \
-  --argument-names infile
+  --argument-names infile outfile
   if [ -z "$infile" ]
+    echo 'usage: dmg2iso infile [outfile]'
     return
   end
-  set outfile (echo $infile | strip_ext)".iso"
+  if [ -z "$outfile" ]
+    set outfile (echo $infile | strip_ext)".iso"
+  end
   hdiutil makehybrid -iso -joliet -o "$outfile" "$infile"
 end
 
