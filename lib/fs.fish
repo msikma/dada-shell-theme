@@ -57,6 +57,19 @@ function _file_basename \
   echo $fn | sed -E 's/\.[^.]+$//g'
 end
 
+function _ensure_trailing_slash \
+  --argument-names dirn \
+  --description "Add a trailing slash to a path if it doesn't have one"
+  # Split the given directory to see if we need a trailing slash.
+  # If the last item of the split isn't an empty string, we do.
+  set spl (string split "/" "$dirn")
+  if [ -n "$spl[-1]" ]
+    echo "$dirn"/
+  else
+    echo "$dirn"
+  end
+end
+
 function _clean_py_ext \
   --argument-names ext \
   --description "Turns 'py2' and 'py3' into just 'py' for Python shell scripts; leaves others intact"

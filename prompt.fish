@@ -128,12 +128,11 @@ function fish_greeting --description 'Display the login greeting'
     "Last commit:"      "$last_commit ($last_commit_rel)" \
 
   # Retrieves dates for when we last backed up important data.
-  set backup_prefix "$home/.cache/dada"
   set backup_cols \
-    "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
+    "MySQL backup:"     (backup_time_str "$_backup_dir/backup-dbs") \
     "Music backup:"     (backup_time_str "$backup_dir_music") \
-    "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
-    "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
+    "Source backup:"    (backup_time_str "$_backup_dir/backup-src") \
+    "Files backup:"     (backup_time_str "$_backup_dir/backup-files") \
 
   # Print all columns.
   set cols_all

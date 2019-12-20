@@ -4,6 +4,9 @@
 # Use rsync --help to see the version.
 set _rsync_min_prot_version 31
 
+# Base directory for backup timestamps (these indicate when the backup last ran).
+set -g _backup_dir $home"/.cache/dada/backup"
+
 # Backup directory for 3DS units.
 set backup_dir_3ds "/Volumes/Files/Backups/Game data/Nintendo 3DS backups"
 
@@ -34,15 +37,14 @@ function backup --description "Displays backup commands and info"
   echo "Backup commands and status for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
   echo
   # Make a list of all last backup times.
-  set backup_prefix "$home/.cache/dada"
   set backup_times \
-    "Config backup:"    (backup_time_str "$backup_prefix/backup-config") \
-    "MySQL backup:"     (backup_time_str "$backup_prefix/backup-dbs") \
-    "Files backup:"     (backup_time_str "$backup_prefix/backup-files") \
-    "EFI backup:"       (backup_time_str "$backup_prefix/backup-efi") \
-    "Games backup:"     (backup_time_str "$backup_prefix/backup-games") \
-    "Source backup:"    (backup_time_str "$backup_prefix/backup-src") \
-    "VMs backup:"       (backup_time_str "$backup_prefix/backup-vms") \
+    "Config backup:"    (backup_time_str "$_backup_dir/backup-config") \
+    "MySQL backup:"     (backup_time_str "$_backup_dir/backup-dbs") \
+    "Files backup:"     (backup_time_str "$_backup_dir/backup-files") \
+    "EFI backup:"       (backup_time_str "$_backup_dir/backup-efi") \
+    "Games backup:"     (backup_time_str "$_backup_dir/backup-games") \
+    "Source backup:"    (backup_time_str "$_backup_dir/backup-src") \
+    "VMs backup:"       (backup_time_str "$_backup_dir/backup-vms") \
     "" "" \
     "" "" \
     "" "" \
@@ -50,7 +52,7 @@ function backup --description "Displays backup commands and info"
   set backup_times_global \
     "3DS SD backup:"    (backup_time_str_3ds) \
     "Music backup:"     (backup_time_str "$backup_dir_music") \
-    "FTP backup:"       (backup_time_str "$backup_prefix/backup-ftp") \
+    "FTP backup:"       (backup_time_str "$_backup_dir/backup-ftp") \
 
   # Merge together with the backup commands.
   set cols_all
@@ -61,19 +63,24 @@ function backup --description "Displays backup commands and info"
   echo
 end
 
+function _backup_ensure_dir \
+  --description "Ensures the backup timestamp directory exists"
+  mkdir -p $_backup_dir
+end
+
 function get_last_backup \
   --argument-names script dirn \
   --description "Returns the last backup time for a script (relative time)"
-  set dirn (_ensure_trailing_slash $dirn)
+  set dirn (_backup_base_dir $dirn)
   set check (_check_backup_vars $script $dirn)
-  if test "$check" != "0"; echo $check; return 1; end
+  if [ "$check" != "0" ]; echo $check; return 1; end
   backup_time_rel "$dirn""$script"
 end
 
 function get_last_backup_abs \
   --argument-names script dirn \
   --description "Returns the last backup time for a script (relative and absolute time)"
-  set dirn (_ensure_trailing_slash $dirn)
+  set dirn (_backup_base_dir $dirn)
   set check (_check_backup_vars $script $dirn)
   if test "$check" != "0"; echo $check; return 1; end
   backup_time_rel "$dirn""$script" 1
@@ -83,7 +90,7 @@ function set_last_backup \
   --argument-names script dirn abs \
   --description "Saves the current timestamp as the latest backup time (defaulting to ~/.cache/dada/ as the base dir)"
   # Add a trailing slash to the path if needed.
-  set dirn (_ensure_trailing_slash $dirn)
+  set dirn (_backup_base_dir $dirn)
 
   # Check if the arguments are valid and the directory exists.
   set check (_check_backup_vars $script $dirn)
@@ -472,26 +479,18 @@ function _check_backup_vars \
   --argument-names script dirn \
   --description "Check if \$script and \$dirn are both set, or errors out otherwise"
   # Ensure the standard path is always there.
-  mkdir -p $home"/.cache/dada"
+  mkdir -p $_backup_dir
   if test -z "$script"; or test -z "$dirn"; echo "set_last_backup: Error: must define \$script"; return 1; end
   if not test -d "$dirn"; echo "set_last_backup: Error: given directory does not exist: $dirn"; return 1; end
   echo 0
 end
 
-function _ensure_trailing_slash \
+function _backup_base_dir \
   --argument-names dirn \
-  --description "Add a trailing slash to a directory if it doesn't have one"
+  --description "Ensures a given backup base dir is valid and has a trailing slash"
   # Use the standard cache path as the default.
-  if test -z "$dirn"
-    set dirn $home"/.cache/dada"
+  if [ -z "$dirn" ]
+    set dirn $_backup_dir
   end
-
-  # Split the given directory to see if we need a trailing slash.
-  # If the last item of the split isn't an empty string, we do.
-  set spl (string split "/" "$dirn")
-  if test -n "$spl[-1]"
-    echo "$dirn"/
-  else
-    echo "$dirn"
-  end
+  echo (_ensure_trailing_slash $_backup_dir)
 end
