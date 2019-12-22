@@ -1,8 +1,8 @@
 # Dada Shell Theme © 2019
 
 # Realistic user agent. Alternative:
-# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:63.0) Gecko/20100101 Firefox/63.0"
-set __moz_ag "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36"
+# "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0"
+set _dada_ua "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36"
 
 # Accept language string for getting localized content.
 set -gx dada_acceptlang "ja,en-US;q=0.7,en;q=0.3"
@@ -28,11 +28,11 @@ function rip_url_files --description "Rip files from a URL"
   set level 0  # hardcoded for now
   echo (set_color yellow)"Ripping files from URL: "(set_color blue)"$target"(set_color normal)
   echo (set_color yellow)"Saving file types: "(set_color purple)"$types"(set_color yellow)" (depth: $level)"(set_color normal)
-  
+
   if test -n "types"
     set types "--accept=$types"
   end
-  
+
   # If level is 0, we need to pass --page-requisites instead of --level;
   # a level value of 0 stands for 'infinite' otherwise.
   if [ "$level" = "0" ]
@@ -40,10 +40,10 @@ function rip_url_files --description "Rip files from a URL"
   else
     set rec_opts "--recursive" "--level=$level"
   end
-  
+
   wget --no-verbose \
        --no-clobber \
-       --user-agent=$__moz_ag \
+       --user-agent=$_dada_ua \
        $rec_opts \
        --span-hosts \
        --tries=1 \
