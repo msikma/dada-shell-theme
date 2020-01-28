@@ -27,7 +27,7 @@ function dada-cron \
   # In that case, create an alert notifying this.
   _cron_print_cmd "mail alerts" "Creating"
   if not _make_new_alerts
-    make_alert 'gmail' 'Gmail' 'warning' "-" "0" "Unable to log in with provided cookie file"\n"No alerts will be generated until this is resolved. See the cookie file in ~/.config/ms-gmail-js/cookies.txt and update it so that 'ms-gmail-cli --action list --no-cache --output json' can run successfully again. To open Gmail in basic HTML mode, use this link: https://mail.google.com/mail/u/0/h/1pq68r75kzvdr/?v%3Dlui."
+    #make_alert 'gmail' 'Gmail' 'warning' "-" "0" "Unable to log in with provided cookie file"\n"No alerts will be generated until this is resolved. See the cookie file in ~/.config/ms-gmail-js/cookies.txt and update it so that 'ms-gmail-cli --action list --no-cache --output json' can run successfully again. To open Gmail in basic HTML mode, use this link: https://mail.google.com/mail/u/0/h/1pq68r75kzvdr/?v%3Dlui."
   end
 
   _cron_print_cmd "Jira tasks" "Caching"
