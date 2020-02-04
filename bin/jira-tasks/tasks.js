@@ -18,8 +18,9 @@ const cachePathGithub = `${homedir()}/.cache/dada/github.json`
 
 /** Main script entry point. */
 const main = (cacheFileJira, cacheFileGithub) => {
+  const hardRefresh = ~process.argv.indexOf('--refresh')
   try {
-    const jiraData = getJiraData(cacheFileJira)
+    const jiraData = getJiraData(cacheFileJira, hardRefresh)
     const termData = getTermData()
     const tableLayout = getLayout()
 
