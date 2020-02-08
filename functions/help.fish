@@ -16,6 +16,7 @@ set cmd_regular \
   "md <file>"         "Opens file in MacDown" \
   "newx <file>"       "Creates a new executable script" \
   "jv <file>"         "Displays JSON file content" \
+  "jq <json>"         "Parses and filters JSON data" \
   "fd <str>"          "Searches for files (alt. to find)" \
   "doc <file>"        "Reads Markdown file in terminal" \
   "setssh"            "Turns remote SSH access on/off" \
