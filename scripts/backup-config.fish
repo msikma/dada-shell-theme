@@ -74,4 +74,4 @@ echo
 
 # Save last backup timestamp.
 mkdir -p ~/.cache/dada
-echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-config
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup/backup-config

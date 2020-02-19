@@ -35,4 +35,4 @@ echo (set_color cyan)"Done in $result s."(set_color normal)
 echo
 
 mkdir -p ~/.cache/dada
-echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-zoo
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup/backup-zoo

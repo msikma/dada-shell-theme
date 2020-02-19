@@ -66,4 +66,4 @@ echo
 
 # Save last backup timestamp.
 mkdir -p ~/.cache/dada
-echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup-games
+echo (date +"%a, %b %d %Y %X %z") > ~/.cache/dada/backup/backup-games
