@@ -103,6 +103,10 @@ function headers
   curl -sILk $argv | sed '$d'
 end
 
+function cclear --description "Clears the screen and the text buffer"
+  clear; printf '\e[3J'
+end
+
 function urlredirs --description "Displays URL redirects"
   if not count $argv > /dev/null
     echo 'usage: urlredirs "http://example.com/"'
