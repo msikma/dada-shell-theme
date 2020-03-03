@@ -51,11 +51,11 @@ source "$DADA/scripts/clean-3ds.fish"
 echo
 print_backup_dirs $sd_backups_src_dir $sd_backups_dst_dir $saves_src_dir $saves_dst_dir $extdata_src_dir $extdata_dst_dir $pictures_src_dir $pictures_dst_dir $screenshots_src_dir $screenshots_dst_dir $powersaves_src_dir $powersaves_dst_dir
 
-copy_rsync_delete $sd_backups_src_dir $sd_backups_dst_dir 1
-copy_rsync $saves_src_dir $saves_dst_dir 1
-copy_rsync $extdata_src_dir $extdata_dst_dir 1
-copy_rsync $pictures_src_dir $pictures_dst_dir 1
-copy_rsync $powersaves_src_dir $powersaves_dst_dir 1
+copy_rsync_delete $sd_backups_src_dir $sd_backups_dst_dir 0
+copy_rsync $saves_src_dir $saves_dst_dir 0
+copy_rsync $extdata_src_dir $extdata_dst_dir 0
+copy_rsync $pictures_src_dir $pictures_dst_dir 0
+copy_rsync $powersaves_src_dir $powersaves_dst_dir 0
 
 # Optionally copy over Luma screenshots if the SD card has those.
 # Don't error out if they don't exist.
@@ -64,6 +64,7 @@ set scr (find_new_3ds_screenshots $screenshots_src_dir $screenshots_dst_dir)
 if test -d $screenshots_src_dir; and set -q scr[1]
   echo ""
   echo (set_color yellow)"Copying over new Luma screenshots and converting them to PNG."(set_color normal)
+  mkdir -p $screenshots_dst_dir
   backup_new_3ds_screenshots $screenshots_src_dir $screenshots_dst_dir
 end
 
