@@ -401,16 +401,22 @@ function print_backup_finish \
 end
 
 function print_last_backup_time \
-  --argument-names script dirn \
+  --argument-names script dirn btype \
   --description "Prints out when the last backup was done (relative time)"
-  echo (set_color green)"Last backup was "(get_last_backup $script $dirn)"."(set_color normal)
+  if [ -z "$btype" ]
+    set btype 'backup'
+  end
+  echo (set_color green)"Last "$btype" was "(get_last_backup $script $dirn)"."(set_color normal)
   echo
 end
 
 function print_last_backup_time_abs \
-  --argument-names script dirn \
+  --argument-names script dirn btype \
   --description "Prints out when the last backup was done (relative and absolute time)"
-  echo (set_color green)"Last backup was "(get_last_backup_abs $script $dirn)"."(set_color normal)
+  if [ -z "$btype" ]
+    set btype 'backup'
+  end
+  echo (set_color green)"Last "$btype" was "(get_last_backup_abs $script $dirn)"."(set_color normal)
   echo
 end
 

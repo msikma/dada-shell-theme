@@ -13,7 +13,7 @@ check_needed_dirs $name 'target' $dst
 check_needed_files $name 'Can only run this script on Fuji' $dst"/.fuji-music"
 
 print_backup_start $purpose $name $dada_hostname "Music import script"
-print_last_backup_time $name
+print_last_backup_time $name '' 'import'
 print_backup_dirs $src_main $dst
 
 mkdir -p $dst"/Music/Classical"
