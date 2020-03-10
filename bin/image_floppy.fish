@@ -9,6 +9,9 @@
 # We will calculate the CRC32 of the first 500 bytes of the floppy
 # as part of the filename, along with the floppy partition name.
 
+# TODO:
+# mdir -i
+
 set err "image_floppy.fish: Error:"
 if [ (whoami) != "root" ]
   echo "$err Must run as root to access floppy device"
