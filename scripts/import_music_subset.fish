@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set name "import-some-music"
+set name "import_music_subset"
 set purpose "music"
 
 set src_main "/Volumes/Files/Music/Archive"

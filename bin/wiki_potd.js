@@ -133,4 +133,4 @@ feedparser.parse(atomURL)
       console.log('File saved.')
     })
   }))
-  .catch(err => console.error(`wiki-potd.js: error: ${err.toString()}`));
+  .catch(err => console.error(`wiki_potd.js: error: ${err.toString()}`));

@@ -9,7 +9,7 @@
 # We will calculate the CRC32 of the first 500 bytes of the floppy
 # as part of the filename, along with the floppy partition name.
 
-set err "backup-floppy.fish: Error:"
+set err "image_floppy.fish: Error:"
 if [ (whoami) != "root" ]
   echo "$err Must run as root to access floppy device"
   exit
@@ -100,31 +100,31 @@ function main
   end
   while true
     set floppy (check_floppy $drive)
-    
+
     # If no floppy drive found, sleep and try again.
     if test -z "$floppy"
       sleep 1
       continue
     end
-    
+
     # Retrieve disk label and CRC32 of the first 500 bytes for uniqueness.
     set crc (make_crc32 $rawdrive)
     # Convert :\/."' and spaces to underscores for safety.
     set label (echo $floppy | sed 's/[ :\/\\\."\']/_/g')
     set fn "$dst"/"$label - $crc"".img"
-    
+
     # Check if this disk has been ripped yet.
     if test -e $fn
       sleep 2
       continue
     end
-    
+
     set out (drive_size $drive)
     set total (echo $out | cut -d'|' -f1)
     set used (echo $out | cut -d'|' -f2)
     set free (echo $out | cut -d'|' -f3)
     set usage (echo $out | cut -d'|' -f4)
-    
+
     # Sometimes we arrive here before the disk has been mounted.
     # In that case we've actually taken *1.5 MB, the diskutil size,
     # as though it's the partition label.
@@ -133,7 +133,7 @@ function main
       sleep 2
       continue
     end
-    
+
     # Print disk information before ripping.
     echo
     echo (set_color green)"Found new disk."(set_color white)
@@ -145,7 +145,7 @@ function main
     echo (set_color green)"Finished imaging disk. Waiting for next."(set_color normal)
     sleep 5
   end
-  
+
   check_floppy
 end
 

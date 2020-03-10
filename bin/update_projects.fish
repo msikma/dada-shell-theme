@@ -3,7 +3,7 @@
 set orig (pwd)
 set home "/$UDIR/"(whoami)
 
-# See view-projects.fish.
+# See view_projects.fish.
 function __get_project_names --description 'Retrieve all project directory names'
   ls -d "$home/Projects/"*/
   ls -d "$home/Client projects/"*/
@@ -23,21 +23,21 @@ for proj in $projs
   if not test -f $proj"/.git/index"
     continue
   end
-  
+
   set name (basename $proj)
   cd $proj
-  
+
   # Determine current state of the repo.
   set old_count (git rev-list HEAD --count)
   set old_hash (git rev-parse --short HEAD)
   set branch (git describe --all | sed s@heads/@@)
-  
+
   # Pull and capture all output.
   set output (git pull ^&1)
-  
+
   # How many commits did we add since pulling?
   set new_count (git rev-list HEAD --count)
-  
+
   set msg ""
   switch "$output"
   case "Already up to date."
@@ -55,7 +55,7 @@ for proj in $projs
     end
     set msg (set_color green)" has been updated (+$commits $commits_sfx; commit #$new_count, $new_hash)."
   end
-  
+
   echo (set_color cyan)"$name$msg"(set_color normal)
 end
 echo

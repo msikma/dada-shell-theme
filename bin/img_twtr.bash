@@ -21,12 +21,12 @@
 #
 # Requires Imagemagick. It's on Brew: 'brew install imagemagick'
 #
-# usage: img-twtr.bash infile [infile [infile...]]
+# usage: img_twtr.bash infile [infile [infile...]]
 
 # Only operate on png files (for now).
 declare -a valid_exts=("png")
 # Display a warning if we can't process an item.
-declare warn="img-twtr: warning:"
+declare warn="img_twtr: warning:"
 # Max. number of pixels to force 4x resizing.
 declare resize4x="82500" # 330*250 (e.g. PSX screenshot, 330x240).
 # Max. number of pixels to force 2x resizing.

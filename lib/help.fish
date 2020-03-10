@@ -24,6 +24,19 @@ function _iterate_help \
   end
 end
 
+function _iterate_list \
+  --description "Iterate through and print a single column list of commands and descriptions"
+  # Note: like _iterate_help, but single column.
+  set _cmd_all $argv
+  set neutral (set_color normal)
+  for n in (seq 1 4 (count $_cmd_all))
+    set l_color $_cmd_all[$n]
+    set l_cmd_n $_cmd_all[(math $n + 1)]
+    set l_cmd_d $_cmd_all[(math $n + 3)]
+    printf "%s%-32s%s%-68s%s\\n" $l_color $l_cmd_n $neutral $l_cmd_d
+  end
+end
+
 # Injects colors into a list of commands
 function _add_cmd_colors
   set color $argv[1]

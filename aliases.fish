@@ -37,15 +37,15 @@ alias latest="ls -lah --git -s old --color=always | head -11" # shows 10 latest 
 
 # Bin
 alias cutvid="cutvid.py"
-alias encflac="enc-flac.bash"
-alias imgfloppy="image-floppy.fish"
-alias jira="git-jira.bash"
+alias encflac="enc_flac.bash"
+alias imgfloppy="image_floppy.fish"
+alias jira="git_jira.bash"
 alias proj="projinfo"
-alias recentprojs="view-projects.fish"
+alias recentprojs="view_projects.fish"
 alias tasks="$DADA/bin/jira-tasks/tasks.js"
 alias projs="$DADA/bin/jira-tasks/projs.js"
-alias updrepos="update-projects.fish"
-alias wikipotd="wiki-potd.js"
+alias updrepos="update_projects.fish"
+alias wikipotd="wiki_potd.js"
 
 # Scripts
 alias backup-3ds="backup-3ds.fish"

@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set _name "clean-3ds"
+set _name "clean_3ds"
 set _purpose "3DS files"
 
 # Check whether the 3DS SD card is mounted.

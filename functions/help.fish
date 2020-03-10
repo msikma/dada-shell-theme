@@ -4,6 +4,9 @@ set cmd_regular \
   "tree"              "Runs ls with tree structure" \
   "headers <url>"     "Displays headers for a URL" \
   "crc32u <file>"     "Prints CRC32 hash of file" \
+  "help"              "Displays this command list" \
+  "scripts"           "Lists the available scripts" \
+  "crc32u <file>"     "Prints CRC32 hash of file" \
   "cdbackup"          "Changes directory to backup dir" \
   "color"             "Adds a colored icon to a folder" \
   "trash"             "Sends files to the OSX trash" \
@@ -92,6 +95,21 @@ set cmd_dada \
   "cron-log"          "Views the Cron log for this month" \
   "cron-info"         "Checks the Cron script's status" \
 
+set scripts_regular \
+  "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
+  "remove_dsstore.fish"       "Removes .DS_Store files from a given directory" \
+  "import_music_subset.fish"  "Imports several music genres from the backup" \
+  "clean_3ds.fish"            "Cleans up unneeded files from the 3DS" \
+  "cutvid.py"                 "Script for cutting up videos" \
+  "enc_flac.bash"             "Converts a .wav file to .flac" \
+  "image_floppy.fish"         "Images a floppy to .img file" \
+  "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
+  "img_twtr.bash"             "Adds a transparent pixel to an image for Twitter" \
+  "serverinfo.fish"           "Displays info about the device's web server" \
+  "update_projects.fish"      "Pulls the latest changes for all projects" \
+  "view_projects.fish"        "Displays a list of projects with recent commits" \
+  "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
+
 function help \
   --description "Prints all available commands"
   # Merge all various command lists together and add colors.
@@ -111,6 +129,20 @@ function help \
   echo
 
   _iterate_help $_cmd_all
+
+  echo
+end
+
+function scripts \
+  --description "Prints all available scripts"
+  set _scripts_all
+  set -a _scripts_all (_add_cmd_colors (set_color blue) $scripts_regular)
+
+  echo
+  echo "The following scripts are available:"
+  echo
+
+  _iterate_list $_scripts_all
 
   echo
 end
