@@ -2,6 +2,19 @@
 
 set -g _jpg_quality "92"
 
+function img_resize50
+  for file in $argv[1..-1]
+    set base (_file_basename $file)
+    set ext (_file_extension $file)
+    set target $base'_img_resize50.'$ext
+    if [ $ext = 'jpg' -o $ext = 'jpeg' ]
+      magick convert "$file" -resize 50% -quality $_jpg_quality "$target"
+    else
+      magick convert "$file" -resize 50% "$target"
+    end
+  end
+end
+
 # Converts images to jpeg. Files that are already .jpg or .jpeg are skipped.
 function img_jpeg
   for file in $argv[1..-1]
