@@ -16,6 +16,7 @@ set cmd_git \
 set cmd_git_scripts \
   "git summary"       "Summary of repo and authors" \
   "jira"              "Lists Jira issue branches" \
+  "open_repo"         "Opens the repo's homepage" \
 
 function ghelp \
   --description "Prints all available Git commands"
@@ -43,6 +44,20 @@ end
 function glb \
   --description "Shows list of local-only branches"
   git branch -vv | cut -c 3- | awk '$3 !~/\[/ { print $1 }'
+end
+
+function open_repo \
+  --description "Opens up the main repository link in the browser"
+  # Note: only supports Node package.json at the moment.
+  set node_url (node -e "const a = require('./package.json'); a.homepage && console.log(a.homepage);" 2> /dev/null)
+  set repo_url $node_url
+  if [ -n "$repo_url" ]
+    echo (set_color yellow)'Opening repo URL/homepage: '(set_color reset)(set_color -u)"$repo_url"
+    open "$repo_url"
+  else
+    echo 'open_repo: could not find repository URL.'
+    return 1
+  end
 end
 
 alias gith="ghelp" # legacy alias
