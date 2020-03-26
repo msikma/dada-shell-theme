@@ -110,6 +110,7 @@ set scripts_regular \
   "update_projects.fish"      "Pulls the latest changes for all projects" \
   "view_projects.fish"        "Displays a list of projects with recent commits" \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
+  "makevids.sh"               "Turns a set of audio and image files into videos" \
 
 function help \
   --description "Prints all available commands"
