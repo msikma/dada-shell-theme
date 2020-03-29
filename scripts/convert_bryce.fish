@@ -1,7 +1,5 @@
 #!/usr/bin/env fish
 
-set bryce_dir ~/"Files/VMs/FujiXP/FujiXP HDD/Bryce/"
-
 function convert_bmp_to_png \
   --argument-names bmp_file \
   --description "Replaces a .bmp file with a .png file"
@@ -30,4 +28,13 @@ function dir_bmp_to_png \
   echo ""
 end
 
-dir_bmp_to_png "$bryce_dir"
+function dada_bryce_dir_cv --argument-names dir
+  if [ -d "$dir" ]
+    dir_bmp_to_png "$dir"
+  else
+    echo 'convert_bryce.fish: error: can\'t find directory: '"$dir"
+    return 1
+  end
+end
+
+dada_bryce_dir_cv $DADA_BRYCE_DIR
