@@ -6,7 +6,7 @@ function convert_bmp_to_png \
   set base (echo $bmp_file | strip_ext)
   set dest "$base.png"
   convert "$bmp_file" "$dest"
-  if [ -n "$remove_original" -a "$remove_original" -eq '1' ]
+  if [ -n "$remove_original" -a "$remove_original" -eq 1 ]
     rm "$bmp_file"
   end
 end
@@ -20,6 +20,9 @@ function dir_bmp_to_png \
   set bmp_files "$dir/"*".bmp"
   set bmp_count (count $bmp_files)
   echo (set_color yellow)"Converting all "(set_color cyan)".bmp"(set_color yellow)" files to "(set_color cyan)".png"(set_color yellow)" in "(set_color normal)"$dir"
+  if [ "$remove_original" -eq 1 ]
+    echo (set_color red)"Originals will be removed after conversion."(set_color normal)
+  end
   if [ $bmp_count -eq 0 ]
     echo (set_color green)"No .bmp images found."(set_color normal)
     return
@@ -33,13 +36,13 @@ function dir_bmp_to_png \
   echo ""
 end
 
-function dada_bryce_dir_cv --argument-names dir
+function dada_bryce_dir_cv --argument-names dir remove_original
   if [ -d "$dir" ]
-    dir_bmp_to_png "$dir" "0"
+    dir_bmp_to_png "$dir" $remove_original
   else
     echo 'convert_bryce.fish: error: can\'t find directory: '"$dir"
     return 1
   end
 end
 
-dada_bryce_dir_cv $DADA_BRYCE_DIR
+dada_bryce_dir_cv $DADA_BRYCE_DIR "$argv[1]"
