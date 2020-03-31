@@ -24,7 +24,7 @@ You should now see the welcome message when opening a new terminal window.
 
 2. Install the following Brew packages:
 
-    `brew install bat composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq ncdu node python3 rsync streamlink tldr wget xdelta youtube-dl`
+    `brew install bat ccd2iso composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq ncdu node python3 rsync streamlink tldr wget xdelta youtube-dl`
 
 3. Install the following [npm](https://www.npmjs.com/) packages:
 

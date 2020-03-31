@@ -27,6 +27,7 @@ set cmd_regular \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "bat"               "Improved version of cat" \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
+  "ccd2iso <file>"    "Converts a CloneCD file to .iso" \
   "cclear"            "Clears the screen and text buffer" \
 
 set cmd_images \
