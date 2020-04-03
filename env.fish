@@ -98,7 +98,7 @@ set -gx DOSBOX_APP_DIR "/$UDIR/msikma/Files/Games/DOSBox"
 # Bryce artwork directory
 set -gx FUJI_BRYCE_DIR ~/"Files/VMs/FujiXP/FujiXP HDD/Bryce/"
 set -gx VESUVIUS_BRYCE_DIR ~/"Files/VMs/VesuviusXP/Files/Bryce/"
-if [ -d "$FUJI_BRYCE_DIR" ];
+if [ -d "$FUJI_BRYCE_DIR" ]
   set -gx DADA_BRYCE_DIR "$FUJI_BRYCE_DIR"
 else
   set -gx DADA_BRYCE_DIR "$VESUVIUS_BRYCE_DIR"
