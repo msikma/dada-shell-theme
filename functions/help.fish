@@ -37,6 +37,7 @@ set cmd_images \
   "img_trim <img>"    "Trims the border off an image" \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
+  "x264ll <vid>"      "Converts video to lossless x264" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
