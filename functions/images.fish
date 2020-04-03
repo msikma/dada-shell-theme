@@ -1,34 +1,13 @@
 # Dada Shell Theme © 2019
 
-set -g _jpg_quality "92"
-
-# Resizes something to 50%.
-# TODO: simplify this and the rest
+# Resizes to 50% to a new file
 function img_r50p
-  for file in $argv[1..-1]
-    set base (_file_basename $file)
-    set ext (_file_extension $file)
-    set target $base'_img_resize50.'$ext
-    if [ $ext = 'jpg' -o $ext = 'jpeg' ]
-      magick convert "$file" -resize 50% -quality $_jpg_quality "$target"
-    else
-      magick convert "$file" -resize 50% "$target"
-    end
-  end
+  _img_resize "1" "50%" "0" $argv[1..-1]
 end
 
-# Resizes something to 4x.
-function img_r4x
-  for file in $argv[1..-1]
-    set base (_file_basename $file)
-    set ext (_file_extension $file)
-    set target $base'_img_resize50.'$ext
-    if [ $ext = 'jpg' -o $ext = 'jpeg' ]
-      magick convert "$file" -resize 400% -quality $_jpg_quality "$target"
-    else
-      magick convert "$file" -resize 400% "$target"
-    end
-  end
+# Resizes to 400% to a new file, nearest neighbor
+function img_r400p
+  _img_resize "1" "400%" "1" $argv[1..-1]
 end
 
 # Converts images to jpeg. Files that are already .jpg or .jpeg are skipped.
