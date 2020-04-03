@@ -25,6 +25,7 @@ set cmd_regular \
   "setssh"            "Turns remote SSH access on/off" \
   "zipdir{n} <dir>"   "Zips a directory (compr. 0-9)" \
   "urlredirs <url>"   "Displays what redirects a URL has" \
+  "screenres"         "Prints current screen resolutions" \
   "bat"               "Improved version of cat" \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
   "ccd2iso <file>"    "Converts a CloneCD file to .iso" \

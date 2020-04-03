@@ -89,6 +89,14 @@ function citra-qt
   popd
 end
 
+# Displays the current screen resolution. E.g.:
+# Resolution: 1920 x 1080 (1080p FHD - Full High Definition)
+# Resolution: 3840 x 2160 (2160p 4K UHD - Ultra High Definition)
+# Resolution: 1024 x 768 (XGA - eXtended Graphics Array)
+function screenres --description "Displays screen resolutions"
+  string trim -- (system_profiler SPDisplaysDataType | grep Resolution --color=never)
+end
+
 function jv --description "Quick display of JSON files"
   set -x jv_json_file (pwd)/$argv[1]
   node -e "console.log(JSON.parse(require('fs').readFileSync(process.env.jv_json_file, 'utf8')));"
