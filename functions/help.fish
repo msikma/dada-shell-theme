@@ -56,6 +56,7 @@ set cmd_scripts \
   "ncdu"              "Shows directory disk space usage" \
   "vgmpfdl <url>"     "Downloads albums from vgmpf.com" \
   "rip-music <url>"   "Rips music files from a URL" \
+  "color-dirs"        "Colorizes subdirs by tech" \
   "eatsql <file>"     "Shortcut to import SQL dumps" \
   "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
   "pinger"            "Checks if we are online" \
@@ -102,19 +103,24 @@ set cmd_dada \
 
 set scripts_regular \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
-  "remove_dsstore.fish"       "Removes .DS_Store files from a given directory" \
-  "import_music_subset.fish"  "Imports several music genres from the backup" \
-  "clean_3ds.fish"            "Cleans up unneeded files from the 3DS" \
   "cutvid.py"                 "Script for cutting up videos" \
   "enc_flac.bash"             "Converts a .wav file to .flac" \
-  "image_floppy.fish"         "Images a floppy to .img file" \
   "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
+  "image_floppy.fish"         "Images a floppy to .img file" \
   "img_twtr.bash"             "Adds a transparent pixel to an image for Twitter" \
+  "import_music_subset.fish"  "Imports several music genres from the backup" \
+  "makevids.sh"               "Turns a set of audio and image files into videos" \
   "serverinfo.fish"           "Displays info about the device's web server" \
   "update_projects.fish"      "Pulls the latest changes for all projects" \
   "view_projects.fish"        "Displays a list of projects with recent commits" \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
-  "makevids.sh"               "Turns a set of audio and image files into videos" \
+
+set scripts_ia \
+  "ia_scans.sh"               "Prints an Internet Archive description with a table of scans" \
+
+set scripts_housekeeping \
+  "clean_3ds.fish"            "Cleans up unneeded files from the 3DS" \
+  "remove_dsstore.fish"       "Removes .DS_Store files from a given directory" \
 
 function help \
   --description "Prints all available commands"
@@ -143,6 +149,8 @@ function scripts \
   --description "Prints all available scripts"
   set _scripts_all
   set -a _scripts_all (_add_cmd_colors (set_color blue) $scripts_regular)
+  set -a _scripts_all (_add_cmd_colors (set_color yellow) $scripts_ia)
+  set -a _scripts_all (_add_cmd_colors (set_color green) $scripts_housekeeping)
 
   echo
   echo "The following scripts are available:"
