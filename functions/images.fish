@@ -2,7 +2,9 @@
 
 set -g _jpg_quality "92"
 
-function img_resize50
+# Resizes something to 50%.
+# TODO: simplify this and the rest
+function img_r50p
   for file in $argv[1..-1]
     set base (_file_basename $file)
     set ext (_file_extension $file)
@@ -11,6 +13,20 @@ function img_resize50
       magick convert "$file" -resize 50% -quality $_jpg_quality "$target"
     else
       magick convert "$file" -resize 50% "$target"
+    end
+  end
+end
+
+# Resizes something to 4x.
+function img_r4x
+  for file in $argv[1..-1]
+    set base (_file_basename $file)
+    set ext (_file_extension $file)
+    set target $base'_img_resize50.'$ext
+    if [ $ext = 'jpg' -o $ext = 'jpeg' ]
+      magick convert "$file" -resize 400% -quality $_jpg_quality "$target"
+    else
+      magick convert "$file" -resize 400% "$target"
     end
   end
 end

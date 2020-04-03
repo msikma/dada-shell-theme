@@ -34,7 +34,8 @@ set cmd_images \
   "img_isakura <i>"   "Processes iSakura TV screenshot" \
   "img_jpeg <img>"    "Converts images to jpeg" \
   "img_trim <img>"    "Trims the border off an image" \
-  "img_resize50<i>"   "Resizes an image to 50% size" \
+  "img_r50p <img>"    "Resizes an image to 50% size" \
+  "img_r4x <img>"     "Resizes an image to 4x size" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
