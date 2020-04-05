@@ -9,6 +9,7 @@ set -g _backup_dir $home"/.cache/dada/backup"
 
 # Backup directory for 3DS units.
 set backup_dir_3ds "/Volumes/Files/Backups/Game data/Nintendo 3DS backups"
+set backup_dir_switch "/Volumes/Files/Backups/Game data/Nintendo Switch pictures"
 
 # Backup timestring files for global backup dirs.
 set backup_dir_music "/Volumes/Files/Music/.backup-music"
@@ -27,7 +28,7 @@ set backup_cmd \
   "backup-vms"        "Backs up VMs" \
   "" "" \
   "$ncol""Non device specific:" "" \
-  "" "" \
+  "backup-switch"     "Backs up Nintendo Switch SD card" \
   "backup-3ds"        "Backs up 3DS SD card" \
   "backup-music"      "Backs up music" \
   "backup-ftp"        "Backs up FTP bookmarks" \
@@ -47,10 +48,10 @@ function backup --description "Displays backup commands and info"
     "VMs backup:"       (backup_time_str "$_backup_dir/backup-vms") \
     "" "" \
     "" "" \
-    "" "" \
 
   set backup_times_global \
     "3DS SD backup:"    (backup_time_str_3ds) \
+    "Switch backup:"    (backup_time_str_switch) \
     "Music backup:"     (backup_time_str "$backup_dir_music") \
     "FTP backup:"       (backup_time_str "$_backup_dir/backup-ftp") \
 
@@ -160,12 +161,30 @@ function copy_rsync_delete \
 end
 
 # Searches for the primary 3DS and prints its last backup time; used in e.g. the 'backup' command.
+# TODO: merge with backup_time_str_switch.
 function backup_time_str_3ds \
   --description "Prints the last backup time for the primary 3DS"
   for n in (ls $backup_dir_3ds)
     set prfile "$backup_dir_3ds/$n/.primary"
     set backfile "$backup_dir_3ds/$n/.backup-3ds"
     if ! test -d "$backup_dir_3ds/$n"; continue; end
+    if ! test -e "$prfile"; continue; end
+
+    backup_time_str $backfile
+    return
+  end
+  # If none were found.
+  echo "unknown"
+end
+
+# Searches for the primary Nintendo Switch and prints its last backup time; used in e.g. the 'backup' command.
+# TODO: merge with above.
+function backup_time_str_switch \
+  --description "Prints the last backup time for the primary Nintendo Switch"
+  for n in (ls $backup_dir_switch)
+    set prfile "$backup_dir_switch/$n/.primary"
+    set backfile "$backup_dir_switch/$n/.backup-switch"
+    if ! test -d "$backup_dir_switch/$n"; continue; end
     if ! test -e "$prfile"; continue; end
 
     backup_time_str $backfile
@@ -433,7 +452,12 @@ function check_needed_dirs \
   --argument-names script dtype \
   --description "Checks if an array of directories exists and is accessible"
   set needdirs $argv[3..-1]
-  for n in (seq (count $needdirs))
+  set dirs (count $needdirs)
+  if [ $dirs -eq 0 ]
+    echo $script": Error: Called check_needed_dirs with no directory arguments"
+    exit 1
+  end
+  for n in (seq 1 $dirs)
     set s $needdirs[$n]
     if not test -d $s
       echo $script": Error: Can't access $dtype directory: "$s
@@ -498,5 +522,5 @@ function _backup_base_dir \
   if [ -z "$dirn" ]
     set dirn $_backup_dir
   end
-  echo (_ensure_trailing_slash $_backup_dir)
+  echo (_ensure_trailing_slash $dirn)
 end

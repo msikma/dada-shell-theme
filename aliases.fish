@@ -49,6 +49,7 @@ alias wikipotd="wiki_potd.js"
 
 # Scripts
 alias backup-3ds="backup-3ds.fish"
+alias backup-switch="backup-switch.fish"
 alias backup-config="backup-config.fish"
 alias backup-dbs="backup-dbs.fish"
 alias backup-files="backup-files.fish"
