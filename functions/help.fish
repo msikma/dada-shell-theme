@@ -27,8 +27,6 @@ set cmd_regular \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "screenres"         "Prints current screen resolutions" \
   "bat"               "Improved version of cat" \
-  "dmg2iso <file>"    "Converts a .dmg file to .iso" \
-  "ccd2iso <file>"    "Converts a CloneCD file to .iso" \
   "cclear"            "Clears the screen and text buffer" \
 
 set cmd_images \
@@ -38,6 +36,12 @@ set cmd_images \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
   "x264ll <vid>"      "Converts video to lossless x264" \
+
+set cmd_conversions \
+  "dmg2iso <file>"    "Converts a .dmg file to .iso" \
+  "ccd2iso <file>"    "Converts a .ccd file to .iso" \
+  "mdf2iso <file>"    "Converts an .mdf file to .iso" \
+  "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
@@ -58,7 +62,6 @@ set cmd_scripts \
   "rip-music <url>"   "Rips music files from a URL" \
   "color-dirs"        "Colorizes subdirs by tech" \
   "eatsql <file>"     "Shortcut to import SQL dumps" \
-  "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
   "pinger"            "Checks if we are online" \
   "unecm"             "Converts ECM files to BIN" \
   "convert"           "Converts images other formats" \
@@ -129,6 +132,7 @@ function help \
   set -a _cmd_all (_add_cmd_colors (set_color blue) $cmd_regular)
   set -a _cmd_all (_add_cmd_colors (set_color ff7e00) $cmd_images)
   set -a _cmd_all (_add_cmd_colors (set_color yellow) $cmd_scripts)
+  set -a _cmd_all (_add_cmd_colors (set_color brgreen) $cmd_conversions)
   set -a _cmd_all (_add_cmd_colors (set_color purple) $cmd_git_short)
   set -a _cmd_all (_add_cmd_colors (set_color red) $cmd_backup)
   set -a _cmd_all (_add_cmd_colors (set_color green) $cmd_project)
