@@ -27,6 +27,7 @@ set cmd_regular \
   "urlredirs <url>"   "Displays what redirects a URL has" \
   "screenres"         "Prints current screen resolutions" \
   "bat"               "Improved version of cat" \
+  "findext"           "Finds all files with a given ext" \
   "cclear"            "Clears the screen and text buffer" \
 
 set cmd_images \

@@ -89,6 +89,16 @@ function citra-qt
   popd
 end
 
+# Searches a directory for files of a certain extension.
+function findext
+  set usage 'usage: findext ext dir'
+  if [ -z "$argv[2]" ]
+    echo $usage
+    return
+  end
+  find $argv[2] -type f -name "*.$argv[1]"
+end
+
 # Displays the current screen resolution. E.g.:
 # Resolution: 1920 x 1080 (1080p FHD - Full High Definition)
 # Resolution: 3840 x 2160 (2160p 4K UHD - Ultra High Definition)
