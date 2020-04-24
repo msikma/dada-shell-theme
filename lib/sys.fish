@@ -22,9 +22,14 @@ end
 
 # Prints the current local IP, e.g. "10.0.1.5"
 function get_curr_ip --description "Prints current local IP"
-  if [ (command -v ifconfig) ]
-    ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1
+  # TODO: this should probably be done in a more clever way.
+  if [ "$DADA_FISH_ENV" = "desktop" ]
+    if [ (command -v ifconfig) ]
+      ifconfig | grep inet | grep broadcast | cut -d' ' -f 2 | head -n 1
+    else
+      hostname -I | cut -d ' ' -f1
+    end
   else
-    hostname -I | xargs
+    hostname -I | cut -d ' ' -f1
   end
 end
