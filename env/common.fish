@@ -1,5 +1,10 @@
 # Dada Shell Theme © 2019, 2020
 
+# Rust
+if [ -d ~/.cargo/bin ]
+  set PATH ~/.cargo/bin $PATH
+end
+
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")
 set -gx LESS_TERMCAP_se (printf "\e[0m")

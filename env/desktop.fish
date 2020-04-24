@@ -30,7 +30,7 @@ if test -d /usr/local/djgpp/bin/
   set PATH /usr/local/djgpp/bin/ $PATH
 end
 set PATH ~/.composer/vendor/bin $PATH
-set PATH ~/.cargo/bin $PATH
+
 # game
 if test -d ~/Projects/fishtetris
   set PATH ~/Projects/fishtetris $PATH
