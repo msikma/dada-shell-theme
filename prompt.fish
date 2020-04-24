@@ -141,6 +141,9 @@ function fish_greeting --description 'Display the login greeting'
   set -a cols_all (_add_cmd_colors (set_color magenta) $backup_cols)
   _iterate_help $cols_all
   echo
+
+  # Run whatever else we need to do specifically for this environment.
+  fish $DADA"env/welcome/$DADA_FISH_ENV.fish"
 end
 
 # Copied from one of the default prompts and edited a bit.

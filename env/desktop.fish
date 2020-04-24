@@ -1,5 +1,7 @@
 # Dada Shell Theme © 2019
 
+source $DADA"env/common.fish"
+
 # Node path so we can import global packages. Be careful!
 set -gx NODE_PATH /usr/local/lib/node_modules $NODE_PATH
 
@@ -55,13 +57,6 @@ end
 
 set -gx FLOPPY_IMAGING_PATH ~/"Files/Floppy disk images/"
 
-set -gx LESS_TERMCAP_md (printf "\e[01;31m")
-set -gx LESS_TERMCAP_me (printf "\e[0m")
-set -gx LESS_TERMCAP_se (printf "\e[0m")
-set -gx LESS_TERMCAP_so (printf "\e[01;44;33m")
-set -gx LESS_TERMCAP_ue (printf "\e[0m")
-set -gx LESS_TERMCAP_us (printf "\e[01;32m")
-
 # For CeeGee
 set -gx DEBUG 1;
 
@@ -70,10 +65,6 @@ set -gx CEEGEE_BUILD_DEST_DIR "/$UDIR/"(whoami)"/Personal projects/ceegee_nightl
 
 set -x SCSCRAPE_DIR ~/Music/scscrape
 set -x VAGRANT_DEFAULT_PROVIDER virtualbox
-set -x EDITOR nano
-set -x GIT_EDITOR nano
-
-set -x LC_ALL en_US.UTF-8
 
 set MANPATH /opt/local/share/man $MANPATH
 set -x DJGPP_PREFIX /usr/local/djgpp

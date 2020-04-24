@@ -11,11 +11,16 @@ set -gx dada_hostname_local (hostname)
 set -gx dada_uhostname (whoami)"@$dada_hostname"
 set -gx dada_uhostname_local (whoami)"@$dada_hostname_local"
 
+# Default environment is 'desktop'. Set DADA_FISH_ENV to 'server' before loading this file otherwise.
+if [ -z "$DADA_FISH_ENV" ]
+  set -gx DADA_FISH_ENV "desktop"
+end
+
+source $DADA"env/$DADA_FISH_ENV.fish"
 source $DADA"alerts.fish"
 source $DADA"aliases.fish"
 source $DADA"commands.fish"
 source $DADA"cron.fish"
-source $DADA"env.fish"
 source $DADA"prompt.fish"
 source $DADA"tasks.fish"
 
