@@ -12,7 +12,9 @@ set -g _weather_cache "/$UDIR/"(whoami)'/.cache/dada/weather.txt'
 
 # Prints out the cached weather data.
 function _get_weather
-  cat $_weather_cache
+  if test -e $_weather_cache
+    cat $_weather_cache
+  end
 end
 
 # Deletes the weather file if it's empty and then caches the weather file.
