@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Returns Git version (e.g. master-23 [a4fd3c]).
 function get_version --description 'Returns version identifier string'

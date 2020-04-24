@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 set cmd_regular \
   "tree"              "Runs ls with tree structure" \

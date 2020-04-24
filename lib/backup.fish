@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Minimal required rsync protocol version; checked when running backup scripts.
 # Use rsync --help to see the version.

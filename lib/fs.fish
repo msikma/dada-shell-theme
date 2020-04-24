@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 function get_dot_underbars \
   --argument-names dir \

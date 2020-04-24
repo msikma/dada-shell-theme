@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Draws lines as columns. Used to draw two columns of text in the greeting.
 function draw_columns --description 'Draws lines as columns'

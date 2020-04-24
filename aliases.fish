@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # OSX applications
 alias chrome="open -a Google\ Chrome\ Canary"

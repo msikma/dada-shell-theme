@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 function _iterate_help \
   --description "Iterate through and print a list of commands and descriptions"
@@ -50,5 +50,3 @@ function _add_cmd_colors
     echo $argv[(math $n + 1)]
   end
 end
-
-

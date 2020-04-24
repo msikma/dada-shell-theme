@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 set -g __fish_git_prompt_showdirtystate 1
 set -g __fish_git_prompt_showstashstate 1

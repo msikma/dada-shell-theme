@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")

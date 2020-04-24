@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Passes on a list of directories to the zipdir function.
 function _zipdir

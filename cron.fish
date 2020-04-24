@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # This file contains a Cron job function that runs periodically.
 # The Cron job cache is located in ~/.cache/dada/cron/, and the log files

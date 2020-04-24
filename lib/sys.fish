@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Prints the OSX version, like "10.13.6"
 function get_osx_version --description "Prints OSX version string"

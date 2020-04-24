@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 function x264ll --description "Converts to lossless x264"
   if [ (count $argv) -eq 0 ]

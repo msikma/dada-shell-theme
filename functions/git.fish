@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 set cmd_git \
   "ghelp"             "Displays all Git commands" \

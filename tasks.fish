@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Alerts directory and the archive.
 set -g jira_data_cache $home"/.cache/dada/jira.json"

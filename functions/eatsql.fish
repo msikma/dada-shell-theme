@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 function eatsql --description "Shortcut for importing SQL files into MariaDB"
   if not count $argv > /dev/null

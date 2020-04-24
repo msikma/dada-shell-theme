@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 function _test_format_full_timestamp
   # Tue Aug 13 23:37:33 CEST 2019

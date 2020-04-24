@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Location used to retrieve the weather.
 set -g _weather_loc "~Rotterdam+2e+Stampioendwarsstraat"

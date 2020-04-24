@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Base directory for Cron job cache.
 set -g _c_dir "/$UDIR/"(whoami)'/.cache/dada/cron'

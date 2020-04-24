@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019
+# Dada Shell Theme © 2019, 2020
 
 # Standard width to display alerts at: screen width minus some padding.
 set -g alerts_width (math (tput cols) " - 18")
