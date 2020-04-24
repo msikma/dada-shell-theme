@@ -22,6 +22,10 @@ set -g __fish_git_prompt_color_cleanstate green
 set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
+if [ "$dada_hostname" = "Sol" ]
+  set -gx dada_left_prompt_prefix "Sol "
+end
+
 # In case we want to make a network request.
 # This is modified to the correct value when fish_greeting is run.
 set -gx dada_ua "Dada Shell Theme/unknown"
@@ -152,7 +156,7 @@ end
 # Displays a shortened cwd and VCS information.
 function fish_prompt --description 'Write out the left prompt'
   announce_next_alert
-  echo -n -s "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
+  echo -n -s $dada_left_prompt_prefix "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
 end
 
 # Right side prompt. Displays a timestamp, and a warning emoji on error.
