@@ -138,7 +138,9 @@ function fish_greeting --description 'Display the login greeting'
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color yellow) $main_cols)
   set -a cols_all (_add_cmd_colors (set_color blue) $theme_cols)
-  set -a cols_all (_add_cmd_colors (set_color magenta) $backup_cols)
+  if [ "$DADA_FISH_ENV" = "desktop" ]
+    set -a cols_all (_add_cmd_colors (set_color magenta) $backup_cols)
+  end
   _iterate_help $cols_all
   echo
 

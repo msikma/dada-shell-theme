@@ -34,6 +34,10 @@ set backup_cmd \
   "backup-ftp"        "Backs up FTP bookmarks" \
 
 function backup --description "Displays backup commands and info"
+  if [ "$DADA_FISH_ENV" != "desktop" ]
+    echo "Backup commands disabled due to environment being "(set_color green)"server"(set_color normal)"."
+    return
+  end
   echo
   echo "Backup commands and status for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
   echo

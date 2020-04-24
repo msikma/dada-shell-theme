@@ -49,6 +49,8 @@ source $DADA"functions/zipdir.fish"
 
 source $DADA"test/datetime.fish"
 
-source $DADA"secrets/keys.fish"
+if test -e $DADA"secrets/keys.fish"
+  source $DADA"secrets/keys.fish"
+end
 
 source $DADA"init.fish"

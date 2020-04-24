@@ -69,6 +69,10 @@ end
 
 function cron-install \
   --description "Ensures that the Cron script is installed"
+  if [ "$DADA_FISH_ENV" != "desktop" ]
+    echo "Can't install cron script due to environment being "(set_color green)"server"(set_color normal)"."
+    return
+  end
   set installed (launchctl list | grep com.dada.crontab | wc -l | bc)
   if not test -e $cron_plist_path
     cp "$DADA"etc/$cron_plist $cron_plist_path
