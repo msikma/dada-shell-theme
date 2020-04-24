@@ -5,7 +5,7 @@ timer_start
 set err "backup-games: Error:"
 set last_backup (backup_time_rel "/$UDIR/"(whoami)"/.cache/dada/backup-games")
 set srcdir "/$UDIR/"(whoami)"/Documents/OpenTTD" "/$UDIR/"(whoami)"/Files/Games"
-set dstdir "/Volumes/Files/Backups/Game data/" "/Volumes/Files/Backups/Game data/"
+set dstdir "/Volumes/Files/Games/Stuff/" "/Volumes/Files/Backups/Game data/"
 set srcdir_opt "/$UDIR/"(whoami)"/Library/Application Support/Steam/userdata"
 set dstdir_opt "/Volumes/Files/Backups/Steam userdata"
 set amount (count $srcdir)
