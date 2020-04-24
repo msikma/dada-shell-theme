@@ -90,7 +90,15 @@ function drive_size
   echo $out
 end
 
+function is_unnamed
+  if [ "$argv[1]" = "NO NAME    " ]
+    echo '1'
+  end
+  echo '0'
+end
+
 function main
+  set session_n '0'
   # Detect the floppy drive and begin listening for new disks.
   while true
     set drive (find_floppy_drive)
@@ -114,13 +122,6 @@ function main
     set crc (make_crc32 $rawdrive)
     # Convert :\/."' and spaces to underscores for safety.
     set label (echo $floppy | sed 's/[ :\/\\\."\']/_/g')
-    set fn "$dst"/"$label - $crc"".img"
-
-    # Check if this disk has been ripped yet.
-    if test -e $fn
-      sleep 2
-      continue
-    end
 
     set out (drive_size $drive)
     set total (echo $out | cut -d'|' -f1)
@@ -141,12 +142,33 @@ function main
     echo
     echo (set_color green)"Found new disk."(set_color white)
     echo (set_color blue)"Floppy size:    "(set_color normal)"$used ($total total; $usage)"
-    echo (set_color blue)"Disk label:     "(set_color -u white)"$floppy"(set_color normal)
+    echo -n (set_color blue)"Disk label:     "(set_color -u white)"$floppy"(set_color normal)
+    if [ (is_unnamed "$label") = '1' ]
+      echo -n (set_color red)" (unnamed)"(set_color normal)
+    end
+    echo -en "\n"
     echo (set_color blue)"CRC32 hash:     "(set_color white)"$crc"(set_color normal)
+    read -P (set_color yellow)"Custom label:   "(set_color normal) custom_label
+
+    # Add session counter.
+    set session_n (math "$session_n + 1")
+    set session_nn (printf "%03g" "$session_n")
+    if [ "$custom_label" = "" ]
+      set fn "$dst"/"$session_nn $label - $crc"".img"
+    else
+      set fn "$dst"/"$session_nn $custom_label ($label) - $crc"".img"
+    end
+    set fn_base (_file_basename $fn)
+    set mdir_target "$fn_base.txt"
+
     echo (set_color purple)"Filename:       "(set_color white)"$fn"(set_color normal)
     save_floppy $rawdrive $fn
-    echo (set_color green)"Finished imaging disk. Waiting for next."(set_color normal)
-    sleep 5
+    mdir -i "$fn" > "$mdir_target"
+    
+    echo "Saved: $fn"
+    echo "Saved: $mdir_target"
+    echo (set_color green)"Finished imaging disk. Insert next disk and press enter, or exit using CTRL+C."(set_color normal)
+    read -P ''
   end
 
   check_floppy
