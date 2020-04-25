@@ -82,6 +82,8 @@ end
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
 function fish_greeting --description 'Display the login greeting'
+  # Clear the current buffer
+  clear
   # Prints the current weather
   _greeting_weather
   # Sets the current Dada Shell Theme version, e.g. master-12-abcdef

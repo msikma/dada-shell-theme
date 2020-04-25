@@ -1,22 +1,38 @@
-## Dada shell theme
+# Dada shell theme
 
 A simple Fish shell theme designed exactly how I want it. This readme also contains instructions for installing all the terminal tools I commonly use.
 
 ![Screenshot of Dada shell theme](etc/dada_screenshot_1.png?raw=true)
 
-### Installation
+Since I use Mac OS X, this is primarily designed for Mac OS X, but I also run it on my Ubuntu 20.04 LTS server with some changes.
+
+## Installation
 
 First, install the [Fish shell](https://fishshell.com/) and [set it as the default](https://stackoverflow.com/a/26321141).
 
-Then clone this repository in `~/.config/dada`. Create a file at `~/.config/fish/config.fish` that loads the theme with the following command:
+Then clone this repository in `~/.config/dada`. Append the a command to `~/.config/fish/config.fish` that loads the theme:
 
 ```fish
-echo "source ~/.config/dada/dada.fish" > ~/.config/fish/config.fish
+echo "source ~/.config/dada/dada.fish" >> ~/.config/fish/config.fish
+```
+
+**If running on a server,** add one extra line before that:
+
+```fish
+set -gx DADA_FISH_ENV "server"
 ```
 
 You should now see the welcome message when opening a new terminal window.
 
-#### Installing utilities
+To suppress the "last login" text that shows up briefly before the welcome message:
+
+```fish
+touch ~/.hushlogin
+```
+
+### Installing utilities
+
+Note that most of these installation instructions are for Mac OS X only.
 
 1. Install [Brew](https://brew.sh/):
 
@@ -59,13 +75,17 @@ After this there are some applications and packages that require extra configura
     1. `git clone https://github.com/msikma/osx-folder-icons ~/Projects/dada-folder-icons`
     2. `git clone git@bitbucket.org:msikma/dada-icons.git ~/Projects/dada-icons`
 
-### Backups
+## Backups
 
 To see the current backup status, use `backup`. This prints a list of the available commands and how long it has been since they were last used.
 
 Backup scripts listed under *"non device specific"* are global; they can be run on any device and store their data in the same place. The other scripts store their data in a directory named after the current hostname (`~/.cache/dada`).
 
-### Cron job
+Backups are disabled when running on a server.
+
+## Cron job
+
+The built in cron job only runs on Mac OS X.
 
 To set up the cron job, run `cron-install`. If this somehow doesn't work, it can be manually installed as follows:
 
@@ -74,6 +94,6 @@ To set up the cron job, run `cron-install`. If this somehow doesn't work, it can
 
 Note that the `run-cron.fish` file doesn't use `env` to invoke Fish - it doesn't seem to be supported when running a cron job.
 
-### Copyright
+## Copyright
 
 MIT license
