@@ -10,6 +10,7 @@ set cmd_git \
   "glist"             "One-line Git log with merge lines" \
   "glog"              "Git log with extra information" \
   "gr"                "Shows the repo's current remotes" \
+  "gclone <dir>"      "Prints a clone command for a repo" \
   "gru"               "Shows the repo remote origin URL" \
   "gsl"               "Git short log (one liners)" \
 
@@ -58,6 +59,17 @@ function open_repo \
     echo 'open_repo: could not find repository URL.'
     return 1
   end
+end
+
+function gclone \
+  --description "Prints a git clone command for a given repo" \
+  --argument-names dir
+  if [ -z "$dir" ]
+    set dir '.'
+  end
+  set path (realpath "$dir")
+  set git (git --git-dir="$path/.git" remote -v | grep "fetch" | string sub -s 8 | cut -d ' ' -f1)
+  echo "git clone $git"
 end
 
 alias gith="ghelp" # legacy alias
