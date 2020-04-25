@@ -16,19 +16,17 @@ function clean_dot_underbars \
   end
 end
 
-# Prints disk usage as percentage.
-function get_disk_usage_perc --description "Prints disk usage in %"
-  df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1
-end
+function get_disk_usage
+  # Note: get all information in 1024kb blocks for easier arithmetic.
+  set amount (df -k / | tail -n1)
+  set total (echo $amount | awk '{print $2}')
+  set avail (echo $amount | awk '{print $4}')
+  set use (echo $amount | awk '{print $5}')
 
-# Total disk usage in GB, one decimal.
-function get_disk_usage_gb --description "Prints disk usage in GB"
-  math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 4)"*512)/1000000000"
-end
+  set avail_h (math --scale=1 "(($avail) * 1024) / 1000000000")
+  set total_h (math --scale=1 "(($total) * 1024) / 1000000000")
 
-# Total disk size in GB, one decimal.
-function get_disk_total_gb --description "Prints disk size in GB"
-  math --scale=1 "("(df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 2)"*512)/1000000000"
+  echo "$use ($avail_h/$total_h GB available)"
 end
 
 function _filesize_bytes --description "Prints the size of a file in bytes"

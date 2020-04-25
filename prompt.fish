@@ -127,7 +127,7 @@ function fish_greeting --description 'Display the login greeting'
   # Display columns containing user and theme information.
   set main_cols \
     "User:"             "$dada_uhostname_local ("(get_curr_ip)")" \
-    "Disk usage:"       (get_disk_usage_perc)"% ("(get_disk_usage_gb)"/"(get_disk_total_gb)" GB available)" \
+    "Disk usage:"       (get_disk_usage) \
 
   set theme_cols \
     "Theme version:"    "$theme_version" \
