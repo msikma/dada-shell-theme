@@ -1,9 +1,12 @@
 # Dada Shell Theme © 2019, 2020
 
-# Rust
-if [ -d ~/.cargo/bin ]
-  set PATH ~/.cargo/bin $PATH
-end
+# Various systems/languages
+set PATH ~/.cargo/bin $PATH            # Rust
+set PATH ./node_modules/.bin $PATH     # Local Node bins
+
+# Dada theme scripts (e.g. those referenced in aliases.fish)
+set PATH ~/.config/dada/bin $PATH      # for larger scripts, with extension
+set PATH ~/.config/dada/scripts $PATH  # for smaller scripts/commands
 
 set -gx LESS_TERMCAP_md (printf "\e[01;31m")
 set -gx LESS_TERMCAP_me (printf "\e[0m")
