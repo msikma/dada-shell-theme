@@ -146,8 +146,36 @@ function fish_greeting --description 'Display the login greeting'
   set -a cols_all (_add_cmd_colors (set_color blue) $theme_cols)
   if [ "$DADA_FISH_ENV" = "desktop" ]
     set -a cols_all (_add_cmd_colors (set_color magenta) $backup_cols)
+    _iterate_help $cols_all
   end
-  _iterate_help $cols_all
+  if [ "$DADA_FISH_ENV" = "server" ]
+    if type -q landscape-sysinfo
+      landscape-sysinfo | read -d \n -z info
+      set mem (echo $info | sed '3q;d' | string sub -s 26)
+      set swap (echo $info | sed '4q;d' | string sub -s 26)
+      set proc (echo $info | sed '5q;d' | string sub -s 26)
+      set uptime_val (uptime | sed 's/^.*load/load/' | cut -d':' -f2 | string sub -s 2)
+      set ipv4 (hostname -i | awk '{print $2}')
+      set ipv6 (hostname -i | awk '{print $1}')
+      
+      set info_cols \
+        "System load:"    "$uptime_val" \
+        "Memory usage:"   "$mem" \
+        "Swap usage:"     "$swap" \
+        "Processes:"      "$proc"
+      
+      set ip_cols \
+        "IPv4 for eth0:"  "$ipv4" \
+        "IPv6 for eth0:"  "$ipv6" \
+        "" "" \
+        "" ""
+      
+      set -a cols_all (_add_cmd_colors (set_color red) $info_cols)
+      _iterate_help $cols_all
+      echo
+      _iterate_help (_add_cmd_colors (set_color green) $ip_cols)
+    end
+  end
   echo
 
   # Run whatever else we need to do specifically for this environment.
