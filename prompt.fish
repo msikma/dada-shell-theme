@@ -82,8 +82,6 @@ end
 # This displays some basic information such as the current user and time,
 # as well as information about the latest backups.
 function fish_greeting --description 'Display the login greeting'
-  # Clear the current buffer
-  clear
   # Prints the current weather
   _greeting_weather
   # Sets the current Dada Shell Theme version, e.g. master-12-abcdef
@@ -158,13 +156,13 @@ function fish_greeting --description 'Display the login greeting'
       set uptime_days (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/') # Linux only
       set ipv4 (hostname -i | awk '{print $2}')
       set ipv6 (hostname -i | awk '{print $1}')
-      
+
       set info_cols \
         "System load:"    "$uptime_val" \
         "Memory usage:"   "$mem" \
         "Swap usage:"     "$swap" \
         "Processes:"      "$proc"
-      
+
       set etc_cols \
         "Uptime:"         "$uptime_days" \
         "IPv4 for eth0:"  "$ipv4" \
@@ -172,7 +170,7 @@ function fish_greeting --description 'Display the login greeting'
         "" "" \
         "" "" \
         "" ""
-      
+
       set -a cols_all (_add_cmd_colors (set_color red) $info_cols)
       _iterate_help $cols_all
       echo
