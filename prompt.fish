@@ -151,13 +151,10 @@ function fish_greeting --description 'Display the login greeting'
   if [ "$DADA_FISH_ENV" = "server" ]
     if type -q landscape-sysinfo
       landscape-sysinfo | read -d \n -z info
+      set uptime_val (uptime | sed 's/^.*load/load/' | cut -d':' -f2 | string sub -s 2)
       set mem (echo $info | sed '3q;d' | string sub -s 26)
       set swap (echo $info | sed '4q;d' | string sub -s 26)
       set proc (echo $info | sed '5q;d' | string sub -s 26)
-      set uptime_val (uptime | sed 's/^.*load/load/' | cut -d':' -f2 | string sub -s 2)
-      set uptime_days (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/') # Linux only
-      set ipv4 (hostname -i | awk '{print $2}')
-      set ipv6 (hostname -i | awk '{print $1}')
       
       set info_cols \
         "System load:"    "$uptime_val" \
@@ -165,18 +162,8 @@ function fish_greeting --description 'Display the login greeting'
         "Swap usage:"     "$swap" \
         "Processes:"      "$proc"
       
-      set etc_cols \
-        "Uptime:"         "$uptime_days" \
-        "IPv4 for eth0:"  "$ipv4" \
-        "IPv6 for eth0:"  "$ipv6" \
-        "" "" \
-        "" "" \
-        "" ""
-      
       set -a cols_all (_add_cmd_colors (set_color red) $info_cols)
       _iterate_help $cols_all
-      echo
-      _iterate_help (_add_cmd_colors (set_color green) $etc_cols)
     end
   end
   echo

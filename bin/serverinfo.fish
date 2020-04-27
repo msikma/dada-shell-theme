@@ -1,8 +1,62 @@
 #!/usr/bin/env fish
 
 if [ "$DADA_FISH_ENV" = "server" ]
-  echo 'Controlling apache:'
-  echo 'sudo systemctl {start,stop,restart,reload} apache2'
+  set apache_data (apache2ctl status | grep -i "requests/sec")
+
+  set apache_version (apache2 -v | head -n1 | string sub -s 17)
+  set apache_uptime (apache2ctl status | grep -i "server uptime" | cut -d':' -f2 | string sub -s 2)
+  set apache_load (apache2ctl status | grep -i "server load" | cut -d':' -f2 | string sub -s 2)
+  set apache_reqs_sec (echo $apache_data | cut -d'-' -f1 | string sub -s 4)
+  set apache_b_sec (echo $apache_data | cut -d'-' -f2 | string sub -s 2)
+  set apache_kb_req (echo $apache_data | cut -d'-' -f3 | string sub -s 2)
+  set apache_ms_req (echo $apache_data | cut -d'-' -f4 | string sub -s 2)
+
+  set apache_reqs_sec_fc (echo $apache_reqs_sec | string sub -s 1 -l 1)
+  set apache_ms_req_fc (echo $apache_ms_req | string sub -s 1 -l 1)
+  if [ "$apache_reqs_sec_fc" = "." ]
+    set apache_reqs_sec "0$apache_reqs_sec"
+  end
+  if [ "$apache_ms_req_fc" = "." ]
+    set apache_ms_req "0$apache_ms_req"
+  end
+
+  set apache_cols \
+    "Apache version:" "$apache_version" \
+    "Server uptime:"  "$apache_uptime" \
+    "Server load:"  "$apache_load" \
+    "Requests:"  "$apache_reqs_sec" \
+    "Speed:"  "$apache_ms_req" \
+    "Size:"  "$apache_kb_req" \
+    "Traffic:"  "$apache_b_sec"
+
+  set uptime_days (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/') # Linux only
+  set ipv4 (hostname -i | awk '{print $2}')
+  set ipv6 (hostname -i | awk '{print $1}')
+      
+  set information_cols \
+    "System uptime:"  "$uptime_days" \
+    "IPv4 for eth0:"  "$ipv4" \
+    "IPv6 for eth0:"  "$ipv6" \
+    "" "" \
+    "" "" \
+    "" ""
+  
+  echo
+  set cols_all
+  set -a cols_all (_add_cmd_colors (set_color red) $apache_cols)
+  set -a cols_all (_add_cmd_colors (set_color green) $information_cols)
+  _iterate_help $cols_all
+  echo
+  echo "   Server configuration:"
+  echo
+  echo "/var/www/"(set_color yellow)"*"(set_color normal)"       served files"
+  echo "/etc/apache2/    configuration"
+  echo ""
+  echo "   To control the Apache server:"
+  echo ""
+  echo "\$ sudo "(set_color cyan)"apache2ctl "(set_color green)"{"(set_color yellow)"start"(set_color green)", "(set_color yellow)"stop"(set_color green)", "(set_color yellow)"restart"(set_color green)", "(set_color yellow)"configtest"(set_color green)", "(set_color yellow)"status"(set_color green)"}"(set_color normal)
+  echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"    enable a site"
+  echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"   disable a site"
   echo 'TODO'
 end
 
