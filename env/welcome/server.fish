@@ -4,6 +4,8 @@
 
 serverinfo
 
+echo "   Other information:"
+
 if test -e /var/lib/update-notifier/updates-available
   cat /var/lib/update-notifier/updates-available
 end
