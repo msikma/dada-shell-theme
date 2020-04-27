@@ -49,15 +49,15 @@ if [ "$DADA_FISH_ENV" = "server" ]
   echo
   echo "   Server configuration:"
   echo
-  echo "/var/www/"(set_color yellow)"*"(set_color normal)"       served files"
-  echo "/etc/apache2/    configuration"
+  echo (set_color cyan)"/var/www/"(set_color yellow)"*"(set_color normal)"      - served files"
+  echo (set_color cyan)"/etc/apache2/"(set_color normal)"   - configuration"
   echo ""
   echo "   To control the Apache server:"
   echo ""
   echo "\$ sudo "(set_color cyan)"apache2ctl "(set_color green)"{"(set_color yellow)"start"(set_color green)", "(set_color yellow)"stop"(set_color green)", "(set_color yellow)"restart"(set_color green)", "(set_color yellow)"configtest"(set_color green)", "(set_color yellow)"status"(set_color green)"}"(set_color normal)
-  echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"    enable a site"
-  echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"   disable a site"
-  echo 'TODO'
+  echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"    - enable a site"
+  echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"   - disable a site"
+  echo
 end
 
 if [ "$DADA_FISH_ENV" = "desktop" ]
