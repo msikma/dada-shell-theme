@@ -32,7 +32,7 @@ if [ "$DADA_FISH_ENV" = "server" ]
   set uptime_days (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/') # Linux only
   set ipv4 (hostname -i | awk '{print $2}')
   set ipv6 (hostname -i | awk '{print $1}')
-      
+
   set information_cols \
     "System uptime:"  "$uptime_days" \
     "IPv4 for eth0:"  "$ipv4" \
@@ -40,7 +40,7 @@ if [ "$DADA_FISH_ENV" = "server" ]
     "" "" \
     "" "" \
     "" ""
-  
+
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color magenta) $apache_cols)
   set -a cols_all (_add_cmd_colors (set_color green) $information_cols)
@@ -52,8 +52,10 @@ if [ "$DADA_FISH_ENV" = "server" ]
   echo "• "(set_color cyan)"/etc/apache2/"(set_color normal)"   - site configuration"
   echo ""
   echo "\$ sudo "(set_color cyan)"apache2ctl "(set_color green)"{"(set_color yellow)"start"(set_color green)", "(set_color yellow)"stop"(set_color green)", "(set_color yellow)"restart"(set_color green)", "(set_color yellow)"configtest"(set_color green)", "(set_color yellow)"status"(set_color green)"}"(set_color normal)
-  echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"    - enable a site"
-  echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"   - disable a site"
+  echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"             - enable a site"
+  echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"            - disable a site"
+  echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/access.log"(set_color normal)"   - access log"
+  echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/error.log"(set_color normal)"    - error log"
   echo ""
 end
 
