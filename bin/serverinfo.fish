@@ -46,12 +46,10 @@ if [ "$DADA_FISH_ENV" = "server" ]
   set -a cols_all (_add_cmd_colors (set_color green) $information_cols)
   _iterate_help $cols_all
   echo
-  echo "   Server configuration:"
-  echo ""
-  echo (set_color cyan)"/var/www/"(set_color yellow)"*"(set_color normal)"      - served files"
-  echo (set_color cyan)"/etc/apache2/"(set_color normal)"   - site configuration"
-  echo ""
   echo "   To control the Apache server:"
+  echo ""
+  echo "• "(set_color cyan)"/var/www/"(set_color yellow)"*"(set_color normal)"      - served files"
+  echo "• "(set_color cyan)"/etc/apache2/"(set_color normal)"   - site configuration"
   echo ""
   echo "\$ sudo "(set_color cyan)"apache2ctl "(set_color green)"{"(set_color yellow)"start"(set_color green)", "(set_color yellow)"stop"(set_color green)", "(set_color yellow)"restart"(set_color green)", "(set_color yellow)"configtest"(set_color green)", "(set_color yellow)"status"(set_color green)"}"(set_color normal)
   echo "\$ sudo "(set_color cyan)"a2ensite "(set_color blue)"example.com.conf"(set_color normal)"    - enable a site"
