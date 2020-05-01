@@ -168,12 +168,12 @@ end
 # TODO: merge with backup_time_str_switch.
 function backup_time_str_3ds \
   --description "Prints the last backup time for the primary 3DS"
+  if ! test -d "$backup_dir_3ds"; return; end
   for n in (ls $backup_dir_3ds)
     set prfile "$backup_dir_3ds/$n/.primary"
     set backfile "$backup_dir_3ds/$n/.backup-3ds"
     if ! test -d "$backup_dir_3ds/$n"; continue; end
     if ! test -e "$prfile"; continue; end
-
     backup_time_str $backfile
     return
   end
@@ -185,6 +185,7 @@ end
 # TODO: merge with above.
 function backup_time_str_switch \
   --description "Prints the last backup time for the primary Nintendo Switch"
+  if ! test -d "$backup_dir_switch"; return; end
   for n in (ls $backup_dir_switch)
     set prfile "$backup_dir_switch/$n/.primary"
     set backfile "$backup_dir_switch/$n/.backup-switch"
