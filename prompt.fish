@@ -174,7 +174,10 @@ end
 # Displays a shortened cwd and VCS information.
 function fish_prompt --description 'Write out the left prompt'
   announce_next_alert
-  echo -n -s $dada_left_prompt_prefix "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
+  if test -n "$STY"
+    set dada_screen_prompt (set_color yellow)"($STY) "(set_color normal)
+  end
+  echo -n -s $dada_left_prompt_prefix $dada_screen_prompt "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
 end
 
 # Right side prompt. Displays a timestamp, and a warning emoji on error.
