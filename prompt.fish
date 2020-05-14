@@ -202,7 +202,7 @@ function display_help_txt \
     return
   end
 
-  if [ ! -f ./help.projinfo.txt ]; end
+  if [ ! -f ./help.projinfo.txt ]
     return
   end
 
