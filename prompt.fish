@@ -193,6 +193,28 @@ function fish_right_prompt --description 'Write out the right prompt'
   set_color normal
 end
 
+# Displays additional help info if specified.
+function display_help_txt \
+  --description 'Displays additional help text' \
+  --on-variable dirprev
+
+  if status --is-command-substitution
+    return
+  end
+
+  if [ ! -f ./help.projinfo.txt ]; end
+    return
+  end
+
+  if begin
+    [ "$NO_DIRPREV_HOOK" = 1 ]; or \
+    [ (count $dirprev) -lt 3 ]; end
+    return
+  end
+
+  cat ./help.projinfo.txt
+end
+
 # Displays project info on directory change.
 function display_project_info \
   --description 'Displays project info after changing to a project directory' \
