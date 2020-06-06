@@ -21,6 +21,7 @@ set cmd_regular \
   "jv <file>"         "Displays JSON file content" \
   "jq <json>"         "Parses and filters JSON data" \
   "fd <str>"          "Searches for files (alt. to find)" \
+  "ip"                "Prints out the current local IP" \
   "doc <file>"        "Reads Markdown file in terminal" \
   "setssh"            "Turns remote SSH access on/off" \
   "zipdir{n} <dir>"   "Zips a directory (compr. 0-9)" \

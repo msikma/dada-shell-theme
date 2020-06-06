@@ -68,3 +68,6 @@ alias ftypes="ftypes.fish"
 alias pinger="pinger.fish"
 alias serverinfo="serverinfo.fish"
 alias setssh="setssh.fish"
+
+# Functions
+alias ip="get_curr_ip"
