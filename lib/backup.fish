@@ -28,8 +28,8 @@ set backup_cmd \
   "backup-vms"        "Backs up VMs" \
   "" "" \
   "$ncol""Non device specific:" "" \
-  "backup-switch"     "Backs up Nintendo Switch SD card" \
   "backup-3ds"        "Backs up 3DS SD card" \
+  "backup-switch"     "Backs up Nintendo Switch SD card" \
   "backup-music"      "Backs up music" \
   "backup-ftp"        "Backs up FTP bookmarks" \
 
