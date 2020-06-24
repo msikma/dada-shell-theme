@@ -125,6 +125,26 @@ function cclear --description "Clears the screen and the text buffer"
   clear; printf '\e[3J'
 end
 
+function prnpdf --description "Converts all .prn files to .pdf" --argument-names dir
+  if [ -z "$dir" ]
+    set dir '.'
+  end
+  if [ ! -d "$dir" ]
+    echo "prnpdf: error: not a directory: $dir"
+    return 1
+  end
+  set files (find . -type f -name "*.prn")
+  if ! set -q files[1]
+    echo "prnpdf: no *.prn files found in directory: $dir"
+    return 1
+  end
+  for f in $files
+    echo (set_color green)"prnpdf: "(set_color yellow)"$f"(set_color normal)
+    ps2pdf "$f"
+  end
+  echo (set_color green)'prnpdf: done'(set_color normal)
+end
+
 function urlredirs --description "Displays URL redirects"
   if not count $argv > /dev/null
     echo 'usage: urlredirs "http://example.com/"'
