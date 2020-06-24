@@ -43,7 +43,8 @@ set cmd_conversions \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
   "ccd2iso <file>"    "Converts a .ccd file to .iso" \
   "mdf2iso <file>"    "Converts an .mdf file to .iso" \
-  "ps2pdf <file>"     "Convert PS to PDF; ps2pdf *.prn" \
+  "ps2pdf <file>"     "Convert PS to PDF" \
+  "prnpdf <dir>"      "Converts all .prn files to .pdf" \
 
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
