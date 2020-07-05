@@ -84,8 +84,8 @@ end
 # This runs nightly version 1144, as newer versions are broken on OSX 10.13.
 function citra-qt
   set target $PWD/$argv[1]
-  pushd "/Applications/Citra/nightly/citra-qt.app/Contents/MacOS/"
-  ./citra-qt-bin $target
+  pushd ~/"Files/Games/Citra/App/nightly/citra-qt.app/Contents/MacOS/"
+  ./citra-qt $target
   popd
 end
 
