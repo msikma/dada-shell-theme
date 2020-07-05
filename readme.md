@@ -40,7 +40,7 @@ Note that most of these installation instructions are for Mac OS X only.
 
 2. Install the following Brew packages:
 
-    `brew install bat ccd2iso composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq mdf2iso ncdu node python3 rsync streamlink tldr wget xdelta youtube-dl`
+    `brew install bat ccd2iso composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq mdf2iso ncdu node python3 rsync streamlink tldr unar wget xdelta youtube-dl`
 
 3. Install the following [npm](https://www.npmjs.com/) packages:
 
