@@ -42,6 +42,7 @@ set cmd_images \
 
 set cmd_conversions \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
+  "bin2iso <file>"    "Converts .bin/.cue files to .iso" \
   "ccd2iso <file>"    "Converts a .ccd file to .iso" \
   "mdf2iso <file>"    "Converts an .mdf file to .iso" \
   "ps2pdf <file>"     "Convert PS to PDF" \

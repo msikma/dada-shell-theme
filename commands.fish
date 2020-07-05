@@ -25,6 +25,26 @@ function dmg2iso \
   hdiutil makehybrid -iso -joliet -o "$outfile" "$infile"
 end
 
+# Converts a bin/cue file to iso.
+function bin2iso \
+  --argument-names binfile cuefile outfile
+  if [ -z "$binfile" -o -z "$cuefile" ]
+    echo 'usage: bincue2iso binfile cuefile [outfile]'
+    return
+  end
+  set ext_bin (_file_extension "$binfile")
+  set ext_cue (_file_extension "$cuefile")
+  if [ "$ext_bin" = "cue" -o "$ext_cue" = "bin" ]
+    echo 'usage: bincue2iso binfile cuefile [outfile]'
+    echo 'error: .bin file goes first, .cue file second'
+    return 1
+  end
+  if [ -z "$outfile" ]
+    set outfile (echo $binfile | strip_ext)".iso"
+  end
+  bchunk "$binfile" "$cuefile" "$outfile"
+end
+
 function print_error \
   --argument-names fn expl \
   --description "Prints an error with function name and explanation"
