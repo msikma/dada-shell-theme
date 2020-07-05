@@ -4,7 +4,7 @@
 alias strip_color="gsed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
 
 # Strips the extension from a filename
-alias strip_ext="sed -e 's/\.[^/]*\$//'"
+alias strip_ext="sed -e 's/\.[^/.]*\$//'"
 
 # Converts text to all lowercase
 alias lowercase="tr '[:upper:]' '[:lower:]'"
