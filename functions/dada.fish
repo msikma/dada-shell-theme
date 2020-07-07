@@ -1,6 +1,11 @@
 # Dada Shell Theme © 2019, 2020
 
-# Updates the shell theme
+# Reloads the theme; useful when developing.
+function dada-reload
+  source "$DADA""dada.fish"
+end
+
+# Updates the shell theme.
 function dada-update
   pushd "/$UDIR/"(whoami)"/.config/dada/"
   set old (get_version_short)
@@ -12,4 +17,5 @@ function dada-update
     echo "You are already on the latest version of Dada Shell Theme, "(set_color red)$new(set_color normal)"."
   end
   popd
+  dada-reload
 end
