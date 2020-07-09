@@ -20,6 +20,18 @@ function dmg2iso \
   hdiutil makehybrid -iso -joliet -o "$outfile" "$infile"
 end
 
+# Converts DSiWare games to CIA for use on 3DS.
+function dsiware_cia \
+  --argument-names infiles
+  if [ -z "$argv[1]" ]
+    echo 'usage: dsiware_cia nds_file[, nds_file[, ..]]'
+    return 1
+  end
+  for n in $argv
+    make_cia --srl="$n"
+  end
+end
+
 # Converts a bin/cue file to iso.
 function bin2iso \
   --argument-names binfile cuefile outfile
