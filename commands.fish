@@ -152,6 +152,19 @@ function cclear --description "Clears the screen and the text buffer"
   clear; printf '\e[3J'
 end
 
+function open_npm \
+  --description "If this is an npm package, open its page on npm"
+  set npm_name (node -e "const a = require('./package.json'); a.name && console.log(a.name);" 2> /dev/null)
+  if [ -n "$npm_name" ]
+    set npm_url "https://www.npmjs.com/package/$npm_name"
+    echo (set_color yellow)'Opening npm package url: '(set_color reset)(set_color -u)"$npm_url"
+    open "$npm_url"
+  else
+    echo 'open_npm: error: not an npm project'
+    return 1
+  end
+end
+
 function prnpdf --description "Converts all .prn files to .pdf" --argument-names dir
   if [ -z "$dir" ]
     set dir '.'

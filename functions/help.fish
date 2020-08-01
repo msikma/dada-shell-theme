@@ -31,6 +31,7 @@ set cmd_regular \
   "unar"              "Universal unarchiving utility" \
   "findext"           "Finds all files with a given ext" \
   "cclear"            "Clears the screen and text buffer" \
+  "open_npm"          "Opens npm page for this package" \
 
 set cmd_images \
   "img_isakura <i>"   "Processes iSakura TV screenshot" \
