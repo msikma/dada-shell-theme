@@ -56,7 +56,7 @@ function open_repo \
     echo (set_color yellow)'Opening repo URL/homepage: '(set_color reset)(set_color -u)"$repo_url"
     open "$repo_url"
   else
-    echo 'open_repo: could not find repository URL.'
+    echo 'open_repo: error: could not find repository URL'
     return 1
   end
 end
