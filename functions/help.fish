@@ -129,6 +129,7 @@ set scripts_ia \
 
 set scripts_housekeeping \
   "clean_3ds.fish"            "Cleans up unneeded files from the 3DS" \
+  "clean_screenshots.fish"    "Deletes screenshots from ~/Desktop/ except for \"(2)\" files" \
   "remove_dsstore.fish"       "Removes .DS_Store files from a given directory" \
 
 function help \
