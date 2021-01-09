@@ -92,3 +92,7 @@ if [ -d "$FUJI_BRYCE_DIR" ]
 else
   set -gx DADA_BRYCE_DIR "$VESUVIUS_BRYCE_DIR"
 end
+
+# RPG Maker/EasyRPG Player
+set -gx RPG2K_RTP_PATH ~/".config/rtp/2000"
+set -gx RPG2K3_RTP_PATH ~/".config/rtp/2003"
