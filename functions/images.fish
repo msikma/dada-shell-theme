@@ -1,5 +1,7 @@
 # Dada Shell Theme © 2019, 2020
 
+set -g screenshot_dir ~/"Desktop/"
+
 # Resizes to 50% to a new file
 function img_r50p
   _img_resize "1" "50%" "0" $argv[1..-1]
@@ -22,6 +24,13 @@ function img_jpeg
 
     set target $base'.jpg'
     magick convert -format jpg -compress jpeg -quality $_jpg_quality $file $target
+  end
+end
+
+# Converts the latest .png screenshots (made in the last 5 minutes).
+function jpeg_scr
+  for file in (find "$screenshot_dir" -type f -depth 1 -mmin -5 -name "*.png")
+    img_jpeg "$file"
   end
 end
 

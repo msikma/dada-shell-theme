@@ -39,6 +39,7 @@ set cmd_images \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
   "x264ll <vid>"      "Converts video to lossless x264" \
+  "jpeg_scr"          "Converts desktop scrshots to jpeg" \
   #"img_isakura <i>"   "Processes iSakura TV screenshot" \
 
 set cmd_conversions \
