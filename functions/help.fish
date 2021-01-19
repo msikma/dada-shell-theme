@@ -34,12 +34,12 @@ set cmd_regular \
   "open_npm"          "Opens npm page for this package" \
 
 set cmd_images \
-  "img_isakura <i>"   "Processes iSakura TV screenshot" \
   "img_jpeg <img>"    "Converts images to jpeg" \
   "img_trim <img>"    "Trims the border off an image" \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
   "x264ll <vid>"      "Converts video to lossless x264" \
+  #"img_isakura <i>"   "Processes iSakura TV screenshot" \
 
 set cmd_conversions \
   "dmg2iso <file>"    "Converts a .dmg file to .iso" \
