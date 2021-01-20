@@ -30,7 +30,10 @@ end
 # Converts the latest .png screenshots (made in the last 5 minutes).
 function jpeg_scr
   for file in (find "$screenshot_dir" -type f -depth 1 -mmin -5 -name "*.png")
-    img_jpeg "$file"
+    set base (_file_basename $file)
+    if [ ! -f "$base.jpg" ]
+      img_jpeg "$file"
+    end
   end
 end
 
