@@ -118,6 +118,7 @@ set scripts_regular \
   "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
   "image_floppy.fish"         "Images a floppy to .img file" \
   "img_twtr.bash"             "Adds a transparent pixel to an image for Twitter" \
+  "img_downres.sh"            "Downscales images from a source resolution to a target resolution" \
   "import_music_subset.fish"  "Imports several music genres from the backup" \
   "makevids.sh"               "Turns a set of audio and image files into videos" \
   "serverinfo.fish"           "Displays info about the device's web server" \
