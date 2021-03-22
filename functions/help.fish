@@ -1,4 +1,4 @@
-# Dada Shell Theme © 2019, 2020
+# Dada Shell Theme © 2019-2021
 
 set cmd_regular \
   "tree"              "Runs ls with tree structure" \
@@ -38,7 +38,11 @@ set cmd_images \
   "img_trim <img>"    "Trims the border off an image" \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
-  "x264ll <vid>"      "Converts video to lossless x264" \
+  "enc_x265_hq"       "Encode to high quality x265" \
+  "enc_vg_up4x"       "Encode 4x upscaled for video games" \
+  "enc_old_anime4k"   "Encode old grainy 4K anime" \
+  "enc_x264_y4ll"     "Encode to lossless x264 yuv444" \
+  "enc_x264_rgbll"    "Encode to lossless x264 rgb" \
   "jpeg_scr"          "Converts desktop scrshots to jpeg" \
   #"img_isakura <i>"   "Processes iSakura TV screenshot" \
 
