@@ -82,6 +82,11 @@ function code
   code-insiders $argv
 end
 
+# Alias for youtube-dl with some sensible defaults.
+function youtube-dl
+  env youtube-dl --format "bestvideo/bestaudio" --verbose --add-metadata --merge-output-format "mp4" $argv
+end
+
 # Alias for youtube-dl with some options specifically for getting MP3s.
 # Checks whether the given URL is a playlist or not and adjusts accordingly.
 function youtube-audio-dl \
@@ -103,7 +108,7 @@ function youtube-audio-dl \
       echo (set_color magenta)"Downloading in playlist mode"(set_color normal)
     end
 
-    youtube-dl -x --add-metadata --audio-format $audiotype -o $tpl $url
+    env youtube-dl -x --add-metadata --audio-format $audiotype -o $tpl $url
   end
 end
 
