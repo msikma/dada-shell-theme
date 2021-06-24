@@ -18,3 +18,8 @@ set -gx LESS_TERMCAP_us (printf "\e[01;32m")
 set -x EDITOR nano
 set -x GIT_EDITOR nano
 set -x LC_ALL en_US.UTF-8
+
+# Include machine-specific env settings if any.
+if test -e ~/".config/env.fish"
+  source ~/".config/env.fish"
+end
