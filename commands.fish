@@ -84,7 +84,7 @@ end
 
 # Alias for youtube-dl with some sensible defaults.
 function youtube-dl
-  env youtube-dl --format "bestvideo/bestaudio" --verbose --add-metadata --merge-output-format "mp4" $argv
+  env youtube-dl --format "bestvideo+bestaudio" --verbose --add-metadata --merge-output-format "mp4" $argv
 end
 
 # Alias for youtube-dl with some options specifically for getting MP3s.
@@ -108,7 +108,7 @@ function youtube-audio-dl \
       echo (set_color magenta)"Downloading in playlist mode"(set_color normal)
     end
 
-    env youtube-dl -x --add-metadata --audio-format $audiotype -o $tpl $url
+    env youtube-dl --format "bestaudio" -x --add-metadata --audio-format $audiotype -o $tpl $url
   end
 end
 
