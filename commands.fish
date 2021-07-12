@@ -88,7 +88,7 @@ end
 
 # Alias for youtube-dl with some sensible defaults.
 function youtube-dl
-  env youtube-dl --format "bestvideo+bestaudio" --verbose --add-metadata --merge-output-format "mp4" $argv
+  env youtube-dl --format "bestvideo+bestaudio/best" --verbose --add-metadata --merge-output-format "mp4" $argv
 end
 
 # Alias for youtube-dl with some options specifically for getting MP3s.
