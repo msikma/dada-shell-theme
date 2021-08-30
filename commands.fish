@@ -79,7 +79,11 @@ function code
     echo "code: Error: can't find ""$argv"
     return 1
   end
-  code-insiders $argv
+  if type -q code-insiders
+  	command code-insiders $argv
+  else
+  	command code $argv
+  end
 end
 
 function randstr
