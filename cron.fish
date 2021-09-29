@@ -34,17 +34,28 @@ function dada-cron \
   end
 
   # Run video archiving script.
-  if [ (cron_cmd_timeago "vidarc.js" "3600") ]
-    vidarc.js --check &> /dev/null
+  cron_cmd_timeago "vidarc" "3600"
+  if [ "$status" -eq 0 ]
+    vidarc --check &> /dev/null
     if [ "$status" -eq 0 ]
-      _cron_print_cmd "vidarc.js"
-      _cron_run_cmd "vidarc.js"
-      vidarc.js --archive
+      _cron_print_cmd "vidarc"
+      _cron_run_cmd "vidarc" "--archive"
+    else
+      _cron_print "vidarc is not set up properly"
     end
+  else
+    _cron_print "Deferring running vidarc"
   end
 
   _cron_print_cmd "yt-dlp" "Upgrading"
   pip3 install yt-dlp --upgrade
+
+  if [ -d "$SLSK_CHAT_LOGS_DIR_SRC" ]
+    _cron_print "Moving Soulseek chat logs"
+    mkdir -p "$SLSK_CHAT_LOGS_DIR_DST"
+    cp -r "$SLSK_CHAT_LOGS_DIR_SRC" "$SLSK_CHAT_LOGS_DIR_DST"
+    rm -rf "$SLSK_CHAT_LOGS_DIR_SRC"
+  end
 
   # Run Bryce conversion script if the directory exists.
   if [ -d "$DADA_BRYCE_DIR" ]
@@ -56,9 +67,12 @@ function dada-cron \
   _cron_print_cmd "Jira tasks" "Caching"
   _cache_tasks
 
-  if [ -d ~/.config/ekizo-dl ]
-    _cron_print_cmd "ekizo-dl"
-    _cron_run_cmd "ekizo-dl.py"
+  if [ -d ~/.config/ekizo ]
+    _cron_print_cmd "ekizo"
+    _cron_run_cmd "ekizo"
+    if [ "$status" -ne 0 ]
+      _cron_print "ekizo did not run properly"
+    end
   end
   _cron_print_cmd "weather" "Caching"
   _cache_weather_safe
@@ -69,12 +83,22 @@ end
 function cron_cmd_timeago \
   --description "Checks if it's been a certain period of time since a cron command was last run" \
   --argument-names cmd timelimit
-  timeago_file "$_cron_date_dir/$cmd.txt" "$timelimit"
+  # Note: this is used to check if we should run a cron command.
+  # Some cron commands don't need to run very often, so a timestamp is used
+  # to check how long it's been since it last ran.
+  # If this returns true, the command should be run.
+  set file "$_cron_date_dir/$cmd.txt"
+  timeago_file "$file" "$timelimit"
 end
 
 function timeago_file \
   --description "Checks if it's been a certain period of time since the last command execution" \
   --argument-names tsfile timelimit
+  # If the file does not exist, it means we never ran this command before.
+  if [ ! -e "$tsfile" ]
+    true
+    return
+  end
   set now (date +%s)
   set then (date -jf "%a, %b %d %Y %X %z" (cat "$tsfile") +%s)
   timeago "$now" "$then" "$timelimit"
@@ -88,8 +112,8 @@ function timeago \
 end
 
 set cron_cmds \
-  "vidarc.js"            "Backs up Twitch account" \
-  "ekizo-dl.py"       "Scrapes Mandarake cel auctions" \
+  "vidarc"            "Backs up Twitch account" \
+  "ekizo"                "Scrapes Mandarake cel auctions" \
 
 function cron-info \
   --description "Displays latest Cron job results"
@@ -98,8 +122,8 @@ function cron-info \
   echo "Status of Cron jobs for "(set_color green)"$dada_uhostname_local"(set_color normal)":"
   echo
   set cron_times \
-    "Last run:"         (backup_time_str "$_cron_date_dir/vidarc.js.txt") \
-    "Last run:"         (backup_time_str "$_cron_date_dir/ekizo-dl.py.txt") \
+    "Last run:"         (backup_time_str "$_cron_date_dir/vidarc.txt") \
+    "Last run:"         (backup_time_str "$_cron_date_dir/ekizo.txt") \
 
   set cols_all
   set -a cols_all (_add_cmd_colors (set_color red) $cron_cmds)
@@ -125,7 +149,7 @@ end
 function cron-log \
   --description "Opens the latest Cron log"
   _cron_ensure_dir
-  tail -n 100 -f (_cron_path)
+  tail -n 500 -f (_cron_path)
 end
 
 function cron-install \
