@@ -46,6 +46,7 @@ alias tasks="$DADA/bin/jira-tasks/tasks.js"
 alias projs="$DADA/bin/jira-tasks/projs.js"
 alias updrepos="update_projects.fish"
 alias wikipotd="wiki_potd.js"
+alias formatjson="formatjson.js"
 
 # Scripts
 alias backup-3ds="backup-3ds.fish"
