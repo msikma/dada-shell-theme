@@ -18,28 +18,34 @@ function main
 
   echo (set_color red)Zipping archived projects:(set_color normal)
 
+  pushd "$src"
   set dirs (find "$src" -type d -mindepth 1 -maxdepth 1)
   for dir in $dirs
     pushd "$dir"
     set dirn (basename "$dir")
     set projs (find "$dir" -type d -mindepth 1 -maxdepth 1)
     for proj in $projs
+      set proj_name (basename "$proj")
+      set proj_parent (dirname "$proj")
+      set proj_date ""
+      set proj_touch ""
 
       # Check the last commit date.
+      pushd "$proj"
       set proj_date (git log -1 --format=%cd --date=short 2> /dev/null)
+      set proj_touch (git log -1 --format=%cd --date=format:'%Y%m%d%H%M' 2> /dev/null)
+      popd
 
       if [ ! "$proj_date" ]
         # If we don't have a commit date, get the last file date.
-        set proj_x (gfind . \( ! -name .DS_Store \) -name 'node_modules' -prune -type f -exec gstat --printf="%Y\n" \{\} \; | sort -n -r | head -n 1)
+        set proj_x (gfind ./"$proj_name" \( ! -name ".DS_Store" ! -name "node_modules" \) ! -path "*/node_modules*" -type f -exec gstat --printf="%Y\n" \{\} \; | sort -n -r | head -n 1)
         if [ ! "$proj_x" ]
           # And if we don't have that, get the last modification date of the directory itself.
           set proj_x (gstat "$proj" --printf="%Y\n")
         end
         set proj_date (date -r "$proj_x" +'%Y-%m-%d')
+        set proj_touch (date -r "$proj_x" +'%Y%m%d%H%M')
       end
-
-      set proj_name (basename "$proj")
-      set proj_parent (dirname "$proj")
 
       set source_fn "./$proj_name"
       set target_fn "$proj_name $proj_date.zip"
@@ -62,6 +68,7 @@ function main
         continue
       end
 
+      touch -t "$proj_touch" "$dst_dir/$target_fn"
       rm -rf "$source_fn"
       set tgfn (set_color yellow)"$dirn"(set_color normal)"/"(set_color yellow)"$proj_name"
       printf "%s%-52s%s%-39s%s\n" (set_color green) "$size" (set_color yellow) "$tgfn" (set_color normal)
