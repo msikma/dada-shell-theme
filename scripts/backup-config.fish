@@ -10,7 +10,7 @@ set dst "/Volumes/Files/Backups/$dada_hostname/Config"
 set srcssh "/$UDIR/"(whoami)"/.ssh/"
 set dstssh "/Volumes/Files/Backups/$dada_hostname/SSH"
 
-set do_not_backup "yarn"
+set do_not_backup "yarn" "nyaht"
 
 if not test -d $src
   echo "$err Can't access source directory: "$src
