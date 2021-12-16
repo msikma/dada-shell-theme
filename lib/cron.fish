@@ -31,6 +31,7 @@ end
 
 function _cron_run_cmd \
   --description "Runs a command and prints its output to the screen and log"
+  # TODO: get error lines too
   for line in ($argv)
     _cron_print $line
   end

@@ -20,6 +20,7 @@ make_mp4() {
     -i "$in_image" \
     -i "$in_audio" \
     -c:v libx264 -crf 20 -tune stillimage -c:a aac -b:a 192k \
+    -tune stillimage \
     -pix_fmt yuv420p -shortest \
     -v quiet -stats \
     "$out_video"
