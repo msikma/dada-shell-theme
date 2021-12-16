@@ -70,7 +70,7 @@ alias cssb64="cssb64.bash"
 alias ftypes="ftypes.fish"
 alias pinger="pinger.fish"
 alias serverinfo="serverinfo.fish"
-alias projstatus="projstatus.fish"
+alias projstatus="projstatus.sh"
 alias setssh="setssh.fish"
 
 # Functions
