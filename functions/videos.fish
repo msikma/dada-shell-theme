@@ -14,8 +14,13 @@ function enc_x265_hq --argument-names src dst
 end
 
 function enc_vg_up4x --argument-names src dst
-  _notify_encode "$src" "$dst" "Video game (with upscale)"
+  _notify_encode "$src" "$dst" "Video game (with 4x upscale)"
   ffmpeg -i "$src" -c:v libx265 -preset slow -filter:v scale="iw*4:ih*4:flags=neighbor" -crf 20 -c:a aac -pix_fmt yuv420 -y -stats "$dst"
+end
+
+function enc_vg_up2x --argument-names src dst
+  _notify_encode "$src" "$dst" "Video game (with 2x upscale)"
+  ffmpeg -i "$src" -c:v libx265 -preset slow -filter:v scale="iw*2:ih*2:flags=neighbor" -crf 20 -c:a aac -pix_fmt yuv420 -y -stats "$dst"
 end
 
 function enc_old_anime4k --argument-names src dst
