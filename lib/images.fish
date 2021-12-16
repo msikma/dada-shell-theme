@@ -6,7 +6,7 @@ set -g _jpg_quality "92"
 function _img_resize \
   --argument-names rename amount point \
   --description "Base for various resizing functions"
-  set files $argv[5..-1]
+  set files $argv[4..-1]
 
   for file in $files
     # Add the suffix to the filename if requested.
@@ -27,11 +27,12 @@ function _img_resize \
 
     # Set either bicubic or nearest neighbor resize filter.
     if [ "$point" -eq "1" ]
-      set filter "-filter Point"
+      set filter "Point"
     else
-      set filter "-filter Cubic"
+      set filter "Cubic"
     end
     
-    echo magick convert "$file" "$filter" -resize "$amount" "$quality" "$target"
+    echo magick convert "$file" -filter "$filter" -resize "$amount" "$quality" "$target"
+    #magick convert "$file" -filter "$filter" -resize "$amount" "$quality" "$target"
   end
 end
