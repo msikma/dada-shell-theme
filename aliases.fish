@@ -19,6 +19,7 @@ alias wget="wget --no-check-certificate"
 alias youtube-audio="youtube-audio-dl 'best'" # note: see 'youtube-audio-dl' function
 alias youtube-mp3="youtube-audio-dl 'mp3'"
 alias youtube-wav="youtube-audio-dl 'wav'"
+alias iatest="ia -c ~/.config/ia-test.ini"
 
 # Utilities in ~/.bin/
 alias bfg="java -jar ~/.bin/bfg.jar"
@@ -69,6 +70,7 @@ alias cssb64="cssb64.bash"
 alias ftypes="ftypes.fish"
 alias pinger="pinger.fish"
 alias serverinfo="serverinfo.fish"
+alias projstatus="projstatus.fish"
 alias setssh="setssh.fish"
 
 # Functions
