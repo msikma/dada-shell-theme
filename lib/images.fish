@@ -1,6 +1,6 @@
 # Dada Shell Theme © 2019, 2020
 
-set -g _jpg_quality "92"
+set -g _jpg_quality "99"
 
 # Base function for various resize scripts/functions.
 function _img_resize \
@@ -31,7 +31,7 @@ function _img_resize \
     else
       set filter "-filter Cubic"
     end
-    
+
     echo magick convert "$file" "$filter" -resize "$amount" "$quality" "$target"
   end
 end
