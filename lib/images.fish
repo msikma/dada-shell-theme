@@ -32,7 +32,6 @@ function _img_resize \
       set filter "Cubic"
     end
     
-    echo magick convert "$file" -filter "$filter" -resize "$amount" "$quality" "$target"
-    #magick convert "$file" -filter "$filter" -resize "$amount" "$quality" "$target"
+    magick convert "$file" -filter "$filter" -resize "$amount" "$quality" "$target"
   end
 end
