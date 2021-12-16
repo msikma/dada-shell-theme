@@ -18,6 +18,10 @@ set PATH ~/.bin/ $PATH
 set PATH ~/.bin/misc-scripts $PATH  # clone from https://github.com/msikma/misc-scripts
 set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/misc-bin
 
+if test -d ~/.cargo/env
+  set PATH ~/.cargo/env $PATH
+end
+
 if test -d ~/Personal\ projects/liballeg.4.4.2-osx/tools
   set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
 end
