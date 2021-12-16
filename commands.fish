@@ -79,7 +79,11 @@ function code
     echo "code: Error: can't find ""$argv"
     return 1
   end
-  code-insiders $argv
+  if type -q code-insiders
+  	command code-insiders $argv
+  else
+  	command code $argv
+  end
 end
 
 function randstr
@@ -88,7 +92,13 @@ end
 
 # Alias for youtube-dl with some sensible defaults.
 function youtube-dl
-  env youtube-dl --format "bestvideo+bestaudio" --verbose --add-metadata --merge-output-format "mp4" $argv
+  env youtube-dl --format "bestvideo+bestaudio/best" --verbose --add-metadata --merge-output-format "mp4" $argv
+end
+
+# Alias for youtube-dl for archival purposes.
+function youtube-arcdl
+  #set code (echo "$argv" | grep -oh "v=\([^&]\+\)" | cut -d'=' -f2)
+  yt-dlp --format "(bestvideo)+(bestaudio[acodec^=opus]/bestaudio)/best" --verbose --sleep-requests 1 --sleep-interval 5 --max-sleep-interval 30 --ignore-errors --no-continue --add-metadata --write-description --write-info-json --write-annotations --write-thumbnail --embed-thumbnail --all-subs --embed-subs --get-comments --match-filter "!is_live & !live" --output "%(title)s [%(uploader)s] (%(upload_date)s)/%(title)s [%(uploader)s] (%(upload_date)s) [%(id)s].%(ext)s" --merge-output-format "mp4" "$argv" 2>&1 | tee output.log
 end
 
 # Alias for youtube-dl with some options specifically for getting MP3s.

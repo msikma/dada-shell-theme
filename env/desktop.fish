@@ -92,6 +92,8 @@ if [ -d "$FUJI_BRYCE_DIR" ]
 else
   set -gx DADA_BRYCE_DIR "$VESUVIUS_BRYCE_DIR"
 end
+set -gx SLSK_CHAT_LOGS_DIR_SRC ~/"Soulseek Chat Logs/"
+set -gx SLSK_CHAT_LOGS_DIR_DST ~/"Files/Storage/Soulseek Chat Logs/"
 
 # RPG Maker/EasyRPG Player
 set -gx RPG2K_RTP_PATH ~/".config/rtp/2000"

@@ -26,6 +26,7 @@ set backup_cmd \
   "backup-games"      "Backs up game content" \
   "backup-src"        "Backs up source code directories" \
   "backup-vms"        "Backs up VMs" \
+  "backup-arc-src"    "Backs up archived source code" \
   "" "" \
   "$ncol""Non device specific:" "" \
   "backup-3ds"        "Backs up 3DS SD card" \
@@ -50,6 +51,7 @@ function backup --description "Displays backup commands and info"
     "Games backup:"     (backup_time_str "$_backup_dir/backup-games") \
     "Source backup:"    (backup_time_str "$_backup_dir/backup-src") \
     "VMs backup:"       (backup_time_str "$_backup_dir/backup-vms") \
+    "Arc.src backup:"   (backup_time_str "$_backup_dir/backup-arc-src") \
     "" "" \
     "" "" \
 

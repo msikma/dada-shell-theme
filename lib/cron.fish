@@ -30,9 +30,8 @@ end
 
 
 function _cron_run_cmd \
-  --description "Runs a command and prints its output to the screen and log" \
-  --argument-names cmd
-  for line in ($cmd)
+  --description "Runs a command and prints its output to the screen and log"
+  for line in ($argv)
     _cron_print $line
   end
 end

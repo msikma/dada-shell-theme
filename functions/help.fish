@@ -67,7 +67,9 @@ set cmd_scripts \
   "rip-imgs <url>"    "Rips image files from a URL" \
   "colortest"         "Tests Terminal color settings" \
   "imgfloppy"         "Copy floppy data to .img file" \
-  "youtube-dl"        "Downloads videos from Youtube" \
+  "youtube-dl"        "Downloads videos from URL" \
+  "youtube-mp3"       "Runs youtube-dl for audio files" \
+  "youtube-arcdl"     "Video downloader in archive mode" \
   "ascr"              "Downloads art from social media" \
   "ncdu"              "Shows directory disk space usage" \
   "vgmpfdl <url>"     "Downloads albums from vgmpf.com" \
@@ -114,7 +116,7 @@ set cmd_dada \
   "dada-update"       "Updates Dada shell theme and bins" \
   #"cron-install"      "Installs the Cron script" \ # removed for brevity since it's only needed once; mentioned in the install.
   "cron-log"          "Views the Cron log for this month" \
-  "cron-info"         "Checks the Cron script's status" \
+  "cron-installed"         "Checks the Cron script's status" \
 
 set scripts_regular \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
@@ -130,6 +132,7 @@ set scripts_regular \
   "update_projects.fish"      "Pulls the latest changes for all projects" \
   "view_projects.fish"        "Displays a list of projects with recent commits" \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
+  "iahtml.js"                 "Generates an HTML table of file information for the Internet Archive" \
 
 set scripts_ia \
   "ia_scans.sh"               "Prints an Internet Archive description with a table of scans" \

@@ -10,7 +10,7 @@ Since I use Mac OS X, this is primarily designed for Mac OS X, but I also run it
 
 First, install the [Fish shell](https://fishshell.com/) and [set it as the default](https://stackoverflow.com/a/26321141).
 
-Then clone this repository in `~/.config/dada`. Append the a command to `~/.config/fish/config.fish` that loads the theme:
+Then clone this repository in `~/.config/dada`. Append a command to `~/.config/fish/config.fish` that loads the theme:
 
 ```fish
 echo "source ~/.config/dada/dada.fish" >> ~/.config/fish/config.fish
@@ -40,7 +40,7 @@ Note that most of these installation instructions are for Mac OS X only.
 
 2. Install the following Brew packages:
 
-    `brew install bat bchunk ccd2iso composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq mdf2iso ncdu node python3 rsync streamlink tldr unar wget xdelta youtube-dl`
+    `brew install bat bchunk ccd2iso composer coreutils ecm exa fd findutils flac gawk git-extras gnu-getopt gnu-indent gnu-sed gnu-tar gnutls grep jq mdf2iso ncdu node python3 rsync streamlink tldr unar wget xdelta youtube-dl yt-dlp ghostscript`
 
 3. Install the following [npm](https://www.npmjs.com/) packages:
 
@@ -48,11 +48,10 @@ Note that most of these installation instructions are for Mac OS X only.
 
 After this there are some applications and packages that require extra configuration:
 
-* [Visual Studio Code](https://code.visualstudio.com/): to add the `code-insiders` command (needed for `code`), press **⇧⌘P** and search for "install"
+* [Visual Studio Code](https://code.visualstudio.com/): to add the `code` command, press **⇧⌘P** and search for "install"
 * Clone the [misc-bin](https://bitbucket.org/msikma/misc-bin) and [misc-scripts](https://github.com/msikma/misc-scripts) repos to `~/.bin/`
 * `brew install diff-so-fancy` - and [configure it](https://github.com/so-fancy/diff-so-fancy)
 * Download [BFG Repo Cleaner](https://rtyley.github.io/bfg-repo-cleaner/) and put its binary in `~/.bin/`
-* `ps2pdf` should be installed by default, but just in case it isn't, [it can be found here](https://www.ghostscript.com/doc/current/Ps2pdf.htm)
 * [MacDown](https://macdown.uranusjr.com/)
 * [ips.py](https://github.com/fbeaudet/ips.py)
 * [MultiPatch](http://www.romhacking.net/utilities/746/)
