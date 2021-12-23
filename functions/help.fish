@@ -79,6 +79,8 @@ set cmd_scripts \
   "pinger"            "Checks if we are online" \
   "unecm"             "Converts ECM files to BIN" \
   "convert"           "Converts images other formats" \
+  "mirror_website"    "Downloads an entire website copy" \
+  "scrape_media"      "Scrapes media files from a url" \
 
 set cmd_project \
   "proj"              "Displays current project info" \
