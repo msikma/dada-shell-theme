@@ -121,6 +121,8 @@ set cmd_dada \
   "cron-installed"         "Checks the Cron script's status" \
 
 set scripts_regular \
+  "collect_images.sh"         "Collects images from anywhere in the current directory" \
+  "make_contact_sheet.sh"     "Opens a contact sheet html file for the current directory" \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
   "cutvid.py"                 "Script for cutting up videos" \
   "enc_flac.bash"             "Converts a .wav file to .flac" \
