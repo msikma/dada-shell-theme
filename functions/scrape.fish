@@ -1,6 +1,6 @@
 # Dada Shell Theme © 2019-2021
 
-set _image_exts "gif" "png" "jpg" "jpeg" "bmp" "tiff" "psd" "pdf" "eps" "ai" "webp" "avif"
+set _image_exts "gif" "png" "jpg" "jpeg" "jpf" "tga" "bmp" "tif" "tiff" "psd" "pdf" "eps" "ai" "webp" "avif" "pcx"
 set _interactive_exts "fla" "swf"
 set _video_exts "mp4" "m4p" "m4v" "mkv" "avi" "webm" "mpg" "mts" "m2ts" "ts" "yuv" "rm" "rmvb" "asf" "amv" "mp2" "mpeg" "mpe" "mpv" "m2v" "ogm" "3gp" "3g2" "wmv" "mov" "qt" "flv" "f4v" "f4p" "f4a" "f4b"
 set _audio_exts "mp3" "ac3" "amr" "mp1" "spx" "wma" "aac" "mpc" "vqf" "ots" "swa" "vox" "voc" "ogg" "flac" "8svx" "16svx" "aiff" "aif" "aifc" "au" "bwf" "cdda" "dsf" "dff" "raw" "wav" "ra" "rm" "ape" "brstm" "ast" "aw" "psf"
