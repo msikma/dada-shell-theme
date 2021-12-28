@@ -6,6 +6,10 @@ source $DADA"env/common.fish"
 set -gx NODE_PATH /usr/local/lib/node_modules $NODE_PATH
 
 # A ton of path segments to add
+if test -d /opt/homebrew/bin
+  # Add Homebrew paths before everything else, so they have precedence.
+  set PATH $PATH /opt/homebrew/bin
+end
 set PATH ~ $PATH
 if test -d /usr/local/opt/node@8/bin
   set PATH /usr/local/opt/node@8/bin $PATH
