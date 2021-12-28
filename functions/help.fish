@@ -125,6 +125,7 @@ set scripts_regular \
   "make_contact_sheet.sh"     "Opens a contact sheet html file for the current directory" \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
   "cutvid.py"                 "Script for cutting up videos" \
+  "build-dosbox.sh"           "Builds the latest version of DOSBox-X and symlinks it" \
   "enc_flac.bash"             "Converts a .wav file to .flac" \
   "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
   "image_floppy.fish"         "Images a floppy to .img file" \
