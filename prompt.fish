@@ -167,7 +167,7 @@ function fish_greeting --description 'Display the login greeting'
   echo
 
   # Run whatever else we need to do specifically for this environment.
-  fish $DADA"env/welcome/$DADA_FISH_ENV.fish"
+  source $DADA"env/welcome/$DADA_FISH_ENV.fish"
 end
 
 # Copied from one of the default prompts and edited a bit.
