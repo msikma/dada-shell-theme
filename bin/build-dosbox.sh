@@ -12,7 +12,15 @@ function get_version
   echo "$xversion $branch-$commits"
 end
 
-function rebuild
+function rebuild --argument-names arg
+  if begin [ "$arg" = "-h" ]; or [ "$arg" = "--help" ]; end
+    echo 'usage: build-dosbox [--no-pull] [-h|--help]'
+    exit 0
+  end
+  if begin [ "$arg" != "--no-pull" ]; and [ -n "$arg" ]; end
+    echo 'usage: build-dosbox [--no-pull] [-h|--help]'
+    exit 0
+  end
   if [ ! -d ~/Source/dosbox-x ]
     echo 'build-dosbox: error: could not find DOSBox-X source directory at ~/Source/dosbox-x'
     exit 1
@@ -21,7 +29,9 @@ function rebuild
 
   pushd ~/Source/dosbox-x
   make clean
-  git pull
+  if [ "$arg" != "--no-pull" ]
+    git pull
+  end
   rm -rf dosbox-x.app
   ./build-macosx-sdl2
   make dosbox-x.app
@@ -45,4 +55,4 @@ function rebuild
   popd
 end
 
-rebuild
+rebuild $argv

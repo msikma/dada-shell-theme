@@ -67,7 +67,16 @@ function dada-cron \
   _cron_print_cmd "Jira tasks" "Caching"
   _cache_tasks
 
-  if [ -d ~/.config/ekizo ]
+  if [ -d ~/".config/the-cave" ]
+    _cron_print_cmd "the-cave"
+    _cron_run_cmd "the-cave.js" "--gen-lines"
+    if [ "$status" -ne 0 ]
+      _cron_print "the-cave did not run properly"
+    end
+    the-cave.js --gen-summary > ~/"Files/Notepad/Writing/danny/results.txt"
+  end
+
+  if [ -d ~/".config/ekizo" ]
     _cron_print_cmd "ekizo"
     _cron_run_cmd "ekizo"
     if [ "$status" -ne 0 ]
