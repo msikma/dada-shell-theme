@@ -8,12 +8,20 @@ function find_files --argument-names dir exts
   find -E "$dir" -type f -regex ".*\.($exts)"
 end
 
+function get_size
+  set size "0"
+  for n in $argv
+    set size (math "$size" + (gstat -c %s -- "$n"))
+  end
+  echo "$size"
+end
+
 function make_sheet --argument-names dir exts
   set full_dir (realpath "$dir")
   set curr_dir (basename "$full_dir")
   set files (find_files "$dir" "$exts" | sort)
   set files_n (count $files)
-  set total_size (gstat -c %s -- $files | paste -d+ -s - | bc)
+  set total_size (get_size)
   set total_size_f (numfmt --to iec --format "%.2f" "$total_size")
   echo "<!doctype html>
 <html>
