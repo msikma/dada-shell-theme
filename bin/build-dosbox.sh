@@ -33,7 +33,7 @@ function rebuild --argument-names arg
     git pull
   end
   rm -rf dosbox-x.app
-  ./build-macosx-sdl2
+  ./build-macosx
   make dosbox-x.app
   
   if [ "$status" -ne 0 ]
