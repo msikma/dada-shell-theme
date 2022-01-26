@@ -4,9 +4,15 @@
 
 serverinfo
 
-echo "   Other information:"
+echo "   Other information:\n"
 
-if test -e /var/lib/update-notifier/updates-available
+# Print the 'reboot required' message if it exists.
+if [ -e /var/run/reboot-required ]
+  echo (set_color red)(cat /var/run/reboot-required)(set_color normal)
+end
+
+# Show any updates that are available.
+if [ -e /var/lib/update-notifier/updates-available ]
   cat /var/lib/update-notifier/updates-available
 end
 

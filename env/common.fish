@@ -26,8 +26,3 @@ set -gx GPG_TTY (tty)
 if [ -e ~/".config/env.fish" ]
   source ~/".config/env.fish"
 end
-
-# Print the 'reboot required' message if it exists.
-if [ -e /var/run/reboot-required ]
-  cat /var/run/reboot-required
-end
