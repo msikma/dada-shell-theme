@@ -4,7 +4,8 @@
 
 serverinfo
 
-echo "   Other information:\n"
+echo "   Other information:"
+echo ""
 
 # Print the 'reboot required' message if it exists.
 if [ -e /var/run/reboot-required ]
