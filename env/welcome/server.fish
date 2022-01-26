@@ -5,10 +5,10 @@
 serverinfo
 
 echo "   Other information:"
-echo ""
 
 # Print the 'reboot required' message if it exists.
 if [ -e /var/run/reboot-required ]
+  echo ""
   echo (set_color red)(cat /var/run/reboot-required)(set_color normal)
 end
 
