@@ -23,6 +23,11 @@ set -x LC_ALL en_US.UTF-8
 set -gx GPG_TTY (tty)
 
 # Include machine-specific env settings if any.
-if test -e ~/".config/env.fish"
+if [ -e ~/".config/env.fish" ]
   source ~/".config/env.fish"
+end
+
+# Print the 'reboot required' message if it exists.
+if [ -e /var/run/reboot-required ]
+  cat /var/run/reboot-required
 end
