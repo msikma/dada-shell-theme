@@ -67,6 +67,14 @@ function dada-cron \
   _cron_print_cmd "Jira tasks" "Caching"
   _cache_tasks
 
+  if [ -d ~/"Files/Music/Stuff/Incoming/OC ReMix" ]
+    _cron_print_cmd "scanocre"
+    _cron_run_cmd "scanocre" "-s" "-o" ~/"Files/Music/Stuff/Incoming/OC ReMix" "--cache" ~/".config/scanocre/"
+    if [ "$status" -ne 0 ]
+      _cron_print "scanocre did not run properly"
+    end
+  end
+
   if [ -d ~/".config/the-cave" ]
     _cron_print_cmd "the-cave"
     _cron_run_cmd "the-cave.js" "--gen-lines"
