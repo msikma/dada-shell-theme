@@ -40,7 +40,7 @@ set cmd_images \
   "img_r50p <img>"    "Resizes an image to 50% size" \
   "img_r200p <img>"   "Resizes an image to 200% size" \
   "img_r400p <img>"   "Resizes an image to 400% size" \
-  "img_resolution"    "Sets an image's resolution value" \
+  "img_res_set"       "Sets an image's resolution value" \
   "enc_x265_hq"       "Encode to high quality x265" \
   "enc_vg_up4x"       "Encode 4x upscaled for video games" \
   "enc_old_anime4k"   "Encode old grainy 4K anime" \

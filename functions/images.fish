@@ -28,9 +28,9 @@ function img_r200p
 end
 
 # Changes the PPI resolution value of an image
-function img_resolution --argument-names res
+function img_res_set --argument-names res
   if ! string match -qr '^[0-9]+$' $res
-    echo 'usage: img_resolution RES FILE_1 [FILE2, ..]'
+    echo 'usage: img_res_set RES FILE_1 [FILE2, ..]'
     return 1
   end
   for file in $argv[2..-1]
