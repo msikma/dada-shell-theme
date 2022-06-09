@@ -25,6 +25,9 @@ end
 if test -d ~/.cargo/env
   set PATH ~/.cargo/env $PATH
 end
+if test -d ~/go/bin
+  set PATH ~/go/bin $PATH
+end
 
 if test -d ~/Personal\ projects/liballeg.4.4.2-osx/tools
   set PATH ~/Personal\ projects/liballeg.4.4.2-osx/tools $PATH
