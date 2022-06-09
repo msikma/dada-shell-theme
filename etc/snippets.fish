@@ -7,6 +7,19 @@ exit 1
 set m 37; for n in (seq 74 120); set m (math $m + 1); set mn (printf "%03u" $m);  set src "Scan $n.jpg"; set dst "$mn.jpg"; convert "$src" -rotate -90 "$dst"; echo $src" -> "$dst; end;
 
 
+
+
+# sort into dirs by dimensions
+for n in *.png;
+  set s (magick identify -format "%wx%h" "$n")
+  mkdir -p "$s"
+  mv "$n" "$s"
+end
+
+# repage into smaller blocks
+magick "ui_bnet_emoticons_sheet3.dds.png" +repage -crop 30x30 "ui_bnet_emoticons_sheet3_%04d.png"
+magick "m.jpg" +repage -crop 14x14 "img/out_%06d.png"
+
 # I forgot what this is
 function drewdrew
   for x in (seq 500)
