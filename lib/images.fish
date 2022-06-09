@@ -7,7 +7,6 @@ function _img_resize \
   --argument-names rename amount point \
   --description "Base for various resizing functions"
   set files $argv[4..-1]
-
   for file in $files
     # Add the suffix to the filename if requested.
     if [ "$rename" -eq "1" ]

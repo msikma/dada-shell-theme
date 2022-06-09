@@ -2,14 +2,44 @@
 
 set -g screenshot_dir ~/"Desktop/"
 
+# Resizes to 8% to a new file
+function img_r8p
+  _img_resize "1" "8%" "0" $argv[1..-1]
+end
+
 # Resizes to 50% to a new file
 function img_r50p
   _img_resize "1" "50%" "0" $argv[1..-1]
 end
 
+# Resizes to 400px to a new file
+function img_r400
+  _img_resize "1" "400x" "0" $argv[1..-1]
+end
+
 # Resizes to 400% to a new file, nearest neighbor
 function img_r400p
   _img_resize "1" "400%" "1" $argv[1..-1]
+end
+
+# Resizes to 200% to a new file, nearest neighbor
+function img_r200p
+  _img_resize "1" "200%" "1" $argv[1..-1]
+end
+
+# Changes the PPI resolution value of an image
+function img_resolution --argument-names res
+  if ! string match -qr '^[0-9]+$' $res
+    echo 'usage: img_resolution RES FILE_1 [FILE2, ..]'
+    return 1
+  end
+  for file in $argv[2..-1]
+    magick convert -units PixelsPerInch -density "$res" "$file" "_$file"
+    touch -r "$file" "_$file"
+    rm "$file"
+    mv "_$file" "$file"
+    magick identify -ping -format "%i %m %g %[profile:icc] %[resolution.x] %[units]\n" "$file"
+  end
 end
 
 # Converts images to jpeg. Files that are already .jpg or .jpeg are skipped.
