@@ -246,6 +246,9 @@ function cdbackup
   cd $bdir
 end
 
+# Escapes strings for URL, e.g. "test#" to "test%23"
+alias urlescape="sed -f '$DADA/etc/url.sed'"
+
 function keys --description "Displays keys installed for this user"
   echo
   echo "Installed keys for "(set_color green)(whoami)(set_color normal)" in "(set_color yellow)"~/.ssh/"(set_color normal)
