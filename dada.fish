@@ -36,6 +36,7 @@ source $DADA"lib/images.fish"
 source $DADA"lib/request.fish"
 source $DADA"lib/sys.fish"
 source $DADA"lib/test.fish"
+source $DADA"lib/time.fish"
 source $DADA"lib/utils.fish"
 
 source $DADA"functions/dada.fish"
