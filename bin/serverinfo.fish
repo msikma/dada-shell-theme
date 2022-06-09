@@ -4,7 +4,7 @@ if [ "$DADA_FISH_ENV" = "server" ]
   set apache_data (apache2ctl status | grep -i "requests/sec")
 
   set apache_version (apache2 -v | head -n1 | string sub -s 17)
-  set apache_uptime (apache2ctl status | grep -i "server uptime" | cut -d':' -f2 | string sub -s 2)
+  set apache_uptime (format_apache_timestr (apache2ctl status | grep -i "server uptime" | cut -d':' -f2 | string sub -s 2))
   set apache_load (apache2ctl status | grep -i "server load" | cut -d':' -f2 | string sub -s 2)
   set apache_reqs_sec (echo $apache_data | cut -d'-' -f1 | string sub -s 4)
   set apache_b_sec (echo $apache_data | cut -d'-' -f2 | string sub -s 2)
@@ -46,7 +46,7 @@ if [ "$DADA_FISH_ENV" = "server" ]
   set -a cols_all (_add_cmd_colors (set_color green) $information_cols)
   _iterate_help $cols_all
   echo
-  echo "   To control the Apache server:"
+  echo "   To control the server:"
   echo ""
   echo "• "(set_color cyan)"/var/www/"(set_color yellow)"*"(set_color normal)"      - served files"
   echo "• "(set_color cyan)"/etc/apache2/"(set_color normal)"   - site configuration"
@@ -56,6 +56,8 @@ if [ "$DADA_FISH_ENV" = "server" ]
   echo "\$ sudo "(set_color cyan)"a2dissite "(set_color blue)"example.com.conf"(set_color normal)"            - disable a site"
   echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/access.log"(set_color normal)"   - access log"
   echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/error.log"(set_color normal)"    - error log"
+  echo ""
+  echo "\$ sudo "(set_color cyan)"reboot "(set_color yellow)"now"(set_color normal)"                            - reboots the server"
   echo ""
 end
 
