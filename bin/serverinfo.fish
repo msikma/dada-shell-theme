@@ -29,11 +29,12 @@ if [ "$DADA_FISH_ENV" = "server" ]
     "Avg. size:"  "$apache_kb_req" \
     "Traffic:"  "$apache_b_sec"
 
-  set uptime_days (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/') # Linux only
+  set uptime_days (string trim (uptime | sed -e 's/^ [^ ]* up \([^,]*\).*/\1/')) # Linux only
   set ipv4 (hostname -i | awk '{print $2}')
   set ipv6 (hostname -i | awk '{print $1}')
 
   set information_cols \
+    "System OS:"      (get_system_version) \
     "System uptime:"  "$uptime_days" \
     "IPv4 for eth0:"  "$ipv4" \
     "IPv6 for eth0:"  "$ipv6" \
