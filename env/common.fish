@@ -1,5 +1,7 @@
 # Dada Shell Theme © 2019, 2020
 
+set IS_DADA_SERVER (if test -e ~/".dada-server"; echo "1"; end)
+
 # Various systems/languages
 set PATH ~/.cargo/bin $PATH            # Rust
 set PATH ./node_modules/.bin $PATH     # Local Node bins

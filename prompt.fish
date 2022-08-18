@@ -22,8 +22,9 @@ set -g __fish_git_prompt_color_cleanstate green
 set -g __fish_prompt_cwd (set_color cyan)
 set -g __fish_prompt_normal (set_color normal)
 
-if [ "$dada_hostname" = "Sol" ]
-  set -gx dada_left_prompt_prefix "Sol "
+# Display the hostname in the prompt if we're running on a server.
+if [ "$IS_DADA_SERVER" = "1" ]
+  set -gx dada_left_prompt_prefix "$dada_hostname "
 end
 
 # In case we want to make a network request.
