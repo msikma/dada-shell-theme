@@ -58,6 +58,8 @@ if [ "$DADA_FISH_ENV" = "server" ]
   echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/access.log"(set_color normal)"   - access log"
   echo "\$ sudo "(set_color cyan)"tail -f "(set_color blue)"/var/log/apache2/error.log"(set_color normal)"    - error log"
   echo ""
+  echo "\$ sudo "(set_color cyan)"certbot"(set_color normal)"                               - update certificates"
+  echo ""
   echo "\$ sudo "(set_color cyan)"reboot "(set_color yellow)"now"(set_color normal)"                            - reboots the server"
   echo ""
 end
