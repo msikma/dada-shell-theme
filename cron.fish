@@ -47,6 +47,12 @@ function dada-cron \
     _cron_print "Deferring running vidarc"
   end
 
+  # Delete .DS_Store from DOSBox directory, as they show up when streaming.
+  if [ -d "$DADA_DOSBOX_DIR" ]
+    _cron_print "Removing .DS_Store from $DADA_DOSBOX_DIR"
+    remove_dsstore.fish "$DADA_DOSBOX_DIR"
+  end
+
   _cron_print_cmd "yt-dlp" "Upgrading"
   pip3 install yt-dlp --upgrade
 
