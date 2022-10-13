@@ -140,6 +140,7 @@ set scripts_regular \
   "view_projects.fish"        "Displays a list of projects with recent commits" \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
   "iahtml.js"                 "Generates an HTML table of file information for the Internet Archive" \
+  "trim_audio.sh"             "Trims silence from the end of lossy audio files" \
 
 set scripts_ia \
   "ia_scans.sh"               "Prints an Internet Archive description with a table of scans" \
