@@ -60,6 +60,7 @@ set cmd_conversions \
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
   "cssb64"            "Outputs an image as Base64 CSS" \
+  "imgb64"            "Outputs an image as Base64 <img>" \
   "scrapemp3s"        "Scrapes MP3 files from a URL" \
   "streamlink"        "Opens internet streams in VLC" \
   "empty-trash"       "Empties the trash bin" \
