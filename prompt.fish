@@ -178,7 +178,11 @@ function fish_prompt --description 'Write out the left prompt'
   if test -n "$STY"
     set dada_screen_prompt (set_color yellow)"($STY) "(set_color normal)
   end
-  echo -n -s $dada_left_prompt_prefix $dada_screen_prompt "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
+  if set -q VIRTUAL_ENV
+    set venv (basename "$VIRTUAL_ENV")
+    set dada_vf_prompt (set_color yellow)"◰ "(set_color red)"$venv"(set_color normal)" "
+  end
+  echo -n -s $dada_left_prompt_prefix $dada_vf_prompt $dada_screen_prompt "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" (in_git_dir_or_subdir) "$__fish_prompt_normal" '> '
 end
 
 # Right side prompt. Displays a timestamp, and a warning emoji on error.
