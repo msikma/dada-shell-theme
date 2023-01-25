@@ -143,6 +143,7 @@ set scripts_regular \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
   "iahtml.js"                 "Generates an HTML table of file information for the Internet Archive" \
   "trim_audio.sh"             "Trims silence from the end of lossy audio files" \
+  "merge_vids.sh"             "Merges together multiple video files into one .mp4 file" \
   "win_icon.sh"               "Generates a Windows icon from a .png file" \
 
 set scripts_ia \
