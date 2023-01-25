@@ -128,6 +128,7 @@ set scripts_regular \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
   "cutvid.py"                 "Script for cutting up videos" \
   "build-dosbox.sh"           "Builds the latest version of DOSBox-X and symlinks it" \
+  "dosbox_cfgdiff.js"         "Prints a diff between a full DOSBox-X config dump and a user config" \
   "enc_flac.bash"             "Converts a .wav file to .flac" \
   "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
   "image_floppy.fish"         "Images a floppy to .img file" \
