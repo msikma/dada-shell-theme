@@ -144,6 +144,7 @@ set scripts_regular \
   "iahtml.js"                 "Generates an HTML table of file information for the Internet Archive" \
   "trim_audio.sh"             "Trims silence from the end of lossy audio files" \
   "merge_vids.sh"             "Merges together multiple video files into one .mp4 file" \
+  "norm_unicode.py"           "Normalizes Unicode characters" \
   "win_icon.sh"               "Generates a Windows icon from a .png file" \
 
 set scripts_ia \
