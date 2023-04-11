@@ -2,6 +2,14 @@
 
 source $DADA"env/common.fish"
 
+function get_node_version --description "Returns our default Node version (assuming nvm is installed)"
+  if test -e ~/.nvmrc
+    cat ~/.nvmrc
+  else
+    node -v
+  end
+end
+
 # Node path so we can import global packages. Be careful!
 set -gx NODE_PATH /usr/local/lib/node_modules $NODE_PATH
 
@@ -20,6 +28,12 @@ set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/mi
 if test -d /opt/homebrew/bin
   # Add Homebrew paths before everything else, so they have precedence.
   set PATH /opt/homebrew/bin $PATH
+end
+
+if test -e ~/.config/fish/conf.d/nvm.fish
+  # Hack: somehow 'nvm use' doesn't work when it's here.
+  # nvm use 19
+  set PATH ~/.local/share/nvm/(get_node_version)/bin $PATH
 end
 
 if test -d ~/.cargo/env
