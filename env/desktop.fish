@@ -119,6 +119,7 @@ else
 end
 set -gx SLSK_CHAT_LOGS_DIR_SRC ~/"Soulseek Chat Logs/"
 set -gx SLSK_CHAT_LOGS_DIR_DST ~/"Files/Storage/Soulseek Chat Logs/"
+set -gx DADA_DOSBOX_DIR ~/"Games/DOSBox/"
 
 # RPG Maker/EasyRPG Player
 set -gx RPG2K_RTP_PATH ~/".config/rtp/2000"
