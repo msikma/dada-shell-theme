@@ -28,6 +28,13 @@ set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/mi
 if test -d /opt/homebrew/bin
   # Add Homebrew paths before everything else, so they have precedence.
   set PATH /opt/homebrew/bin $PATH
+  # Add paths for Meson.
+  set -x LIBRARY_PATH /opt/homebrew/lib $LIBRARY_PATH
+  set -x CPATH /opt/homebrew/include $CPATH
+  set -x LIBRARY_PATH /opt/homebrew/Cellar/molten-vk/1.1.10_1/lib $LIBRARY_PATH
+  set -x CPATH /opt/homebrew/Cellar/molten-vk/1.1.10_1/include $CPATH
+  # Other things needed to build.
+  set -x Qt5_DIR /opt/homebrew/opt/qt5
 end
 
 if test -e ~/.config/fish/conf.d/nvm.fish
