@@ -60,6 +60,7 @@ set cmd_conversions \
 set cmd_scripts \
   "sphp"              "Changes PHP version" \
   "cssb64"            "Outputs an image as Base64 CSS" \
+  "imgb64"            "Outputs an image as Base64 <img>" \
   "scrapemp3s"        "Scrapes MP3 files from a URL" \
   "streamlink"        "Opens internet streams in VLC" \
   "empty-trash"       "Empties the trash bin" \
@@ -128,6 +129,7 @@ set scripts_regular \
   "convert_bryce.fish"        "Converts .bmp files in the Bryce dir to .png files" \
   "cutvid.py"                 "Script for cutting up videos" \
   "build-dosbox.sh"           "Builds the latest version of DOSBox-X and symlinks it" \
+  "dosbox_cfgdiff.js"         "Prints a diff between a full DOSBox-X config dump and a user config" \
   "enc_flac.bash"             "Converts a .wav file to .flac" \
   "git_jira.bash"             "Lists a project's last 25 issue branches by commit order" \
   "image_floppy.fish"         "Images a floppy to .img file" \
@@ -140,6 +142,10 @@ set scripts_regular \
   "view_projects.fish"        "Displays a list of projects with recent commits" \
   "wiki_potd.js"              "Retrieves the picture of the day from Wikipedia" \
   "iahtml.js"                 "Generates an HTML table of file information for the Internet Archive" \
+  "trim_audio.sh"             "Trims silence from the end of lossy audio files" \
+  "merge_vids.sh"             "Merges together multiple video files into one .mp4 file" \
+  "norm_unicode.py"           "Normalizes Unicode characters" \
+  "win_icon.sh"               "Generates a Windows icon from a .png file" \
 
 set scripts_ia \
   "ia_scans.sh"               "Prints an Internet Archive description with a table of scans" \

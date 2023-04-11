@@ -2,6 +2,14 @@
 
 source $DADA"env/common.fish"
 
+function get_node_version --description "Returns our default Node version (assuming nvm is installed)"
+  if test -e ~/.nvmrc
+    cat ~/.nvmrc
+  else
+    node -v
+  end
+end
+
 # Node path so we can import global packages. Be careful!
 set -gx NODE_PATH /usr/local/lib/node_modules $NODE_PATH
 
@@ -20,6 +28,12 @@ set PATH ~/.bin/misc-bin $PATH      # clone from https://bitbucket.org/msikma/mi
 if test -d /opt/homebrew/bin
   # Add Homebrew paths before everything else, so they have precedence.
   set PATH /opt/homebrew/bin $PATH
+end
+
+if test -e ~/.config/fish/conf.d/nvm.fish
+  # Hack: somehow 'nvm use' doesn't work when it's here.
+  # nvm use 19
+  set PATH ~/.local/share/nvm/(get_node_version)/bin $PATH
 end
 
 if test -d ~/.cargo/env
@@ -94,6 +108,7 @@ set -gx DADA_CATAWIKI_TLD NL
 # For compiling DOSBox
 set -gx DOSBOX_SRC_DIR "/$UDIR/msikma/Source/dosbox-code-0"
 set -gx DOSBOX_APP_DIR "/$UDIR/msikma/Files/Games/DOSBox"
+set -gx DADA_DOSBOX_DIR ~/"Games/DOSBox/"
 
 # Bryce artwork directory
 set -gx FUJI_BRYCE_DIR ~/"Files/VMs/FujiXP/Shared/Bryce/"
@@ -103,8 +118,13 @@ if [ -d "$FUJI_BRYCE_DIR" ]
 else
   set -gx DADA_BRYCE_DIR "$VESUVIUS_BRYCE_DIR"
 end
+
+# Soulseek
 set -gx SLSK_CHAT_LOGS_DIR_SRC ~/"Soulseek Chat Logs/"
 set -gx SLSK_CHAT_LOGS_DIR_DST ~/"Files/Storage/Soulseek Chat Logs/"
+
+# For Whisper
+set -gx WHISPER_MODEL ~/".resources/models/whisper-ggml-large.bin"
 
 # RPG Maker/EasyRPG Player
 set -gx RPG2K_RTP_PATH ~/".config/rtp/2000"
