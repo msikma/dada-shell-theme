@@ -5,6 +5,8 @@ set purpose "databases"
 
 set dst "/Volumes/Files/Backups/$dada_hostname/Databases"
 
+set mysql_pass_file "$DADA/secrets/mysql.txt"
+
 check_hostname $name
 check_needed_dirs $name 'target' $dst
 
@@ -23,19 +25,24 @@ if test -d $mamp_dir
   set dumpcmd "$mamp_dir/mysqldump"
 else
   # No MAMP; use the default MySQL binaries.
-  set user "root"
-  set pass "root"
+  if [ -e "$mysql_pass_file" ]
+    set user (cat "$mysql_pass_file" | head -n 1 | string escape -n)
+    set pass (cat "$mysql_pass_file" | tail -n 1 | string escape -n)
+  else
+    set user "root"
+    set pass "root"
+  end
   set sqlcmd "mysql"
   set dumpcmd "mysqldump"
 end
 
 # Check if we have access with the standard credentials.
-if not eval $sqlcmd -u$user -p$pass -e "help 2>/dev/null;" > /dev/null
+if not eval $sqlcmd -u"$user" -p"$pass" -e "help 2>/dev/null;" > /dev/null
   backup_error_exit $name "Could not login using given credentials."
 end
 
 # Generate a list of databases we'll back up.
-set databases (eval $sqlcmd -u$user -p$pass -e "'show databases;'" 2> /dev/null | grep -Ev "(mysql|Database|information_schema|performance_schema)")
+set databases (eval $sqlcmd -u"$user" -p"$pass" -e "'show databases;'" 2> /dev/null | grep -Ev "(mysql|Database|information_schema|performance_schema)")
 set db_count (count $databases)
 set db_plural "s"
 if test $db_count -eq 1
@@ -46,7 +53,7 @@ echo (set_color yellow)"Backing up $db_count database$db_plural."(set_color norm
 # Dump every database and gzip it, saving it to the destination directory.
 for db in $databases
   set file "$dst/$db.sql.gz"
-  eval $dumpcmd --force -u$user -p$pass --databases $db 2> /dev/null | gzip > "$file"
+  eval $dumpcmd --force -u"$user" -p"$pass" --databases $db 2> /dev/null | gzip > "$file"
   du -h "$file"
 end
 set db_files (ls $dst)
