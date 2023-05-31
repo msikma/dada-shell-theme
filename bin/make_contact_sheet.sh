@@ -8,20 +8,16 @@ function find_files --argument-names dir exts
   find -E "$dir" -type f -regex ".*\.($exts)"
 end
 
-function get_size
-  set size "0"
-  for n in $argv
-    set size (math "$size" + (gstat -c %s -- "$n"))
-  end
-  echo "$size"
+function get_size --argument-names dir
+  gdu -b "$dir" | tail -n 1 | awk '{ print $1 }'
 end
 
-function make_sheet --argument-names dir exts
+function make_sheet --argument-names dir exts add_list
   set full_dir (realpath "$dir")
   set curr_dir (basename "$full_dir")
   set files (find_files "$dir" "$exts" | sort)
   set files_n (count $files)
-  set total_size (get_size)
+  set total_size (get_size "$dir")
   set total_size_f (numfmt --to iec --format "%.2f" "$total_size")
   echo "<!doctype html>
 <html>
@@ -44,8 +40,10 @@ body.dark a { color: cyan; }
 body.dark .image-outer:hover .image { border: 2px outset #fff; background-color: #333; }
 body.dark .image-outer:target .image { border: 2px outset #ffff64; background-color: #393900; }
 body.dark .image-outer:target:hover .image { border: 2px outset #fff; }
-body.minimal .image { margin: 0; padding: 0; }
+body.minimal .image { margin: 0; padding: 0; display: block; }
 body.minimal .image p { display: none; }
+body.minimal .image img { display: block; }
+body.limit-size .image img { max-height: 300px; width: auto; }
 </style>
 </head>
 <body>
@@ -58,6 +56,7 @@ body.minimal .image p { display: none; }
 <label for='darkcheck'><p><input type='checkbox' id='darkcheck' onclick='toggleDark()'> Toggle dark mode</p></label>
 <label for='sortcheck'><p><input type='checkbox' id='sortcheck' onclick='toggleSort()'> Sort by height</p></label>
 <label for='minimalcheck'><p><input type='checkbox' id='minimalcheck' onclick='toggleMinimal()'> Minimal display</p></label>
+<label for='limitsize'><p><input type='checkbox' id='limitsize' onclick='toggleLimitSize()'> Limit image display size</p></label>
 <script>
 let hasDetectedHeights = false;
 let sortedByHeight = false;
@@ -67,10 +66,15 @@ function toggleDark() {
 function toggleMinimal() {
   document.body.classList.toggle('minimal');
 }
+function toggleLimitSize() {
+  document.body.classList.toggle('limit-size');
+}
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
   toggleDark();
   document.querySelector('#darkcheck').checked = true;
 }
+toggleLimitSize();
+toggleMinimal();
 function sortChildren(parent, comparator) {
   parent.replaceChildren(...Array.from(parent.children).sort(comparator));
 }
@@ -106,15 +110,17 @@ function makeHeightSortOrder() {
   });
   hasDetectedHeights = true;
 }
-</script>
-<details class='image-list'>
-<summary>List of files</summary>"
-  echo "<div>"
-  make_sheet_list "$dir" $files
-  echo "</div>"
-  echo "</details>"
+</script>"
+  if [ "$add_list" -eq "1" ]
+    echo "<details class='image-list'>"
+    echo "<summary>List of files</summary>"
+    echo "<div>"
+    make_sheet_list "$dir" $files
+    echo "</div>"
+    echo "</details>"
+  end
   echo "<div class='images'>"
-  make_sheet_images "$dir" "$full_dir" $files
+  make_sheet_images "$dir" "$full_dir" $files | sort
   echo "</div>"
   echo "</body>"
   echo "</html>"
@@ -135,21 +141,36 @@ function make_sheet_images --argument-names dir pathprefix
   set files $argv[3..-1]
   for n in (seq (count $files))
     set f $files[$n]
-    set furl "$pathprefix/$f"
-    set alt (basename "$f")
-    echo "<div class='image-outer' id='f$n'><div class='image'><img src='file://$furl' alt='$alt'><p>$alt</p></div></div>"
+    set furl (echo "$pathprefix/$f" | sed "s/'/\&apos;/g" | sed "s/#/\%23/g" | sed "s/?/\%3f/g")
+    set alt (basename "$f" | sed "s/'/\&apos;/g")
+    set width (identify -ping -format '%w' "$f""[0]")
+    set height (identify -ping -format '%h' "$f""[0]")
+    set w_zero (string pad -w 10 -c 0 "$width")
+    set h_zero (string pad -w 10 -c 0 "$height")
+    set fn_zero (echo "$f" | strip_ext)
+    echo "<!--h$h_zero|fn$fn_zero|w$w_zero-->""<div class='image-outer' id='f$n'><div class='image'><img src='file://$furl' alt='$alt'><p>$alt</p></div></div>"
   end
 end
 
-function main --argument-names dir
+function main --argument-names dir add_list to_browser
   if [ -z "$dir" ]
     set dir "."
   end
+  if [ -z "$add_list" ]
+    set add_list "1"
+  end
+  if [ -z "$to_browser" ]
+    set to_browser "1"
+  end
   set fn "$TMPDIR"(randstr)".html"
   set exts (string join \| $_image_exts)
-  set html (make_sheet "$dir" "$exts")
-  echo "$html" > "$fn"
-  open "$fn"
+  if [ "$to_browser" -eq "1" ]
+    set html (make_sheet "$dir" "$exts" "$add_list")
+    echo "$html" > "$fn"
+    open "$fn"
+  else
+    make_sheet "$dir" "$exts" "$add_list"
+  end
 end
 
 main $argv
