@@ -21,7 +21,7 @@ function get_disk_usage
   set amount (df -k / | tail -n1)
   set total (echo $amount | awk '{print $2}')
   set avail (echo $amount | awk '{print $4}')
-  set use (echo $amount | awk '{print $5}')
+  set use (math -s 1 "(" 1 - "$avail" / "$total" ")" "*" 100)"%"
 
   set avail_h (math --scale=1 "(($avail) * 1024) / 1000000000")
   set total_h (math --scale=1 "(($total) * 1024) / 1000000000")
