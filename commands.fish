@@ -114,15 +114,15 @@ function youtube-audio-dl \
   # Check whether this is a playlist or not.
   # If so, include the playlist_index variable in the filename.
   set tpl_playlist "%(playlist_index)s - %(title)s [%(id)s].%(ext)s"
-  set tpl "%(title)s [%(id)s].%(ext)s"
+  set tpl "%(playlist_autonumber)02d %(title)s (%(upload_date>%Y-%m-%d)s) [%(id)s].%(ext)s"
   for url in $urls
     if begin string match -qr -- ".+?playlist\?list.+?" $url; \
       or string match -qr -- ".+?&list=.+?" $url; end
       set tpl $tpl_playlist
       echo (set_color magenta)"Downloading in playlist mode"(set_color normal)
     end
-
-    yt-dlp -i --format "bestaudio" -x --add-metadata --audio-format $audiotype -o $tpl $url
+    
+    yt-dlp -i --format "bestaudio" -x --convert-thumbnail jpg --add-metadata --embed-metadata --embed-thumbnail --audio-format $audiotype -o $tpl $url
   end
 end
 
