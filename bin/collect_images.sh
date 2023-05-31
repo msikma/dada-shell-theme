@@ -10,7 +10,9 @@ function main --argument-names dir
   echo (set_color yellow)"Saving to: "(set_color cyan)"$outdir"(set_color normal)
   mkdir -p "$outdir"
   for n in (find -E "$dir" -type f -regex ".*\.($exts)")
-    cp "$n" ./$outdir
+    set fullsplit (string split -r -m1 . -- "$n")
+    set fullfn (echo "$fullsplit[1]" | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr A-Z a-z | string trim --chars="-")".$fullsplit[2]"
+    cp "$n" ./"$outdir"/"$fullfn"
   end
   for n in (find ./$outdir -type f)
     set tmr (cat "$n" | grep -i "<h1>Too Many Requests</h1>")
