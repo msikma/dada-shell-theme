@@ -316,12 +316,21 @@ function backup_dir_to_file_needed \
 end
 
 function backup_dir_to_file \
-  --description "Backs up a directory to a zip file" \
+  --description "Backs up a directory to a 7z file" \
   --argument-names src_base_dir dst_base_dir all_dst_base_dir type_dir src_dir_name dst_file dst_fn age_diff
   # Make a shorter version of the source directory for display purposes.
   set src_dir "$src_base_dir/$src_dir_name"
   set home_escaped (echo $home | sed "s/\//\\\\\//g")
   set src_short (echo $src_dir | sed "s/$home_escaped\\///")
+  # Skip if we don't want to backup this directory.
+  if [ -e "$src_base_dir/$src_dir_name/.no_backup" ]
+    # Target is identical in age, or even newer, than the source.
+    set skip_str (set_color cyan)"Skip"
+    set src_str (set_color yellow)"$src_short"
+    set no_str (set_color magenta)"- has .no_backup file"(set_color normal)
+    printf "%-13s%-52s%s\n" $skip_str $src_str $no_str
+    return
+  end
   # Check whether the backup is needed.
   if [ $age_diff -le 0 ]
     # Target is identical in age, or even newer, than the source.
@@ -331,17 +340,8 @@ function backup_dir_to_file \
     printf "%-13s%-52s%s\n" $skip_str $src_str $no_str
     return
   end
-  # Create the zip file *without node_modules directory*, which is unnecessary and slow to pack.
-  set exclude ""
-  if test -d "$src_dir/node_modules"
-    set exclude "-x $src_dir/node_modules/**"
-  end
-  pushd $src_base_dir
-  zip -r9qu $dst_file $src_dir_name -x "/**/.DS_Store" $exclude
-  popd
-  pushd $all_dst_base_dir
-  set size (du -h $type_dir/$dst_fn)
-  popd
+  7zz a "$dst_file" -y -bsp0 -bso0 -mx5 -xr!node_modules "$src_dir"
+  set size (du -h $all_dst_base_dir/$type_dir/$dst_fn)
   # Check the size of the file we made.
   # And the age difference before the backup.
   # Unless it's 1, which indicates the file didn't exist before now.
