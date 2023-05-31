@@ -80,6 +80,18 @@ function img_trim
   magick mogrify -trim $files
 end
 
+# Converts all .gif files to .png.
+function gif2png --argument-names del
+  for file in (find "." -type f -depth 1 -iname "*.gif")
+    set nfile (basename "$file" .gif)".png"
+    convert "$file" PNG24:"$nfile"
+    touch -r "$file" "$nfile"
+    if [ "$del" = "-d" ]
+      rm "$file"
+    end
+  end
+end
+
 # Processing command for iSakura TV. Crops 22px off the top and bottom and converts to jpg.
 # Archived because that's no longer needed now that the monitor has changed.
 #function img_isakura_old
