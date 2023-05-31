@@ -8,7 +8,7 @@ end
 # Prints the system name and version, e.g. "OSX 10.13.6" or "Ubuntu 19.04"
 function get_system_version
   if [ (command -v defaults) ]
-    echo "OSX "(get_osx_version)
+    echo "macOS "(get_osx_version)
   else
     lsb_release -d | cut -d":" -f2 | xargs
   end
