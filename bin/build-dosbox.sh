@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 set USAGE 'usage: build-dosbox [--no-symlink] [--no-clean] [--no-pull]
-                    [-h|--help]'
+                    [-h|--help] [--legacy-symlink]'
 
 function get_branch
   cat .git/HEAD | sed -e 's/ref: \(.*\)$/\1/g' | sed -e 's/refs\/heads\/\(.*\)$/\1/g'
@@ -25,7 +25,7 @@ function rebuild --argument-names arg
     exit 0
   end
   if [ -n "$arg" ]
-    if begin [ "$arg" != "--no-pull" ]; and [ "$arg" != "--no-symlink" ]; and [ "$arg" != "--no-clean" ]; end
+    if begin [ "$arg" != "--no-pull" ]; and [ "$arg" != "--no-symlink" ]; and [ "$arg" != "--legacy-symlink" ]; and [ "$arg" != "--no-clean" ]; end
       echo $USAGE
       exit 0
     end
@@ -44,7 +44,8 @@ function rebuild --argument-names arg
     git pull
   end
   rm -rf dosbox-x.app
-  ./build-macosx
+  # note: temporarily disable avcodec: <https://github.com/joncampbell123/dosbox-x/issues/3283>
+  ./build-macos --disable-avcodec
   make dosbox-x.app
   
   if [ "$status" -ne 0 ]
@@ -60,7 +61,11 @@ function rebuild --argument-names arg
   echo (date) > ./dosbox-x.app/Contents/Resources/built.txt
   rm -rf ~/Source/dosbox-x-builds/"$name"
   mv dosbox-x.app ~/Source/dosbox-x-builds/"$name"
-  if begin; ! contains -- "--no-symlink" $argv; and [ "$branch" = "master" ]; end
+  if contains -- "--legacy-symlink" $argv
+    rm -rf ~/Source/dosbox-x-builds/"DOSBox-X Legacy.app"
+    ln -s ~/Source/dosbox-x-builds/"$name" ~/Source/dosbox-x-builds/"DOSBox-X Legacy.app"
+    echo (set_color yellow)"Built "(set_color cyan)"$name"(set_color yellow)" and symlinked it to "(set_color blue)"DOSBox-X Legacy.app"(set_color yellow)"."(set_color normal)
+  else if begin; ! contains -- "--no-symlink" $argv; and [ "$branch" = "master" ]; end
     rm -rf ~/Source/dosbox-x-builds/"DOSBox-X Latest.app"
     ln -s ~/Source/dosbox-x-builds/"$name" ~/Source/dosbox-x-builds/"DOSBox-X Latest.app"
     echo (set_color yellow)"Built "(set_color cyan)"$name"(set_color yellow)" and symlinked it to "(set_color blue)"DOSBox-X Latest.app"(set_color yellow)"."(set_color normal)
